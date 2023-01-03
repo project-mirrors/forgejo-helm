@@ -18,7 +18,7 @@ pipeline:
       - helm dependency update
       - rm -rf tmp/
       - helm package --version "${CI_COMMIT_TAG##v}" -d tmp/ ./
-      - echo $${TOKEN} | helm registy login https://codeberg.org/api/packages/forgejo-contrib/helm/api/charts
+      - echo $${TOKEN} | helm registry login https://codeberg.org/api/packages/forgejo-contrib/helm/api/charts
       - helm push tmp/forgejo-${CI_COMMIT_TAG##v}.tgz oci://codeberg.org/api/packages/forgejo-contrib/helm/api/charts
       # - git fetch origin
       # - git checkout pages
