@@ -6,12 +6,19 @@ when:
       - pages
 
 pipeline:
+  deps:
+    image: alpine:3.17
+    pull: true
+    commands:
+      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
+      - helm repo add bitnami https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      - helm dependency build
+
   helm-lint:
     image: alpine:3.17
     pull: true
     commands:
       - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
-      - helm dependency build
       - helm lint
 
   helm-template:
