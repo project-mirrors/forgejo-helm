@@ -15,18 +15,10 @@ pipeline:
     commands:
       - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
       - apk add --no-cache git
-      - helm dependency update
+      - helm dependency build
       - rm -rf tmp/
       - helm package --version "${CI_COMMIT_TAG##v}" -d tmp/ ./
       - echo $${TOKEN} | helm registry login -u viceice --password-stdin codeberg.org/forgejo-contrib
       - helm push tmp/forgejo-${CI_COMMIT_TAG##v}.tgz oci://codeberg.org/forgejo-contrib
-      # - git fetch origin
-      # - git checkout pages
-      # - helm repo index tmp/ --merge index.yaml
-      # - mv -f tmp/* .
-      # - git config user.email "release@forgejo.org" ; git config user.name "Release Team"
-      # - git add .
-      # - git commit -m "update charts to ${CI_COMMIT_TAG}" -a
-      # - git push origin pages
     secrets:
       - token
