@@ -9,7 +9,7 @@ dependencies:
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 10.3.17
 - name: mariadb
-  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
-  version: 9.3.6
-digest: sha256:044e249826b5d277202656686696ea748107952da49e5e56d5d635edab93dc1a
-generated: "2023-01-03T22:02:26.0191894+01:00"
+  repository: https://charts.bitnami.com/bitnami
+  version: 11.4.2
+digest: sha256:10516937fb2fd61045984a8d875b22c79dc80b4b6bad02c86e044dd2b7898983
+generated: "2023-01-03T22:04:32.6044332+01:00"
