@@ -1,0 +1,31 @@
+platform: linux/amd64
+
+when:
+  event: [ push, pull_request ]
+  branch:
+    exclude:
+      - main
+
+pipeline:
+  helm-lint:
+    image: alpine:3.17
+    pull: true
+    commands:
+      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
+      - helm lint
+
+  helm-template:
+    image: alpine:3.17
+    pull: true
+    commands:
+      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
+      - helm dependency update
+      - helm template --debug gitea-helm .
+
+  verify-readme:
+    image: alpine:3.17
+    pull: true
+    commands:
+      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing make npm git
+      - make readme
+      - git diff --exit-code --name-only README.md
