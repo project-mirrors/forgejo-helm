@@ -96,7 +96,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{- define "mysql.dns" -}}
-{{- printf "%s-mysql.%s.svc.%s:%g" .Release.Name .Release.Namespace .Values.clusterDomain .Values.mysql.service.port | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-mysql.%s.svc.%s:%g" .Release.Name .Release.Namespace .Values.clusterDomain .Values.mysql.primary.service.ports.mysql | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "mariadb.dns" -}}

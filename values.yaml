@@ -426,24 +426,25 @@ postgresql:
 ## @section MySQL
 #
 ## @param mysql.enabled Enable MySQL
-## @param mysql.root.password Password for the root user. Ignored if existing secret is provided
-## @param mysql.db.user Username of new user to create.
-## @param mysql.db.password Password for the new user.Ignored if existing secret is provided
-## @param mysql.db.name Name for new database to create.
-## @param mysql.service.port Port to connect to MySQL service
-## @param mysql.persistence.size PVC Storage Request for MySQL volume
+## @param mysql.auth.database Name for new database to create.
+## @param mysql.auth.username Username of new user to create.
+## @param mysql.auth.password Password for the new user.Ignored if existing secret is provided
+## @param mysql.auth.rootPassword Password for the root user. Ignored if existing secret is provided
+## @param mysql.primary.service.ports.mysql Port to connect to MySQL service
+## @param mysql.primary.persistence.size PVC Storage Request for MySQL volume
 mysql:
   enabled: false
-  root:
+  auth:
+    database: gitea
+    username: gitea
     password: gitea
-  db:
-    user: gitea
-    password: gitea
-    name: gitea
-  service:
-    port: 3306
-  persistence:
-    size: 10Gi
+    rootPassword: gitea
+  primary:
+    service:
+      ports:
+        mysql: 3306
+    persistence:
+      size: 10Gi
 
 ## @section MariaDB
 #
