@@ -1,6 +1,6 @@
-# Gitea Helm Chart
+# Forgejo Helm Chart
 
-[Gitea](https://gitea.io/en-us/) is a community managed lightweight code hosting
+[Forgejo](https://forgejo.org/) is a community managed lightweight code hosting
 solution written in Go. It is published under the MIT license.
 
 ## Introduction
@@ -13,7 +13,7 @@ as well as being deployed as a statefulset to retain stored repositories.
 
 ## Dependencies
 
-Gitea can be run with an external database and cache. This chart provides those
+Forgejo can be run with an external database and cache. This chart provides those
 dependencies, which can be enabled, or disabled via
 configuration.
 
@@ -27,9 +27,9 @@ Dependencies:
 ## Installing
 
 ```sh
-helm repo add gitea-charts https://dl.gitea.io/charts/
+helm repo add forgejo-charts https://forgejo-contrib.codeberg.page/forgejo-helm/
 helm repo update
-helm install gitea gitea-charts/gitea
+helm install forgejo forgejo-charts/forgejo
 ```
 
 When upgrading, please refer to the [Upgrading](#upgrading) section at the bottom
@@ -44,7 +44,7 @@ of this document for major and breaking changes.
 ## Configure Commit Signing
 
 When using the rootless image the gpg key folder was is not persistent by
-default. If you consider using signed commits for internal Gitea activities
+default. If you consider using signed commits for internal Forgejo activities
 (e.g. initial commit), you'd need to provide a signing key. Prior to
 [PR186](https://gitea.com/gitea/helm-chart/pulls/186), imported keys had to be
 re-imported once the container got replaced by another.
@@ -61,27 +61,27 @@ signing:
 
 ## Examples
 
-### Gitea Configuration
+### Forgejo Configuration
 
-Gitea offers lots of configuration options. This is fully described in the
+Forgejo offers lots of configuration options. This is fully described in the
 [Gitea Cheat Sheet](https://docs.gitea.io/en-us/config-cheat-sheet/).
 
 ```yaml
 gitea:
   config:
-    APP_NAME: "Gitea: With a cup of tea."
+    APP_NAME: 'Forgejo: With a cup of tea.'
     repository:
-      ROOT: "~/gitea-repositories"
+      ROOT: '~/gitea-repositories'
     repository.pull-request:
-      WORK_IN_PROGRESS_PREFIXES: "WIP:,[WIP]:"
+      WORK_IN_PROGRESS_PREFIXES: 'WIP:,[WIP]:'
 ```
 
 ### Default Configuration
 
-This chart will set a few defaults in the Gitea configuration based on the
+This chart will set a few defaults in the Forgejo configuration based on the
 service and ingress settings. All defaults can be overwritten in `gitea.config`.
 
-INSTALL_LOCK is always set to true, since we want to configure Gitea with this
+INSTALL_LOCK is always set to true, since we want to configure Forgejo with this
 helm chart and everything is taken care of.
 
 _All default settings are made directly in the generated app.ini, not in the Values._
@@ -143,7 +143,7 @@ ENABLED = false
 ### Additional _app.ini_ settings
 
 > **The [generic](https://docs.gitea.io/en-us/config-cheat-sheet/#overall-default)
-section cannot be defined that way.**
+> section cannot be defined that way.**
 
 Some settings inside _app.ini_ (like passwords or whole authentication configurations)
 must be considered sensitive and therefore should not be passed via plain text
@@ -343,7 +343,7 @@ gitea:
 
 ### Persistence
 
-Gitea will be deployed as a statefulset. By simply enabling the persistence and
+Forgejo will be deployed as a statefulset. By simply enabling the persistence and
 setting the storage class according to your cluster everything else will be
 taken care of. The following example will create a PVC as a part of the
 statefulset. This PVC will not be deleted even if you uninstall the chart.
@@ -365,9 +365,9 @@ by default.
 If you want to manage your own PVC you can simply pass the PVC name to the chart.
 
 ```yaml
-  persistence:
-    enabled: true
-    existingClaim: MyAwesomeGiteaClaim
+persistence:
+  enabled: true
+  existingClaim: MyAwesomeGiteaClaim
 ```
 
 In case that peristence has been disabled it will simply use an empty dir volume.
@@ -376,20 +376,20 @@ PostgreSQL handles the persistence in the exact same way.
 You can interact with the postgres settings as displayed in the following example:
 
 ```yaml
-  postgresql:
-    persistence:
-      enabled: true
-      existingClaim: MyAwesomeGiteaPostgresClaim
+postgresql:
+  persistence:
+    enabled: true
+    existingClaim: MyAwesomeGiteaPostgresClaim
 ```
 
 MySQL also handles persistence the same, even though it is not deployed as a statefulset.
 You can interact with the postgres settings as displayed in the following example:
 
 ```yaml
-  mysql:
-    persistence:
-      enabled: true
-      existingClaim: MyAwesomeGiteaMysqlClaim
+mysql:
+  persistence:
+    enabled: true
+    existingClaim: MyAwesomeGiteaMysqlClaim
 ```
 
 ### Admin User
@@ -400,11 +400,11 @@ not possible to delete an admin user after it has been created. This has to be
 done in the ui. You cannot use `admin` as username.
 
 ```yaml
-  gitea:
-    admin:
-      username: "MyAwesomeGiteaAdmin"
-      password: "AReallyAwesomeGiteaPassword"
-      email: "gi@tea.com"
+gitea:
+  admin:
+    username: 'MyAwesomeForgejoAdmin'
+    password: 'AReallyAwesomeForgejoPassword'
+    email: 'forge@jo.com'
 ```
 
 You can also use an existing Secret to configure the admin user:
@@ -422,8 +422,8 @@ stringData:
 
 ```yaml
 gitea:
-    admin:
-      existingSecret: gitea-admin-secret
+  admin:
+    existingSecret: gitea-admin-secret
 ```
 
 ### LDAP Settings
@@ -434,20 +434,20 @@ All LDAP values from <https://docs.gitea.io/en-us/command-line/#admin> are avail
 Multiple LDAP sources can be configured with additional LDAP list items.
 
 ```yaml
-  gitea:
-    ldap:
-      - name: MyAwesomeGiteaLdap
-        securityProtocol: unencrypted
-        host: "127.0.0.1"
-        port: "389"
-        userSearchBase: ou=Users,dc=example,dc=com
-        userFilter: sAMAccountName=%s
-        adminFilter: CN=Admin,CN=Group,DC=example,DC=com
-        emailAttribute: mail
-        bindDn: CN=ldap read,OU=Spezial,DC=example,DC=com
-        bindPassword: JustAnotherBindPw
-        usernameAttribute: CN
-        publicSSHKeyAttribute: publicSSHKey
+gitea:
+  ldap:
+    - name: MyAwesomeGiteaLdap
+      securityProtocol: unencrypted
+      host: '127.0.0.1'
+      port: '389'
+      userSearchBase: ou=Users,dc=example,dc=com
+      userFilter: sAMAccountName=%s
+      adminFilter: CN=Admin,CN=Group,DC=example,DC=com
+      emailAttribute: mail
+      bindDn: CN=ldap read,OU=Spezial,DC=example,DC=com
+      bindPassword: JustAnotherBindPw
+      usernameAttribute: CN
+      publicSSHKeyAttribute: publicSSHKey
 ```
 
 You can also use an existing secret to set the bindDn and bindPassword:
@@ -550,7 +550,7 @@ gitea:
 
 ### Pod Annotations
 
-Annotations can be added to the Gitea pod.
+Annotations can be added to the Forgejo pod.
 
 ```yaml
 gitea:
@@ -571,14 +571,14 @@ gitea:
 
 ### Image
 
-| Name               | Description                                                                                                                             | Value         |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `image.registry`   | image registry, e.g. gcr.io,docker.io                                                                                                   | `""`          |
-| `image.repository` | Image to start for this pod                                                                                                             | `gitea/gitea` |
-| `image.tag`        | Visit: [Image tag](https://hub.docker.com/r/gitea/gitea/tags?page=1&ordering=last_updated). Defaults to `appVersion` within Chart.yaml. | `""`          |
-| `image.pullPolicy` | Image pull policy                                                                                                                       | `Always`      |
-| `image.rootless`   | Wether or not to pull the rootless version of Gitea, only works on Gitea 1.14.x or higher                                               | `false`       |
-| `imagePullSecrets` | Secret to use for pulling the image                                                                                                     | `[]`          |
+| Name               | Description                                                                                                                         | Value             |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `image.registry`   | image registry, e.g. gcr.io,docker.io                                                                                               | `"codeberg.org"`  |
+| `image.repository` | Image to start for this pod                                                                                                         | `forgejo/forgejo` |
+| `image.tag`        | Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml. | `""`              |
+| `image.pullPolicy` | Image pull policy                                                                                                                   | `Always`          |
+| `image.rootless`   | Wether or not to pull the rootless version of Forgejo, only works on Forgejo 1.14.x or higher                                       | `false`           |
+| `imagePullSecrets` | Secret to use for pulling the image                                                                                                 | `[]`              |
 
 ### Security
 
@@ -586,7 +586,7 @@ gitea:
 | ---------------------------- | --------------------------------------------------------------- | ------ |
 | `podSecurityContext.fsGroup` | Set the shared file system group for all containers in the pod. | `1000` |
 | `containerSecurityContext`   | Security context                                                | `{}`   |
-| `securityContext`            | Run init and Gitea containers as a specific securityContext     | `{}`   |
+| `securityContext`            | Run init and Forgejo containers as a specific securityContext   | `{}`   |
 
 ### Service
 
@@ -642,24 +642,24 @@ gitea:
 | `statefulset.env`                           | Additional environment variables to pass to containers | `[]`  |
 | `statefulset.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod         | `60`  |
 | `statefulset.labels`                        | Labels for the statefulset                             | `{}`  |
-| `statefulset.annotations`                   | Annotations for the Gitea StatefulSet to be created    | `{}`  |
+| `statefulset.annotations`                   | Annotations for the Forgejo StatefulSet to be created  | `{}`  |
 
 ### Persistence
 
-| Name                         | Description                                                                                           | Value               |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------- |
-| `persistence.enabled`        | Enable persistent storage                                                                             | `true`              |
-| `persistence.existingClaim`  | Use an existing claim to store repository information                                                 | `nil`               |
-| `persistence.size`           | Size for persistence to store repo information                                                        | `10Gi`              |
-| `persistence.accessModes`    | AccessMode for persistence                                                                            | `["ReadWriteOnce"]` |
-| `persistence.labels`         | Labels for the persistence volume claim to be created                                                 | `{}`                |
-| `persistence.annotations`    | Annotations for the persistence volume claim to be created                                            | `{}`                |
-| `persistence.storageClass`   | Name of the storage class to use                                                                      | `nil`               |
-| `persistence.subPath`        | Subdirectory of the volume to mount at                                                                | `nil`               |
-| `extraVolumes`               | Additional volumes to mount to the Gitea statefulset                                                  | `[]`                |
-| `extraContainerVolumeMounts` | Mounts that are only mapped into the Gitea runtime/main container, to e.g. override custom templates. | `[]`                |
-| `extraInitVolumeMounts`      | Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.    | `[]`                |
-| `extraVolumeMounts`          | **DEPRECATED** Additional volume mounts for init containers and the Gitea main container              | `[]`                |
+| Name                         | Description                                                                                             | Value               |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------- |
+| `persistence.enabled`        | Enable persistent storage                                                                               | `true`              |
+| `persistence.existingClaim`  | Use an existing claim to store repository information                                                   | `nil`               |
+| `persistence.size`           | Size for persistence to store repo information                                                          | `10Gi`              |
+| `persistence.accessModes`    | AccessMode for persistence                                                                              | `["ReadWriteOnce"]` |
+| `persistence.labels`         | Labels for the persistence volume claim to be created                                                   | `{}`                |
+| `persistence.annotations`    | Annotations for the persistence volume claim to be created                                              | `{}`                |
+| `persistence.storageClass`   | Name of the storage class to use                                                                        | `nil`               |
+| `persistence.subPath`        | Subdirectory of the volume to mount at                                                                  | `nil`               |
+| `extraVolumes`               | Additional volumes to mount to the Forgejo statefulset                                                  | `[]`                |
+| `extraContainerVolumeMounts` | Mounts that are only mapped into the Forgejo runtime/main container, to e.g. override custom templates. | `[]`                |
+| `extraInitVolumeMounts`      | Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.      | `[]`                |
+| `extraVolumeMounts`          | **DEPRECATED** Additional volume mounts for init containers and the Forgejo main container              | `[]`                |
 
 ### Init
 
@@ -676,20 +676,20 @@ gitea:
 
 ### Gitea
 
-| Name                                   | Description                                                                                                   | Value                |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `gitea.admin.username`                 | Username for the Gitea admin user                                                                             | `gitea_admin`        |
-| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                                                        | `nil`                |
-| `gitea.admin.password`                 | Password for the Gitea admin user                                                                             | `r8sA8CPHD9!bt6d`    |
-| `gitea.admin.email`                    | Email for the Gitea admin user                                                                                | `gitea@local.domain` |
-| `gitea.metrics.enabled`                | Enable Gitea metrics                                                                                          | `false`              |
-| `gitea.metrics.serviceMonitor.enabled` | Enable Gitea metrics service monitor                                                                          | `false`              |
-| `gitea.ldap`                           | LDAP configuration                                                                                            | `[]`                 |
-| `gitea.oauth`                          | OAuth configuration                                                                                           | `[]`                 |
-| `gitea.config`                         | Configuration for the Gitea server,ref: [config-cheat-sheet](https://docs.gitea.io/en-us/config-cheat-sheet/) | `{}`                 |
-| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                                                             | `[]`                 |
-| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables                                                   | `[]`                 |
-| `gitea.podAnnotations`                 | Annotations for the Gitea pod                                                                                 | `{}`                 |
+| Name                                   | Description                                                                                                     | Value                |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `gitea.admin.username`                 | Username for the Forgejo admin user                                                                             | `gitea_admin`        |
+| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                                                          | `nil`                |
+| `gitea.admin.password`                 | Password for the Forgejo admin user                                                                             | `r8sA8CPHD9!bt6d`    |
+| `gitea.admin.email`                    | Email for the Forgejo admin user                                                                                | `gitea@local.domain` |
+| `gitea.metrics.enabled`                | Enable Forgejo metrics                                                                                          | `false`              |
+| `gitea.metrics.serviceMonitor.enabled` | Enable Forgejo metrics service monitor                                                                          | `false`              |
+| `gitea.ldap`                           | LDAP configuration                                                                                              | `[]`                 |
+| `gitea.oauth`                          | OAuth configuration                                                                                             | `[]`                 |
+| `gitea.config`                         | Configuration for the Forgejo server,ref: [config-cheat-sheet](https://docs.gitea.io/en-us/config-cheat-sheet/) | `{}`                 |
+| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                                                               | `[]`                 |
+| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables                                                     | `[]`                 |
+| `gitea.podAnnotations`                 | Annotations for the Forgejo pod                                                                                 | `{}`                 |
 
 ### LivenessProbe
 
@@ -786,181 +786,3 @@ See [CONTRIBUTORS GUIDE](CONTRIBUTING.md) for details.
 This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully.
 
-### To 6.0.0
-
-#### Different volume mounts for init-containers and runtime container
-
-**The `extraVolumeMounts` is deprecated** in favor of `extraInitVolumeMounts` and
-`extraContainerVolumeMounts`. You can now have different mounts for the initialization
-phase and Gitea runtime. The deprecated `extraVolumeMounts` will still be available
-for the time being and is mounted into every container. If you want to switch to
-the new settings and want to mount specific volumes into all containers, you have
-to configure their mount points within both new settings.
-
-**Combining values from the deprecated setting with values from the new settings
-is not possible.**
-
-#### New `enabled` flag for `startupProbe`
-
-Prior to this version the `startupProbe` was just a commented sample within the
-`values.yaml`. With the migration to an auto-generated [Parameters](#parameters)
-section, a new parameter `gitea.startupProbe.enabled` has been introduced set to
-`false` by default.
-
-If you are using the `startupProbe` you need to add that new
-parameter and set it to `true`. Otherwise, your defined probe won't be considered
-after the upgrade.
-
-### To 5.0.0
-
-> 💥 The Helm Chart now requires Gitea versions of at least 1.11.0.
-
-#### Enable Dependencies
-
-The values to enable the dependencies,
-such as PostgreSQL, Memcached, MySQL and MariaDB
-have been moved from `gitea.database.builtIn.` to the dependency values.
-
-You can now enable the dependencies as followed:
-
-```yaml
-memcached:
-  enabled: true
-
-postgresql:
-  enabled: true
-
-mysql:
-  enabled: false
-
-mariadb:
-  enabled: false
-```
-
-#### App.ini generation
-
-The app.ini generation has changed and now utilizes the environment-to-ini
-script provided by newer Gitea versions. This change ensures, that the app.ini
-is now persistent.
-
-##### Secret Key generation
-
-Gitea secret keys (SECRET_KEY, INTERNAL_TOKEN, JWT_SECRET) are now generated
-automatically in certain situations:
-
-- New install: By default the secrets are created automatically. If you provide
-  secrets via `gitea.config` they will be used instead of automatic generation.
-- Existing installs: The secrets won't be deployed, neither via
-  configuration nor via auto generation. We explicitly prevent to set new secrets.
-
-> 💡 It would be possible to set new secret keys manually by entering
-the running container and rewriting the app.ini by hand. However, this it is
-not advisable to do so for existing installations. Certain settings like
-_LDAP_ would not be readable anymore.
-
-#### Probes
-
-`gitea.customLivenessProbe`, `gitea.customReadinessProbe` and `gitea.customStartupProbe`
-have been removed.
-
-They are replaced by the settings `gitea.livenessProbe`, `gitea.readinessProbe`
-and `gitea.startupProbe` which are now fully configurable and used _as-is_ for
-a Chart deployment.
-If you have customized their values instead of using the `custom` prefixed settings,
-please ensure that you remove the `enabled` property from each of them.
-
-In case you want to disable one of these probes, let's say the `livenessProbe`, add
-the following to your values. The `podAnnotation` is just there to have a bit more
-context.
-
-```diff
-gitea:
-+ livenessProbe:
-  podAnnotations: {}
-```
-
-#### Multiple OAuth and LDAP authentication sources
-
-With `5.0.0` of this Chart it is now possible to configure Gitea with multiple
-OAuth and LDAP sources. As a result, you need to update an existing OAuth/LDAP configuration
-in your customized `values.yaml` by replacing the object with settings to a list
-of settings objects. See [OAuth2 Settings](#oauth2-settings) and
-[LDAP Settings](#ldap-settings) section for details.
-
-### To 4.0.0
-
-#### Ingress changes
-
-To provide a more flexible Ingress configuration we now support not only host
-settings but also provide configuration for the path and pathType. So this
-change changes the hosts from a simple string list, to a list containing a more
-complex object for more configuration.
-
-```diff
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
--  hosts:
--    - git.example.com
-+  hosts:
-+    - host: git.example.com
-+      paths:
-+        - path: /
-+          pathType: Prefix
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - git.example.com
-```
-
-If you want everything as it was before, you can simply add the following code
-to all your host entries.
-
-```yaml
-paths:
-  - path: /
-    pathType: Prefix
-```
-
-#### Dropped kebab-case support
-
-In 3.x.x it was possible to provide an ldap configuration via kebab-case, this
-support has now been dropped and only camel case is supported. See [LDAP
-section](#ldap-settings) for more information.
-
-#### Dependency update
-
-The chart comes with multiple databases and Memcached as dependency, the latest
-release updated the dependencies.
-
-- Memcached: `4.2.20` -> `5.9.0`
-- PostgreSQL: `9.7.2` -> `10.3.17`
-- MariaDB: `8.0.0` -> `9.3.6`
-
-If you're using the builtin databases you will most likely redeploy the chart in
-order to update the database correctly.
-
-#### Execution of initPreScript
-
-Generally spoken, this might not be a breaking change, but it is worth to be
-mentioned.
-
-Prior to `4.0.0` only one init container was used to both setup directories and
-configure Gitea. As of now the actual Gitea configuration is separated from the
-other pre-execution. This also includes the execution of _initPreScript_. If you
-have such script, please be aware of this. Dynamically prepare the Gitea setup
-during execution by e.g. adding environment variables to the execution context
-won't work anymore.
-
-### Misc
-
-#### Gitea Version 1.14.X repository ROOT
-
-Previously the ROOT folder for the Gitea repositories was located at
-`/data/git/gitea-repositories`. In version `1.14` has the path been changed to
-`/data/gitea-repositories`.
-
-This chart will set the `gitea.config.repository.ROOT` value default to
-`/data/git/gitea-repositories`.

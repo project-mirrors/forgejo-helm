@@ -24,12 +24,12 @@ clusterDomain: cluster.local
 ## @section Image
 ## @param image.registry image registry, e.g. gcr.io,docker.io
 ## @param image.repository Image to start for this pod
-## @param image.tag Visit: [Image tag](https://hub.docker.com/r/gitea/gitea/tags?page=1&ordering=last_updated). Defaults to `appVersion` within Chart.yaml.
+## @param image.tag Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.
 ## @param image.pullPolicy Image pull policy
-## @param image.rootless Wether or not to pull the rootless version of Gitea, only works on Gitea 1.14.x or higher
+## @param image.rootless Wether or not to pull the rootless version of Forgejo, only works on Forgejo 1.14.x or higher
 image:
-  registry: ""
-  repository: gitea/gitea
+  registry: "codeberg.org"
+  repository: forgejo/forgejo
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   pullPolicy: Always
@@ -66,7 +66,7 @@ containerSecurityContext: {}
 ## @depracated The securityContext variable has been split two:
 ## - containerSecurityContext
 ## - podSecurityContext.
-## @param securityContext Run init and Gitea containers as a specific securityContext
+## @param securityContext Run init and Forgejo containers as a specific securityContext
 securityContext: {}
 
 ## @section Service
@@ -186,7 +186,7 @@ dnsConfig: {}
 ## @param statefulset.env  Additional environment variables to pass to containers
 ## @param statefulset.terminationGracePeriodSeconds How long to wait until forcefully kill the pod
 ## @param statefulset.labels Labels for the statefulset
-## @param statefulset.annotations Annotations for the Gitea StatefulSet to be created
+## @param statefulset.annotations Annotations for the Forgejo StatefulSet to be created
 statefulset:
   env: []
     # - name: VARIABLE
@@ -216,13 +216,13 @@ persistence:
   storageClass:
   subPath:
 
-## @param extraVolumes Additional volumes to mount to the Gitea statefulset
+## @param extraVolumes Additional volumes to mount to the Forgejo statefulset
 extraVolumes: []
 # - name: postgres-ssl-vol
 #   secret:
 #     secretName: gitea-postgres-ssl
 
-## @param extraContainerVolumeMounts Mounts that are only mapped into the Gitea runtime/main container, to e.g. override custom templates.
+## @param extraContainerVolumeMounts Mounts that are only mapped into the Forgejo runtime/main container, to e.g. override custom templates.
 extraContainerVolumeMounts: []
 
 ## @param extraInitVolumeMounts Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.
@@ -232,7 +232,7 @@ extraInitVolumeMounts: []
 ## - extraContainerVolumeMounts
 ## - extraInitVolumeMounts
 ## As an example, can be used to mount a client cert when connecting to an external Postgres server.
-## @param extraVolumeMounts **DEPRECATED** Additional volume mounts for init containers and the Gitea main container
+## @param extraVolumeMounts **DEPRECATED** Additional volume mounts for init containers and the Forgejo main container
 extraVolumeMounts: []
 # - name: postgres-ssl-vol
 #   readOnly: true
@@ -257,13 +257,13 @@ signing:
   enabled: false
   gpgHome: /data/git/.gnupg
 
-## @section Gitea
+## @section Forgejo
 #
 gitea:
-  ## @param gitea.admin.username Username for the Gitea admin user
+  ## @param gitea.admin.username Username for the Forgejo admin user
   ## @param gitea.admin.existingSecret Use an existing secret to store admin user credentials
-  ## @param gitea.admin.password Password for the Gitea admin user
-  ## @param gitea.admin.email Email for the Gitea admin user
+  ## @param gitea.admin.password Password for the Forgejo admin user
+  ## @param gitea.admin.email Email for the Forgejo admin user
   admin:
     #existingSecret: gitea-admin-secret
     existingSecret:
@@ -271,8 +271,8 @@ gitea:
     password: r8sA8CPHD9!bt6d
     email: "gitea@local.domain"
 
-  ## @param gitea.metrics.enabled Enable Gitea metrics
-  ## @param gitea.metrics.serviceMonitor.enabled Enable Gitea metrics service monitor
+  ## @param gitea.metrics.enabled Enable Forgejo metrics
+  ## @param gitea.metrics.serviceMonitor.enabled Enable Forgejo metrics service monitor
   metrics:
     enabled: false
     serviceMonitor:
@@ -311,9 +311,9 @@ gitea:
     #   customProfileUrl:
     #   customEmailUrl:
 
-  ## @param gitea.config  Configuration for the Gitea server,ref: [config-cheat-sheet](https://docs.gitea.io/en-us/config-cheat-sheet/)
+  ## @param gitea.config  Configuration for the Forgejo server,ref: [config-cheat-sheet](https://docs.gitea.io/en-us/config-cheat-sheet/)
   config: {}
-  #  APP_NAME: "Gitea: Git with a cup of tea"
+  #  APP_NAME: "Forgejo: Git with a cup of tea"
   #  RUN_MODE: dev
   #
   #  server:
@@ -332,7 +332,7 @@ gitea:
   ## @param gitea.additionalConfigFromEnvs Additional configuration sources from environment variables
   additionalConfigFromEnvs: []
 
-  ## @param gitea.podAnnotations Annotations for the Gitea pod
+  ## @param gitea.podAnnotations Annotations for the Forgejo pod
   podAnnotations: {}
 
   ## @section LivenessProbe
