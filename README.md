@@ -573,7 +573,7 @@ gitea:
 
 | Name               | Description                                                                                                                         | Value             |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `image.registry`   | image registry, e.g. gcr.io,docker.io                                                                                               | `"codeberg.org"`  |
+| `image.registry`   | image registry, e.g. gcr.io,docker.io                                                                                               | `codeberg.org`    |
 | `image.repository` | Image to start for this pod                                                                                                         | `forgejo/forgejo` |
 | `image.tag`        | Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml. | `""`              |
 | `image.pullPolicy` | Image pull policy                                                                                                                   | `Always`          |
@@ -785,4 +785,3 @@ See [CONTRIBUTORS GUIDE](CONTRIBUTING.md) for details.
 
 This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully.
-

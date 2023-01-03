@@ -257,7 +257,7 @@ signing:
   enabled: false
   gpgHome: /data/git/.gnupg
 
-## @section Forgejo
+## @section Gitea
 #
 gitea:
   ## @param gitea.admin.username Username for the Forgejo admin user
