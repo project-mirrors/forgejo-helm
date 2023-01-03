@@ -1,6 +1,6 @@
 {
-  "name": "gitea-helm-chart",
-  "homepage": "https://gitea.com/gitea/helm-chart.git",
+  "name": "forgejo-helm-chart",
+  "homepage": "https://codeberg.org/forgejo-contrib/forgejo-helm.git",
   "license": "MIT",
   "private": true,
   "engineStrict": true,
