@@ -300,9 +300,9 @@ https
     {{- if not (.Values.gitea.config.database.HOST) -}}
       {{- $_ := set .Values.gitea.config.database "HOST"      (include "mysql.dns" .) -}}
     {{- end -}}
-    {{- $_ := set .Values.gitea.config.database "NAME"      .Values.mysql.db.name -}}
-    {{- $_ := set .Values.gitea.config.database "USER"      .Values.mysql.db.user -}}
-    {{- $_ := set .Values.gitea.config.database "PASSWD"    .Values.mysql.db.password -}}
+    {{- $_ := set .Values.gitea.config.database "NAME"      .Values.mysql.auth.database -}}
+    {{- $_ := set .Values.gitea.config.database "USER"      .Values.mysql.auth.username -}}
+    {{- $_ := set .Values.gitea.config.database "PASSWD"    .Values.mysql.auth.password -}}
   {{- else if .Values.mariadb.enabled -}}
     {{- $_ := set .Values.gitea.config.database "DB_TYPE"   "mysql" -}}
     {{- if not (.Values.gitea.config.database.HOST) -}}
