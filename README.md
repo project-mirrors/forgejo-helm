@@ -27,9 +27,7 @@ Dependencies:
 ## Installing
 
 ```sh
-helm repo add forgejo-charts https://forgejo-contrib.codeberg.page/forgejo-helm/
-helm repo update
-helm install forgejo forgejo-charts/forgejo
+helm install oci://codeberg.org/forgejo-contrib/forgejo
 ```
 
 When upgrading, please refer to the [Upgrading](#upgrading) section at the bottom
@@ -377,9 +375,10 @@ You can interact with the postgres settings as displayed in the following exampl
 
 ```yaml
 postgresql:
-  persistence:
-    enabled: true
-    existingClaim: MyAwesomeGiteaPostgresClaim
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: MyAwesomeGiteaPostgresClaim
 ```
 
 MySQL also handles persistence the same, even though it is not deployed as a statefulset.
@@ -387,9 +386,10 @@ You can interact with the postgres settings as displayed in the following exampl
 
 ```yaml
 mysql:
-  persistence:
-    enabled: true
-    existingClaim: MyAwesomeGiteaMysqlClaim
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: MyAwesomeGiteaMysqlClaim
 ```
 
 ### Admin User
@@ -465,9 +465,8 @@ stringData:
 
 ```yaml
 gitea:
-    ldap:
-      - existingSecret: gitea-ldap-secret
-        ...
+  ldap:
+    - existingSecret: gitea-ldap-secret
 ```
 
 ⚠️ Some options are just flags and therefore don't have any values. If they
@@ -522,7 +521,6 @@ gitea:
   oauth:
     - name: 'MyAwesomeGiteaOAuth'
       existingSecret: gitea-oauth-secret
-        ...
 ```
 
 ### Metrics and profiling
