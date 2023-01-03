@@ -11,6 +11,7 @@ pipeline:
     pull: true
     commands:
       - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
+      - helm dependency build
       - helm lint
 
   helm-template:
@@ -18,7 +19,6 @@ pipeline:
     pull: true
     commands:
       - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
-      - helm dependency build
       - helm template --debug gitea-helm .
 
   verify-readme:
