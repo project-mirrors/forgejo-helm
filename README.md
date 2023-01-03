@@ -5,7 +5,7 @@ solution written in Go. It is published under the MIT license.
 
 ## Introduction
 
-This helm chart has taken some inspiration from official [Gitea helm chart](https://gitea.com/gitea/helm-chart).
+This helm chart is based on official [Gitea helm chart](https://gitea.com/gitea/helm-chart).
 Additionally, this chart provides LDAP and admin user configuration with values,
 as well as being deployed as a statefulset to retain stored repositories.
 
