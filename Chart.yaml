@@ -25,7 +25,7 @@ maintainers:
 # Bitnami charts are served from GitHub CDN - See https://github.com/bitnami/charts/issues/10539 for details
 dependencies:
 - name: memcached
-  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  repository: https://charts.bitnami.com/bitnami
   version: 6.3.2
   condition: memcached.enabled
 - name: mysql
