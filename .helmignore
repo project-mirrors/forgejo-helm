@@ -32,3 +32,4 @@ Makefile
 CONTRIBUTING.md
 .woodpecker/
 tmp/
+artifacthub-repo.yml
