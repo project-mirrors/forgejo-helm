@@ -748,6 +748,8 @@ PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/c
 
 ### MySQL
 
+MySQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/mysql) if enabled in the values. Complete Configuration can be taken from their website.
+
 | Name                                | Description                                                        | Value   |
 | ----------------------------------- | ------------------------------------------------------------------ | ------- |
 | `mysql.enabled`                     | Enable MySQL                                                       | `false` |
@@ -759,6 +761,8 @@ PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/c
 | `mysql.primary.persistence.size`    | PVC Storage Request for MySQL volume                               | `10Gi`  |
 
 ### MariaDB
+
+MariaDB is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/mariadb) if enabled in the values. Complete Configuration can be taken from their website.
 
 | Name                                  | Description                                                       | Value   |
 | ------------------------------------- | ----------------------------------------------------------------- | ------- |
