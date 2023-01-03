@@ -18,11 +18,15 @@ pipeline:
       - helm dependency update
       - rm -rf tmp/
       - helm package --version "${CI_COMMIT_TAG##v}" -d tmp/ ./
-      - git fetch origin
-      - git checkout pages
-      - helm repo index tmp/ --merge index.yaml
-      - mv -f tmp/* .
-      - git config user.email "release@forgejo.org" ; git config user.name "Release Team"
-      - git add .
-      - git commit -m "update charts to ${CI_COMMIT_TAG}" -a
-      - git push origin pages
+      - echo $${TOKEN} | helm registy login https://codeberg.org/api/packages/forgejo-contrib/helm/api/charts
+      - helm push tmp/forgejo-${CI_COMMIT_TAG##v}.tgz oci://codeberg.org/api/packages/forgejo-contrib/helm/api/charts
+      # - git fetch origin
+      # - git checkout pages
+      # - helm repo index tmp/ --merge index.yaml
+      # - mv -f tmp/* .
+      # - git config user.email "release@forgejo.org" ; git config user.name "Release Team"
+      # - git add .
+      # - git commit -m "update charts to ${CI_COMMIT_TAG}" -a
+      # - git push origin pages
+    secrets:
+      - token
