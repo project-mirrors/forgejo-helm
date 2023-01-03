@@ -1,0 +1,25 @@
+platform: linux/amd64
+
+depends_on:
+  - lint
+
+when:
+  tag: v*
+
+pipeline:
+  generate-chart:
+    image: alpine:3.17
+    pull: true
+    commands:
+      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
+      - apk add --no-cache curl
+      - helm dependency update
+      - rm -rf tmp/
+      - helm package --version "${CI_COMMIT_TAG##v}" -d tmp/ ./
+      - git fetch origin
+      - git checkout pages
+      - helm repo index tmp/ --merge index.yaml
+      - mv -f tmp/* .
+      - git add -A
+      - 'git commit -m "chore: update charts to ${CI_COMMIT_TAG}"'
+      - git push origin pages

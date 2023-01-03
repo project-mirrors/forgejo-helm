@@ -30,3 +30,5 @@ Makefile
 .markdownlint.yaml
 .drone.yml
 CONTRIBUTING.md
+.woodpecker/
+tmp/
