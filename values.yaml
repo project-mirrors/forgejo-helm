@@ -407,21 +407,25 @@ memcached:
 ## @section PostgreSQL
 #
 ## @param postgresql.enabled Enable PostgreSQL
-## @param postgresql.global.postgresql.postgresqlDatabase PostgreSQL database (overrides postgresqlDatabase)
-## @param postgresql.global.postgresql.postgresqlUsername PostgreSQL username (overrides postgresqlUsername)
-## @param postgresql.global.postgresql.postgresqlPassword PostgreSQL admin password (overrides postgresqlPassword)
-## @param postgresql.global.postgresql.servicePort PostgreSQL port (overrides service.port)
-## @param postgresql.persistence.size PVC Storage Request for PostgreSQL volume
+## @param postgresql.auth.database PostgreSQL database 
+## @param postgresql.auth.username PostgreSQL username 
+## @param postgresql.auth.password PostgreSQL username 
+## @param postgresql.auth.postgresPassword PostgreSQL admin password
+## @param postgresql.primary.service.ports.postgresql Port to connect to PostgreSQL service
+## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
 postgresql:
   enabled: true
-  global:
-    postgresql:
-      postgresqlDatabase: gitea
-      postgresqlUsername: gitea
-      postgresqlPassword: gitea
-      servicePort: 5432
-  persistence:
-    size: 10Gi
+  auth:
+    database: gitea
+    username: gitea
+    password: gitea
+    postgresPassword: gitea
+  primary:
+    service:
+      ports:
+        postgresql: 5432
+    persistence:
+      size: 10Gi
 
 ## @section MySQL
 #

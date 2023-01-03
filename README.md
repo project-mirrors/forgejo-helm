@@ -736,14 +736,15 @@ gitea:
 
 ### PostgreSQL
 
-| Name                                              | Description                                              | Value   |
-| ------------------------------------------------- | -------------------------------------------------------- | ------- |
-| `postgresql.enabled`                              | Enable PostgreSQL                                        | `true`  |
-| `postgresql.global.postgresql.postgresqlDatabase` | PostgreSQL database (overrides postgresqlDatabase)       | `gitea` |
-| `postgresql.global.postgresql.postgresqlUsername` | PostgreSQL username (overrides postgresqlUsername)       | `gitea` |
-| `postgresql.global.postgresql.postgresqlPassword` | PostgreSQL admin password (overrides postgresqlPassword) | `gitea` |
-| `postgresql.global.postgresql.servicePort`        | PostgreSQL port (overrides service.port)                 | `5432`  |
-| `postgresql.persistence.size`                     | PVC Storage Request for PostgreSQL volume                | `10Gi`  |
+| Name                                          | Description                               | Value   |
+| --------------------------------------------- | ----------------------------------------- | ------- |
+| `postgresql.enabled`                          | Enable PostgreSQL                         | `true`  |
+| `postgresql.auth.database`                    | PostgreSQL database                       | `gitea` |
+| `postgresql.auth.username`                    | PostgreSQL username                       | `gitea` |
+| `postgresql.auth.password`                    | PostgreSQL username                       | `gitea` |
+| `postgresql.auth.postgresPassword`            | PostgreSQL admin password                 | `gitea` |
+| `postgresql.primary.service.ports.postgresql` | Port to connect to PostgreSQL service     | `5432`  |
+| `postgresql.primary.persistence.size`         | PVC Storage Request for PostgreSQL volume | `10Gi`  |
 
 ### MySQL
 
