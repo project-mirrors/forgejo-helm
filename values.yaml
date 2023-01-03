@@ -396,8 +396,11 @@ gitea:
     failureThreshold: 10
 
 ## @section Memcached
+## @descriptionStart
+## Memcached is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/memcached) if enabled in the values. Complete Configuration can be taken from their website.
+## @descriptionEnd
 #
-## @param memcached.enabled Memcached is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/memcached) if enabled in the values. Complete Configuration can be taken from their website.
+## @param memcached.enabled Enable Memcached
 ## @param memcached.service.ports.memcached Port for Memcached
 memcached:
   enabled: true
@@ -406,6 +409,9 @@ memcached:
       memcached: 11211
 
 ## @section PostgreSQL
+## @descriptionStart
+## PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) if enabled in the values. Complete Configuration can be taken from their website.
+## @descriptionEnd
 #
 ## @param postgresql.enabled Enable PostgreSQL
 ## @param postgresql.auth.database PostgreSQL database 
@@ -429,6 +435,10 @@ postgresql:
       size: 10Gi
 
 ## @section MySQL
+## @descriptionStart
+## MySQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/mysql) if enabled in the values. Complete Configuration can be taken from their website.
+## @descriptionEnd
+#
 #
 ## @param mysql.enabled Enable MySQL
 ## @param mysql.auth.database Name for new database to create.
@@ -452,6 +462,10 @@ mysql:
       size: 10Gi
 
 ## @section MariaDB
+## @descriptionStart
+## MariaDB is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/mariadb) if enabled in the values. Complete Configuration can be taken from their website.
+## @descriptionEnd
+#
 #
 ## @param mariadb.enabled Enable MariaDB
 ## @param mariadb.auth.database Name of the database to create.
