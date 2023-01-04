@@ -5,14 +5,49 @@
   "semanticCommits": "enabled",
   "automergeStrategy": "rebase",
   "woodpecker": {
-    "fileMatch": [
-        "(^|\\/)\\.woodpecker(?:\\/[^/]+)?\\.ya?ml$"
-    ]
+    "fileMatch": ["^\\.woodpecker(?:\\/[^/]+)?\\.ya?ml$"]
   },
   "packageRules": [
     {
       "matchManagers": ["droneci"],
       "enabled": false
+    },
+    {
+      "matchManagers": ["helmv3"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "semanticCommitType": "fix"
+    },
+    {
+      "matchManagers": ["helmv3"],
+      "matchUpdateTypes": ["major"],
+      "semanticCommitType": "feat"
+    },
+    {
+      "description": "Fix forgejo docker image versioning",
+      "matchPackageNames": ["codeberg.org/forgejo/forgejo"],
+      "matchDatasources": ["docker"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>)(?:-(?<compatibility>.+))?$"
+    },
+    {
+      "matchManagers": ["regex"],
+      "matchPackageNames": ["codeberg.org/forgejo/forgejo"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "semanticCommitType": "fix"
+    },
+    {
+      "matchManagers": ["regex"],
+      "matchPackageNames": ["codeberg.org/forgejo/forgejo"],
+      "matchUpdateTypes": ["major"],
+      "semanticCommitType": "feat"
+    }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^Chart\\.yaml$"],
+      "matchStrings": ["appVersion: (?<currentValue>.+?)\\s"],
+      "depNameTemplate": "forgejo",
+      "packageNameTemplate": "codeberg.org/forgejo/forgejo",
+      "datasourceTemplate": "docker"
     }
   ]
 }
