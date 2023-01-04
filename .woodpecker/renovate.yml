@@ -3,8 +3,6 @@ platform: linux/amd64
 when:
   event:
     - cron
-  cron: renovate
-  repo: forgejo-contrib/forgejo-helm
 
 pipeline:
   renovate:
@@ -21,3 +19,7 @@ pipeline:
         target: renovate_token
       - source: gh_token
         target: github_com_token
+    when:
+      - event:
+          - cron
+        cron: renovate
