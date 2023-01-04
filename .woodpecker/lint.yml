@@ -1,9 +1,9 @@
 platform: linux/amd64
 
 when:
-  branch:
-    exclude:
-      - pages
+  event: 
+    - pull_request
+    - tag
 
 pipeline:
   deps:

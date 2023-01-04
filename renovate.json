@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": "config:base",
+  "assignees": ["viceice"],
+  "semanticCommits": "enabled",
+  "packageRules": [
+    {
+      "matchManagers": ["droneci"],
+      "enabled": false
+    }
+  ]
+}
