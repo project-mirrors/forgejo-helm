@@ -1,9 +1,14 @@
 platform: linux/amd64
 
 when:
-  event: 
+  event:
     - pull_request
     - tag
+    - push
+
+branches:
+    - main
+    - release/**
 
 pipeline:
   deps:
