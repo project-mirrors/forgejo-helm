@@ -36,6 +36,6 @@ pipeline:
     image: alpine:3.17.0
     pull: true
     commands:
-      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing make npm git
+      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing make nodejs npm git
       - make readme
       - git diff --exit-code --name-only README.md
