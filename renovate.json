@@ -4,6 +4,11 @@
   "assignees": ["viceice"],
   "semanticCommits": "enabled",
   "automergeStrategy": "rebase",
+  "woodpecker": {
+    "fileMatch": [
+        "(^|\\/)\\.woodpecker(?:\\/[^/]+)?\\.ya?ml$"
+    ]
+  },
   "packageRules": [
     {
       "matchManagers": ["droneci"],
