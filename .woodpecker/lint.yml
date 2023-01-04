@@ -14,7 +14,7 @@ pipeline:
     image: alpine:3.17.0
     pull: true
     commands:
-      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
+      - apk add --no-cache helm
       - helm repo add bitnami https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
       - helm dependency build
 
@@ -22,20 +22,20 @@ pipeline:
     image: alpine:3.17.0
     pull: true
     commands:
-      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
+      - apk add --no-cache helm
       - helm lint
 
   helm-template:
     image: alpine:3.17.0
     pull: true
     commands:
-      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
+      - apk add --no-cache helm
       - helm template --debug gitea-helm .
 
   verify-readme:
     image: alpine:3.17.0
     pull: true
     commands:
-      - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing make nodejs npm git
+      - apk add --no-cache make nodejs npm git
       - make readme
       - git diff --exit-code --name-only README.md
