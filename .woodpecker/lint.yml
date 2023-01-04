@@ -5,8 +5,7 @@ when:
     - pull_request
     - tag
     - push
-
-branches:
+  branch:
     - main
     - release/**
 

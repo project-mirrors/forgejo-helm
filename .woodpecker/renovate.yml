@@ -1,9 +1,9 @@
 platform: linux/amd64
 
 when:
-  event: 
+  event:
     - cron
-    - manual
+  cron: renovate
   repo: forgejo-contrib/forgejo-helm
 
 pipeline:
