@@ -6,7 +6,7 @@ when:
 
 pipeline:
   renovate:
-    image: ghcr.io/visualon/renovate:34.83.1
+    image: ghcr.io/visualon/renovate:34.84.1
     pull: true
     commands:
       - renovate $${CI_REPO}
