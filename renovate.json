@@ -43,7 +43,8 @@
     {
       "description": "Automerge renovate updates",
       "matchPackageNames": ["ghcr.io/visualon/renovate"],
-      "automerge": true
+      "automerge": true,
+      "platformAutomerge": true
     }
   ],
   "regexManagers": [
