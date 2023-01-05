@@ -3,6 +3,7 @@
   "extends": "config:base",
   "assignees": ["viceice"],
   "semanticCommits": "enabled",
+  "automergeStrategy": "fast-forward",
   "woodpecker": {
     "fileMatch": ["^\\.woodpecker(?:\\/[^/]+)?\\.ya?ml$"]
   },
