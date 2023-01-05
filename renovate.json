@@ -39,6 +39,11 @@
       "matchPackageNames": ["codeberg.org/forgejo/forgejo"],
       "matchUpdateTypes": ["major"],
       "semanticCommitType": "feat"
+    },
+    {
+      "description": "Automerge renovate updates",
+      "matchPackageNames": ["ghcr.io/visualon/renovate"],
+      "automerge": true
     }
   ],
   "regexManagers": [
