@@ -11,7 +11,7 @@ when:
 
 pipeline:
   deps:
-    image: alpine:3.17.0
+    image: alpine:3.17.1
     pull: true
     commands:
       - apk add --no-cache helm
@@ -19,21 +19,21 @@ pipeline:
       - helm dependency build
 
   helm-lint:
-    image: alpine:3.17.0
+    image: alpine:3.17.1
     pull: true
     commands:
       - apk add --no-cache helm
       - helm lint
 
   helm-template:
-    image: alpine:3.17.0
+    image: alpine:3.17.1
     pull: true
     commands:
       - apk add --no-cache helm
       - helm template --debug gitea-helm .
 
   verify-readme:
-    image: alpine:3.17.0
+    image: alpine:3.17.1
     pull: true
     commands:
       - apk add --no-cache make nodejs npm git
