@@ -4,9 +4,6 @@
   "assignees": ["viceice"],
   "semanticCommits": "enabled",
   "automergeStrategy": "fast-forward",
-  "woodpecker": {
-    "fileMatch": ["^\\.woodpecker(?:\\/[^/]+)?\\.ya?ml$"]
-  },
   "packageRules": [
     {
       "matchManagers": ["droneci"],
@@ -43,6 +40,14 @@
     {
       "description": "Automerge renovate updates",
       "matchPackageNames": ["ghcr.io/visualon/renovate"],
+      "automerge": true,
+      "platformAutomerge": true
+    },
+    {
+      "description": "Automerge patch deps updates",
+      "matchManagers": ["helmv3"],
+      "matchFiles": ["Chart.yaml"],
+      "matchUpdateTypes": ["patch"],
       "automerge": true,
       "platformAutomerge": true
     }
