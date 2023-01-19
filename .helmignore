@@ -1,21 +1,30 @@
-# Patterns to ignore when building packages.
+# Patterns to ignore when building packages
+
 # This supports shell glob matching, relative path matching, and
-# negation (prefixed with !). Only one pattern per line.
+
+# negation (prefixed with !). Only one pattern per line
+
 .DS_Store
+
 # Common VCS dirs
-.git/
+
+.Git/
 .gitignore
 .bzr/
 .bzrignore
 .hg/
 .hgignore
 .svn/
+
 # Common backup files
+
 *.swp
 *.bak
 *.tmp
 *~
+
 # Various IDEs
+
 .project
 .idea/
 *.tmproj
@@ -24,12 +33,13 @@ node_modules/
 .npmrc
 package.json
 package-lock.json
-.gitea/
+.Gitea/
 Makefile
 .markdownlintignore
 .markdownlint.yaml
 .drone.yml
 CONTRIBUTING.md
+unittests/
 .woodpecker/
 tmp/
 artifacthub-repo.yml
