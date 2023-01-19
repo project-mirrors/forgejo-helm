@@ -24,20 +24,20 @@
     },
     {
       "description": "Fix forgejo docker image versioning",
-      "matchPackageNames": ["codeberg.org/forgejo/forgejo"],
+      "matchDepNames": ["forgejo"],
       "matchDatasources": ["docker"],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>)(?:-(?<compatibility>.+))?$"
     },
     {
       "matchManagers": ["regex"],
-      "matchPackageNames": ["codeberg.org/forgejo/forgejo"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchDepNames": ["forgejo"],
+      "matchUpdateTypes": ["patch"],
       "semanticCommitType": "fix"
     },
     {
       "matchManagers": ["regex"],
-      "matchPackageNames": ["codeberg.org/forgejo/forgejo"],
-      "matchUpdateTypes": ["major"],
+      "matchDepNames": ["forgejo"],
+      "matchUpdateTypes": ["major", "minor"],
       "semanticCommitType": "feat"
     },
     {
