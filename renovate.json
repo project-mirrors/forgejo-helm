@@ -4,11 +4,8 @@
   "assignees": ["viceice"],
   "semanticCommits": "enabled",
   "automergeStrategy": "fast-forward",
+  "enabledManagers": ["helmv3", "npm", "regex", "woodpecker"],
   "packageRules": [
-    {
-      "matchManagers": ["droneci"],
-      "enabled": false
-    },
     {
       "matchManagers": ["helmv3"],
       "matchUpdateTypes": ["minor", "patch"],
