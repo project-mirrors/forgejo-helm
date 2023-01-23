@@ -30,7 +30,7 @@ dependencies:
   condition: memcached.enabled
 - name: mysql
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
-  version: 9.4.6
+  version: 9.4.7
   condition: mysql.enabled
 - name: postgresql
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
