@@ -7,9 +7,9 @@ dependencies:
   version: 9.4.8
 - name: postgresql
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
-  version: 12.1.12
+  version: 12.1.13
 - name: mariadb
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 11.4.5
-digest: sha256:b8a12cca675066ccf9d5b9ef9981c1a8e22b837d36a64c8c6a0895e4cc1ac8e1
-generated: "2023-02-01T00:07:52.772251993Z"
+digest: sha256:880e565145f0cc02eb985578987b3db8324693f7d73789fb82ffae19b77b14e6
+generated: "2023-02-02T00:07:35.312164645Z"
