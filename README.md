@@ -25,7 +25,13 @@ Dependencies:
 ## Installing
 
 ```sh
-helm install oci://codeberg.org/forgejo-contrib/forgejo
+helm install forgejo oci://codeberg.org/forgejo-contrib/forgejo
+```
+
+In case you want to supply values, you can reference a `values.yaml` file:
+
+```sh
+helm install forgejo -f values.yaml oci://codeberg.org/forgejo-contrib/forgejo
 ```
 
 When upgrading, please refer to the [Upgrading](#upgrading) section at the bottom
