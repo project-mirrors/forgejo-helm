@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": "forgejo-contrib/forgejo-renovate//base.json",
+  "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
   "assignees": ["viceice"],
   "enabledManagers": ["helmv3", "npm", "regex", "woodpecker"],
   "packageRules": [
