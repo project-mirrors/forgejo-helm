@@ -37,7 +37,7 @@ pipeline:
     pull: true
     commands:
       - apk add --no-cache make helm git bash
-      - helm plugin install https://github.com/quintush/helm-unittest
+      - helm plugin install https://github.com/helm-unittest/helm-unittest
       - helm dependency update
       - make unittests
 
