@@ -4,12 +4,12 @@ dependencies:
   version: 6.3.9
 - name: mysql
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
-  version: 9.5.1
+  version: 9.5.2
 - name: postgresql
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 12.2.2
 - name: mariadb
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 11.5.2
-digest: sha256:742b94a7845fe315930b7905f21b3f4d4dc2f3f279f39adc58249087a63d9c11
-generated: "2023-03-07T00:07:48.466645482Z"
+digest: sha256:c25e3aa171dd6d87601c77a86901b63f1100b533bfe0b5cdf50167c5c6e2ff05
+generated: "2023-03-07T11:38:01.011179343Z"
