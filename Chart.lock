@@ -4,12 +4,12 @@ dependencies:
   version: 6.3.13
 - name: mysql
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 9.5.2
+  version: 9.6.0
 - name: postgresql
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 12.2.5
 - name: mariadb
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 11.5.4
-digest: sha256:09a8073e242f90739a0ae88a3d362bb67a6736bfabe650652881cd417218899b
-generated: "2023-03-21T11:15:30.7072158+01:00"
+digest: sha256:76e850e9265acafac2177dc61323bc36be6291e829204436899c2fd32974869f
+generated: "2023-03-21T11:22:08.663556017Z"
