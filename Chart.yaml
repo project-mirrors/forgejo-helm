@@ -22,21 +22,24 @@ maintainers:
   - name: Michael Kriese
     email: michael.kriese@visualon.de
 
-# Bitnami charts are served from GitHub CDN - See https://github.com/bitnami/charts/issues/10833 for details
+# Bitnami charts are served from Docker Hub
+# https://hub.docker.com/u/bitnamicharts
+# https://blog.bitnami.com/2023/01/bitnami-helm-charts-available-as-oci.html
+
 dependencies:
 - name: memcached
-  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  repository: oci://registry-1.docker.io/bitnamicharts
   version: 6.3.13
   condition: memcached.enabled
 - name: mysql
-  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  repository: oci://registry-1.docker.io/bitnamicharts
   version: 9.5.2
   condition: mysql.enabled
 - name: postgresql
-  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  repository: oci://registry-1.docker.io/bitnamicharts
   version: 12.2.5
   condition: postgresql.enabled
 - name: mariadb
-  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  repository: oci://registry-1.docker.io/bitnamicharts
   version: 11.5.4
   condition: mariadb.enabled
