@@ -24,7 +24,7 @@ pipeline:
       - token
 
   publish-release:
-    image: plugins/gitea-release
+    image: woodpeckerci/plugin-gitea-release:0.2.0
     pull: true
     settings:
       base_url: https://codeberg.org
