@@ -1,5 +1,7 @@
 # Forgejo Helm Chart
 
+[![status-badge](https://ci.dachary.org/api/badges/forgejo-contrib/forgejo-helm/status.svg)](https://ci.dachary.org/forgejo-contrib/forgejo-helm)
+
 [Forgejo](https://forgejo.org/) is a community managed lightweight code hosting
 solution written in Go. It is published under the MIT license.
 
