@@ -10,7 +10,7 @@ when:
 
 pipeline:
   generate-chart:
-    image: alpine:3.17.2
+    image: alpine:3.17.3
     pull: true
     commands:
       - apk add --no-cache git nodejs npm helm
@@ -36,7 +36,7 @@ pipeline:
       note: tmp/changelog.md
 
   publish-chart:
-    image: alpine:3.17.2
+    image: alpine:3.17.3
     pull: true
     commands:
       - apk add --no-cache helm
