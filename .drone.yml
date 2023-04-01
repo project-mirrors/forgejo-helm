@@ -59,7 +59,7 @@
 #         - changed
 #         - failure
 
----
+# ---
 kind: pipeline
 type: docker
 name: release-version
