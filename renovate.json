@@ -3,7 +3,6 @@
   "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
   "assignees": ["viceice"],
   "enabledManagers": ["helmv3", "npm", "regex", "woodpecker"],
-  "platformAutomerge": true,
   "packageRules": [
     {
       "matchManagers": ["helmv3"],
