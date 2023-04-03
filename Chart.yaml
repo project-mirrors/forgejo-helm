@@ -29,7 +29,7 @@ maintainers:
 dependencies:
 - name: memcached
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 6.3.13
+  version: 6.3.14
   condition: memcached.enabled
 - name: mysql
   repository: oci://registry-1.docker.io/bitnamicharts
