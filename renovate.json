@@ -3,6 +3,7 @@
   "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
   "assignees": ["viceice"],
   "enabledManagers": ["helmv3", "npm", "regex", "woodpecker"],
+  "platformAutomerge": true,
   "packageRules": [
     {
       "matchManagers": ["helmv3"],
@@ -31,8 +32,7 @@
       "matchManagers": ["helmv3"],
       "matchFiles": ["Chart.yaml"],
       "matchUpdateTypes": ["patch"],
-      "automerge": true,
-      "platformAutomerge": true
+      "automerge": true
     }
   ],
   "regexManagers": [
