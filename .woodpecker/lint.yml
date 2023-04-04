@@ -15,7 +15,6 @@ pipeline:
     pull: true
     commands:
       - apk add --no-cache helm
-      - helm repo add bitnami https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
       - helm dependency build
 
   helm-lint:
@@ -48,3 +47,9 @@ pipeline:
       - apk add --no-cache make nodejs npm git
       - make readme
       - git diff --exit-code --name-only README.md
+
+  yaml-lint:
+    image: cytopia/yamllint:alpine-1
+    pull: true
+    commands:
+      - yamllint -f colored .

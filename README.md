@@ -11,6 +11,22 @@ This helm chart is based on official [Gitea helm chart](https://gitea.com/gitea/
 Additionally, this chart provides LDAP and admin user configuration with values,
 as well as being deployed as a statefulset to retain stored repositories.
 
+## Update and versioning policy
+
+The Gitea helm chart versioning does not follow Gitea's versioning.
+The latest chart version can be looked up in [https://dl.gitea.com/charts](https://dl.gitea.com/charts) or in the [repository releases](https://gitea.com/gitea/helm-chart/releases).
+
+The chart aims to follow Gitea's releases closely.
+There might be times when the chart is behind the latest Gitea release.
+This might be caused by different reasons, most often due to time constraints of the maintainers (remember, all work here is done voluntarily in the spare time of people).
+If you're eager to use the latest Gitea version earlier than this chart catches up, then change the tag in `values.yaml` to the latest Gitea version.
+Note that besides the exact Gitea version one can also use the `:1` tag to automatically follow the latest Gitea version.
+This should be combined with `image.pullPolicy: "Always"`.
+Important: Using the `:1` will also automatically jump to new minor release (e.g. from 1.13 to 1.14) which may eventually cause incompatibilities if major/breaking changes happened between these versions.
+This is due to Gitea not strictly following [semantic versioning](https://semver.org/#summary) as breaking changes do not increase the major version.
+I.e., "minor" version bumps are considered "major".
+Yet most often no issues will be encountered and the chart maintainers aim to communicate early/upfront if this would be the case.
+
 ## Dependencies
 
 Forgejo can be run with an external database and cache. This chart provides those
@@ -21,8 +37,6 @@ Dependencies:
 
 - PostgreSQL ([configuration](#postgresql))
 - Memcached ([configuration](#memcached))
-- MySQL ([configuration](#mysql))
-- MariaDB ([configuration](#mariadb))
 
 ## Installing
 
@@ -223,14 +237,17 @@ Priority (highest to lowest) for defining app.ini variables:
 
 ### External Database
 
-An external Database can be used instead of builtIn PostgreSQL or MySQL.
+Any external Database listed in [https://docs.gitea.io/en-us/database-prep/](https://docs.gitea.io/en-us/database-prep/) can be used instead of the built-in PostgreSQL.
+In fact, it is **highly recommended** to use an external database to ensure a stable Gitea installation longterm.
+
+If an external database is used, no matter which type, make sure to set `postgresql.enabled` to `false` to disable the use of the built-in PostgreSQL.
 
 ```yaml
 gitea:
   config:
     database:
       DB_TYPE: mysql
-      HOST: 127.0.0.1:3306
+      HOST: <mysql HOST>
       NAME: gitea
       USER: root
       PASSWD: gitea
@@ -356,28 +373,16 @@ persistence:
   existingClaim: MyAwesomeGiteaClaim
 ```
 
-In case that peristence has been disabled it will simply use an empty dir volume.
+In case that persistence has been disabled it will simply use an empty dir volume.
 
 PostgreSQL handles the persistence in the exact same way.
 You can interact with the postgres settings as displayed in the following example:
 
 ```yaml
 postgresql:
-  primary:
-    persistence:
-      enabled: true
-      existingClaim: MyAwesomeGiteaPostgresClaim
-```
-
-MySQL also handles persistence the same, even though it is not deployed as a statefulset.
-You can interact with the postgres settings as displayed in the following example:
-
-```yaml
-mysql:
-  primary:
-    persistence:
-      enabled: true
-      existingClaim: MyAwesomeGiteaMysqlClaim
+  persistence:
+    enabled: true
+    existingClaim: MyAwesomeGiteaPostgresClaim
 ```
 
 ### Admin User
@@ -479,11 +484,11 @@ Multiple OAuth2 sources can be configured with additional OAuth list items.
 ```yaml
 gitea:
   oauth:
-    - name: 'MyAwesomeGiteaOAuth'
-      provider: 'openidConnect'
-      key: 'hello'
-      secret: 'world'
-      autoDiscoverUrl: 'https://gitea.example.com/.well-known/openid-configuration'
+    - name: "MyAwesomeGiteaOAuth"
+      provider: "openidConnect"
+      key: "hello"
+      secret: "world"
+      autoDiscoverUrl: "https://gitea.example.com/.well-known/openid-configuration"
       #useCustomUrls:
       #customAuthUrl:
       #customTokenUrl:
@@ -507,7 +512,7 @@ stringData:
 ```yaml
 gitea:
   oauth:
-    - name: 'MyAwesomeGiteaOAuth'
+    - name: "MyAwesomeGiteaOAuth"
       existingSecret: gitea-oauth-secret
 ```
 
@@ -531,7 +536,8 @@ signing:
 
 Regardless of the used container image the `signing` object allows to specify a
 private gpg key. Either using the `signing.privateKey` to define the key inline,
-or refer to an existing secret containing the key data by using `signing.existingKey`.
+
+or refer to an existing secret containing the key data by using `signing.existingSecret`.
 
 ```yaml
 apiVersion: v1
@@ -722,6 +728,7 @@ gitea:
 | `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                                                               | `[]`                 |
 | `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables                                                     | `[]`                 |
 | `gitea.podAnnotations`                 | Annotations for the Forgejo pod                                                                                 | `{}`                 |
+| `gitea.ssh.logLevel`                   | Configure OpenSSH's log level. Only available for root-based Gitea image.                                       | `INFO`               |
 
 ### LivenessProbe
 
@@ -763,58 +770,32 @@ gitea:
 
 Memcached is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/memcached) if enabled in the values. Complete Configuration can be taken from their website.
 
-| Name                                | Description        | Value   |
-| ----------------------------------- | ------------------ | ------- |
-| `memcached.enabled`                 | Enable Memcached   | `true`  |
-| `memcached.service.ports.memcached` | Port for Memcached | `11211` |
+| Name                                | Description                                                                                                                                                                                           | Value   |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `memcached.enabled`                 | Memcached is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/memcached) if enabled in the values. Complete Configuration can be taken from their website. | `true`  |
+| `memcached.service.ports.memcached` | Port for Memcached                                                                                                                                                                                    | `11211` |
 
 ### PostgreSQL
 
 PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) if enabled in the values. Complete Configuration can be taken from their website.
 
-| Name                                          | Description                               | Value   |
-| --------------------------------------------- | ----------------------------------------- | ------- |
-| `postgresql.enabled`                          | Enable PostgreSQL                         | `true`  |
-| `postgresql.auth.database`                    | PostgreSQL database                       | `gitea` |
-| `postgresql.auth.username`                    | PostgreSQL username                       | `gitea` |
-| `postgresql.auth.password`                    | PostgreSQL username                       | `gitea` |
-| `postgresql.auth.postgresPassword`            | PostgreSQL admin password                 | `gitea` |
-| `postgresql.primary.service.ports.postgresql` | Port to connect to PostgreSQL service     | `5432`  |
-| `postgresql.primary.persistence.size`         | PVC Storage Request for PostgreSQL volume | `10Gi`  |
-
-### MySQL
-
-MySQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/mysql) if enabled in the values. Complete Configuration can be taken from their website.
-
-| Name                                | Description                                                        | Value   |
-| ----------------------------------- | ------------------------------------------------------------------ | ------- |
-| `mysql.enabled`                     | Enable MySQL                                                       | `false` |
-| `mysql.auth.database`               | Name for new database to create.                                   | `gitea` |
-| `mysql.auth.username`               | Username of new user to create.                                    | `gitea` |
-| `mysql.auth.password`               | Password for the new user.Ignored if existing secret is provided   | `gitea` |
-| `mysql.auth.rootPassword`           | Password for the root user. Ignored if existing secret is provided | `gitea` |
-| `mysql.primary.service.ports.mysql` | Port to connect to MySQL service                                   | `3306`  |
-| `mysql.primary.persistence.size`    | PVC Storage Request for MySQL volume                               | `10Gi`  |
-
-### MariaDB
-
-MariaDB is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/mariadb) if enabled in the values. Complete Configuration can be taken from their website.
-
-| Name                                  | Description                                                       | Value   |
-| ------------------------------------- | ----------------------------------------------------------------- | ------- |
-| `mariadb.enabled`                     | Enable MariaDB                                                    | `false` |
-| `mariadb.auth.database`               | Name of the database to create.                                   | `gitea` |
-| `mariadb.auth.username`               | Username of the new user to create.                               | `gitea` |
-| `mariadb.auth.password`               | Password for the new user. Ignored if existing secret is provided | `gitea` |
-| `mariadb.auth.rootPassword`           | Password for the root user.                                       | `gitea` |
-| `mariadb.primary.service.ports.mysql` | Port to connect to MariaDB service                                | `3306`  |
-| `mariadb.primary.persistence.size`    | Persistence size for MariaDB                                      | `10Gi`  |
+| Name                                                    | Description                                                      | Value   |
+| ------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
+| `postgresql.enabled`                                    | Enable PostgreSQL                                                | `true`  |
+| `postgresql.global.postgresql.auth.password`            | Password for the `gitea` user (overrides `auth.password`)        | `gitea` |
+| `postgresql.global.postgresql.auth.database`            | Name for a custom database to create (overrides `auth.database`) | `gitea` |
+| `postgresql.global.postgresql.auth.username`            | Name for a custom user to create (overrides `auth.username`)     | `gitea` |
+| `postgresql.global.postgresql.service.ports.postgresql` | PostgreSQL service port (overrides `service.ports.postgresql`)   | `5432`  |
+| `postgresql.primary.persistence.size`                   | PVC Storage Request for PostgreSQL volume                        | `10Gi`  |
 
 ### Advanced
 
-| Name               | Description                                          | Value  |
-| ------------------ | ---------------------------------------------------- | ------ |
-| `checkDeprecation` | Set it to false to skip this basic validation check. | `true` |
+| Name               | Description                                                        | Value     |
+| ------------------ | ------------------------------------------------------------------ | --------- |
+| `checkDeprecation` | Set it to false to skip this basic validation check.               | `true`    |
+| `test.enabled`     | Set it to false to disable test-connection Pod.                    | `true`    |
+| `test.image.name`  | Image name for the wget container used in the test-connection Pod. | `busybox` |
+| `test.image.tag`   | Image tag for the wget container used in the test-connection Pod.  | `latest`  |
 
 ## Contributing
 
@@ -824,5 +805,5 @@ See [CONTRIBUTORS GUIDE](CONTRIBUTING.md) for details.
 
 ## Upgrading
 
-This section lists major and breaking changes of each Helm Chart version.
+This section lists major and breaking changes of each Helm Chart version
 Please read them carefully to upgrade successfully.
