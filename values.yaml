@@ -189,6 +189,9 @@ affinity: {}
 ## @param dnsConfig dnsConfig for the statefulset
 dnsConfig: {}
 
+## @param priorityClassName priorityClassName for the statefulset
+priorityClassName: ""
+
 ## @param statefulset.env  Additional environment variables to pass to containers
 ## @param statefulset.terminationGracePeriodSeconds How long to wait until forcefully kill the pod
 ## @param statefulset.labels Labels for the statefulset
@@ -254,6 +257,16 @@ initPreScript: ""
 #   cp /pg-ssl/* /data/git/.postgresql/
 #   chown -R git:git /data/git/.postgresql/
 #   chmod 400 /data/git/.postgresql/postgresql.key
+
+## @param initContainers.resources.limits initContainers.limits Kubernetes resource limits for init containers
+## @param initContainers.resources.requests.cpu initContainers.requests.cpu Kubernetes cpu resource limits for init containers
+## @param initContainers.resources.requests.memory initContainers.requests.memory Kubernetes memory resource limits for init containers
+initContainers:
+  resources:
+    limits: {}
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 # Configure commit/action signing prerequisites
 ## @section Signing
