@@ -46,7 +46,6 @@
 #     commands:
 #       - yamllint -f colored .
 
----
 kind: pipeline
 type: docker
 name: release-version
@@ -72,7 +71,8 @@ steps:
       - apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing helm
       - apk add --no-cache curl
       - apk add --no-cache gnupg
-      - gpg --import $GPGSIGN_KEY --passphrase $GPGSIGN_PASSPHRASE
+      # - echo $GPGSIGN_KEY > private.key && echo $GPGSIGN_PASSPHRASE > passphrase.txt && gpg --batch --passphrase-file=passphrase.txt --import private.key && rm private.key passphrase.txt 
+      - echo $GPGSIGN_PASSPHRASE > passphrase.txt && echo $GPGSIGN_KEY | gpg --batch --passphrase-file=passphrase.txt --import
       - helm dependency update
       - helm package --sign --key 'Gitea' --keyring ~/.gnupg/secring.gpg --version "${DRONE_TAG##v}" ./
       - mkdir gitea
