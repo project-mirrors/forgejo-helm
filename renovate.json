@@ -41,6 +41,13 @@
       "depNameTemplate": "forgejo",
       "packageNameTemplate": "codeberg.org/forgejo/forgejo",
       "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["^\\.woodpecker/[a-z-]+\\.yml$"],
+      "matchStrings": ["helm plugin install --version (?<currentValue>.+?) https://github.com/helm-unittest/helm-unittest\\s"],
+      "depNameTemplate": "helm-unittest",
+      "packageNameTemplate": "helm-unittest/helm-unittest",
+      "datasourceTemplate": "github-releases"
     }
   ]
 }

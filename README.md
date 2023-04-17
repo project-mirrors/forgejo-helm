@@ -675,6 +675,7 @@ gitea:
 | `tolerations`                               | Tolerations for the statefulset                        | `[]`  |
 | `affinity`                                  | Affinity for the statefulset                           | `{}`  |
 | `dnsConfig`                                 | dnsConfig for the statefulset                          | `{}`  |
+| `priorityClassName`                         | priorityClassName for the statefulset                  | `""`  |
 | `statefulset.env`                           | Additional environment variables to pass to containers | `[]`  |
 | `statefulset.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod         | `60`  |
 | `statefulset.labels`                        | Labels for the statefulset                             | `{}`  |
@@ -699,9 +700,12 @@ gitea:
 
 ### Init
 
-| Name            | Description                                                           | Value |
-| --------------- | --------------------------------------------------------------------- | ----- |
-| `initPreScript` | Bash shell script copied verbatim to the start of the init-container. | `""`  |
+| Name                                       | Description                                                                          | Value   |
+| ------------------------------------------ | ------------------------------------------------------------------------------------ | ------- |
+| `initPreScript`                            | Bash shell script copied verbatim to the start of the init-container.                | `""`    |
+| `initContainers.resources.limits`          | initContainers.limits Kubernetes resource limits for init containers                 | `{}`    |
+| `initContainers.resources.requests.cpu`    | initContainers.requests.cpu Kubernetes cpu resource limits for init containers       | `100m`  |
+| `initContainers.resources.requests.memory` | initContainers.requests.memory Kubernetes memory resource limits for init containers | `128Mi` |
 
 ### Signing
 
