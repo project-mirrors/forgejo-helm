@@ -36,6 +36,7 @@
   ],
   "regexManagers": [
     {
+      "description": "Update forgeo version in chart",
       "fileMatch": ["^Chart\\.yaml$"],
       "matchStrings": ["appVersion: (?<currentValue>.+?)\\s"],
       "depNameTemplate": "forgejo",
@@ -43,6 +44,7 @@
       "datasourceTemplate": "docker"
     },
     {
+      "description": "Update helm unittest plugin",
       "fileMatch": ["^\\.woodpecker/[a-z-]+\\.yml$"],
       "matchStrings": ["helm plugin install --version (?<currentValue>.+?) https://github.com/helm-unittest/helm-unittest\\s"],
       "depNameTemplate": "helm-unittest",

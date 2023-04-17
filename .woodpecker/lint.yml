@@ -14,28 +14,28 @@ pipeline:
     image: alpine:3.17.3
     pull: true
     commands:
-      - apk add --no-cache helm
+      - apk add helm
       - helm dependency build
 
   helm-lint:
     image: alpine:3.17.3
     pull: true
     commands:
-      - apk add --no-cache helm
+      - apk add helm
       - helm lint
 
   helm-template:
     image: alpine:3.17.3
     pull: true
     commands:
-      - apk add --no-cache helm
+      - apk add helm
       - helm template --debug gitea-helm .
 
   helm-unittests:
     image: alpine:3.17.3
     pull: true
     commands:
-      - apk add --no-cache make helm git bash
+      - apk add make helm git bash
       - helm plugin install --version 0.3.1 https://github.com/helm-unittest/helm-unittest
       - helm dependency update
       - make unittests
@@ -44,12 +44,13 @@ pipeline:
     image: alpine:3.17.3
     pull: true
     commands:
-      - apk add --no-cache make nodejs npm git
+      - apk add make nodejs npm git
       - make readme
       - git diff --exit-code --name-only README.md
 
   yaml-lint:
-    image: cytopia/yamllint:alpine-1
+    image: alpine:3.17.3
     pull: true
     commands:
+      - apk add yamllint
       - yamllint -f colored .
