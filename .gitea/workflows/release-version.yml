@@ -2,31 +2,31 @@ name: generate-chart
 
 on:
   push:
-    tags:
-      - "*"
+    # tags:
+    #   - "*"
 
 jobs:
   generate-chart-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: install tools
-        run: |
-          apt update -y
-          apt install -y curl
-          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-          apt update -y
-          apt install -y python helm python3-pip apt-transport-https
-          pip install awscli
+      # - name: install tools
+      #   run: |
+      #     apt update -y
+      #     apt install -y curl
+      #     curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+      #     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+      #     apt update -y
+      #     apt install -y python helm python3-pip apt-transport-https
+      #     pip install awscli
 
       - name: Import GPG key
         id: import_gpg
         uses: https://github.com/crazy-max/ghaction-import-gpg@v5
         with:
-          gpg_private_key: ${{ secrets.gpgsign_key }}
-          passphrase: ${{ secrets.gpgsign_passphrase }}
-          fingerprint: CC64B1DB67ABBEECAB24B6455FC346329753F4B0
+          gpg_private_key: ${{ secrets.GPGSIGN_KEY }}
+          passphrase: ${{ secrets.GPGSIGN_PASSPHRASE }}
+          # fingerprint: CC64B1DB67ABBEECAB24B6455FC346329753F4B0
 
       - name: package chart
         run: |
