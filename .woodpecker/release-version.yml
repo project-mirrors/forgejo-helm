@@ -33,6 +33,7 @@ pipeline:
       title: ${CI_COMMIT_TAG##v}
       file_exists: fail
       note: tmp/changelog.md
+      target: main
 
   publish-chart:
     image: alpine:3.17.3
