@@ -35,7 +35,7 @@ jobs:
           helm plugin install https://github.com/pat-s/helm-gpg
           helm dependency update
           helm package --version "${GITHUB_REF#refs/tags/v}" ./
-          helm gpg sign "gitea-${GITHUB_REF#refs/tags/v}.tgz" 
+          helm gpg sign "gitea-${GITHUB_REF#refs/tags/v}.tgz"
           mkdir gitea
           mv gitea*.tgz gitea/
           curl -L -o gitea/index.yaml https://dl.gitea.com/charts/index.yaml
