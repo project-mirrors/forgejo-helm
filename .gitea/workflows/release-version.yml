@@ -28,6 +28,7 @@ jobs:
           passphrase: ${{ secrets.GPGSIGN_PASSPHRASE }}
           fingerprint: CC64B1DB67ABBEECAB24B6455FC346329753F4B0
 
+      # Using helm gpg plugin as 'helm package --sign' has issues with gpg2: https://github.com/helm/helm/issues/2843
       - name: package chart
         run: |
           # FIXME: use upstream after https://github.com/technosophos/helm-gpg/issues/1 is solved
