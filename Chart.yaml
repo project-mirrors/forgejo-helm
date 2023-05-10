@@ -32,5 +32,5 @@ dependencies:
     condition: memcached.enabled
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 12.4.2
+    version: 12.4.3
     condition: postgresql.enabled
