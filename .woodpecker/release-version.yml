@@ -10,7 +10,7 @@ when:
 
 pipeline:
   generate-chart:
-    image: alpine:3.17.3
+    image: alpine:3.18.0
     pull: true
     commands:
       - apk add git nodejs npm helm
@@ -36,7 +36,7 @@ pipeline:
       target: main
 
   publish-chart:
-    image: alpine:3.17.3
+    image: alpine:3.18.0
     pull: true
     commands:
       - apk add helm
