@@ -365,7 +365,7 @@ gitea:
   ## @param gitea.podAnnotations Annotations for the Forgejo pod
   podAnnotations: {}
 
-  ## @param gitea.ssh.logLevel Configure OpenSSH's log level. Only available for root-based Gitea image.
+  ## @param gitea.ssh.logLevel Configure OpenSSH's log level. Only available for root-based Forgejo image.
   ssh:
     logLevel: "INFO"
 
