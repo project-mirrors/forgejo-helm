@@ -28,7 +28,7 @@ maintainers:
 dependencies:
   - name: memcached
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 6.4.1
+    version: 6.4.2
     condition: memcached.enabled
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
