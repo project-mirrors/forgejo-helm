@@ -1,9 +1,9 @@
 dependencies:
 - name: memcached
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 6.5.3
+  version: 6.5.4
 - name: postgresql
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 12.5.8
-digest: sha256:88444e9ff16c90278149cde44b4b70bdf524af8ef08291c0f1fd59d38c956ba7
-generated: "2023-06-20T00:07:02.330117945Z"
+digest: sha256:f7fe465950645bd858db688c030732a98d677f4e49808c642cb1d5d4a4beb59d
+generated: "2023-06-28T00:07:02.393968102Z"
