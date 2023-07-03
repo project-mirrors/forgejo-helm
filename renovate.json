@@ -32,6 +32,12 @@
       "matchFiles": ["Chart.yaml"],
       "matchUpdateTypes": ["patch"],
       "automerge": true
+    },
+    {
+      "description": "Automerge dev deps updates",
+      "matchManagers": ["npm"],
+      "matchDepTypes":["devDependencies"],
+      "automerge": true
     }
   ],
   "regexManagers": [
