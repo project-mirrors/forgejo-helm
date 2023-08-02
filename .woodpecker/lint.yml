@@ -36,7 +36,7 @@ pipeline:
     pull: true
     commands:
       - apk add make helm git bash
-      - helm plugin install --version v0.3.3 https://github.com/helm-unittest/helm-unittest
+      - helm plugin install --version v0.3.4 https://github.com/helm-unittest/helm-unittest
       - helm dependency update
       - make unittests
 
