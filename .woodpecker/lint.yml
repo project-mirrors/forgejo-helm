@@ -11,28 +11,28 @@ when:
 
 pipeline:
   deps:
-    image: alpine:3.18.2
+    image: alpine:3.18.3
     pull: true
     commands:
       - apk add helm
       - helm dependency build
 
   helm-lint:
-    image: alpine:3.18.2
+    image: alpine:3.18.3
     pull: true
     commands:
       - apk add helm
       - helm lint
 
   helm-template:
-    image: alpine:3.18.2
+    image: alpine:3.18.3
     pull: true
     commands:
       - apk add helm
       - helm template --debug gitea-helm .
 
   helm-unittests:
-    image: alpine:3.18.2
+    image: alpine:3.18.3
     pull: true
     commands:
       - apk add make helm git bash
@@ -41,7 +41,7 @@ pipeline:
       - make unittests
 
   verify-readme:
-    image: alpine:3.18.2
+    image: alpine:3.18.3
     pull: true
     commands:
       - apk add make nodejs npm git
@@ -49,7 +49,7 @@ pipeline:
       - git diff --exit-code --name-only README.md
 
   yaml-lint:
-    image: alpine:3.18.2
+    image: alpine:3.18.3
     pull: true
     commands:
       - apk add yamllint
