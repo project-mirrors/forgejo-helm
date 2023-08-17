@@ -28,7 +28,7 @@ maintainers:
 dependencies:
   - name: memcached
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 6.5.6
+    version: 6.5.7
     condition: memcached.enabled
   # Chart release date: 2023-04
   - name: postgresql
