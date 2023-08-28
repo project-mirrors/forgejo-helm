@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@bitnami/readme-generator-for-helm": "^2.4.2",
-    "conventional-changelog-conventionalcommits": "^6.0.0",
+    "conventional-changelog-conventionalcommits": "^7.0.0",
     "conventional-changelog-core": "^5.0.0",
     "markdownlint-cli": "^0.35.0"
   }
