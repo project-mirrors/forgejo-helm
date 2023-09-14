@@ -33,5 +33,5 @@ dependencies:
   # Chart release date: 2023-04
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 12.10.0
+    version: 12.11.1
     condition: postgresql.enabled
