@@ -57,8 +57,5 @@
       "packageNameTemplate": "helm-unittest/helm-unittest",
       "datasourceTemplate": "github-releases"
     }
-  ],
-  "constraints": {
-    "helm": "3.12.3"
-  }
+  ]
 }
