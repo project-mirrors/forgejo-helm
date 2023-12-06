@@ -989,7 +989,10 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `gitea.startupProbe.successThreshold`    | Success threshold for startup probe             | `1`     |
 | `gitea.startupProbe.failureThreshold`    | Failure threshold for startup probe             | `10`    |
 
-### redis-cluster
+### Redis&reg; Cluster
+
+Redis&reg; Cluster is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster) if enabled in the values.
+Complete Configuration can be taken from their website.
 
 | Name                             | Description                                  | Value   |
 | -------------------------------- | -------------------------------------------- | ------- |
@@ -998,11 +1001,14 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `redis-cluster.cluster.nodes`    | Number of redis cluster master nodes         | `3`     |
 | `redis-cluster.cluster.replicas` | Number of redis cluster master node replicas | `0`     |
 
-### PostgreSQL-ha
+### PostgreSQL HA
+
+PostgreSQL HA is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql-ha) if enabled in the values.
+Complete Configuration can be taken from their website.
 
 | Name                                        | Description                                                      | Value       |
 | ------------------------------------------- | ---------------------------------------------------------------- | ----------- |
-| `postgresql-ha.enabled`                     | Enable PostgreSQL-ha                                             | `true`      |
+| `postgresql-ha.enabled`                     | Enable PostgreSQL HA chart                                       | `true`      |
 | `postgresql-ha.postgresql.password`         | Password for the `gitea` user (overrides `auth.password`)        | `changeme4` |
 | `postgresql-ha.global.postgresql.database`  | Name for a custom database to create (overrides `auth.database`) | `gitea`     |
 | `postgresql-ha.global.postgresql.username`  | Name for a custom user to create (overrides `auth.username`)     | `gitea`     |
@@ -1015,7 +1021,8 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### PostgreSQL
 
-PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) if enabled in the values. Complete Configuration can be taken from their website.
+PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) if enabled in the values.
+Complete Configuration can be taken from their website.
 
 | Name                                                    | Description                                                      | Value   |
 | ------------------------------------------------------- | ---------------------------------------------------------------- | ------- |

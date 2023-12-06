@@ -54,3 +54,10 @@ pipeline:
     commands:
       - apk add yamllint
       - yamllint -f colored .
+
+  chart-testing:
+    image: quay.io/helmpack/chart-testing:v3.10.1
+    pull: true
+    commands:
+      - git fetch --no-tags --filter=blob:none origin
+      - ct lint --config tools/ct.yml --charts .

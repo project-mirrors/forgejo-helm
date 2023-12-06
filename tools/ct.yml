@@ -1,0 +1,6 @@
+# helm-extra-args: --timeout 600s
+check-version-increment: false
+debug: true
+target-branch: main
+lint-conf: .yamllint
+validate-maintainers: false # does not work with gitea
