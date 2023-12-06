@@ -36,13 +36,14 @@
     {
       "description": "Automerge dev deps updates",
       "matchManagers": ["npm"],
-      "matchDepTypes":["devDependencies"],
+      "matchDepTypes": ["devDependencies"],
       "automerge": true
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
       "description": "Update forgeo version in chart",
+      "customType": "regex",
       "fileMatch": ["^Chart\\.yaml$"],
       "matchStrings": ["appVersion: (?<currentValue>.+?)\\s"],
       "depNameTemplate": "forgejo",
@@ -51,10 +52,22 @@
     },
     {
       "description": "Update helm unittest plugin",
+      "customType": "regex",
       "fileMatch": ["^\\.woodpecker/[a-z-]+\\.yml$"],
-      "matchStrings": ["helm plugin install --version (?<currentValue>.+?) https://github.com/helm-unittest/helm-unittest\\s"],
+      "matchStrings": [
+        "helm plugin install --version (?<currentValue>.+?) https://github.com/helm-unittest/helm-unittest\\s"
+      ],
       "depNameTemplate": "helm-unittest",
       "packageNameTemplate": "helm-unittest/helm-unittest",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "description": "Detect helm-unittest yaml schema file",
+      "customType": "regex",
+      "fileMatch": [".vscode/settings\\.json$"],
+      "matchStrings": [
+        "https:\\/\\/raw\\.githubusercontent\\.com\\/(?<depName>[^\\s]+?)\\/(?<currentValue>v[0-9.]+?)\\/schema\\/helm-testsuite\\.json"
+      ],
       "datasourceTemplate": "github-releases"
     }
   ]

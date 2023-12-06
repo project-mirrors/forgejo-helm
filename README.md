@@ -1,14 +1,68 @@
-# Forgejo Helm Chart
+
+# Forgejo Helm Chart <!-- omit from toc -->
 
 [![status-badge](https://ci.dachary.org/api/badges/forgejo-contrib/forgejo-helm/status.svg)](https://ci.dachary.org/forgejo-contrib/forgejo-helm)
 
-[Forgejo](https://forgejo.org/) is a community managed lightweight code hosting
-solution written in Go. It is published under the MIT license.
+- [Introduction](#introduction)
+- [Update and versioning policy](#update-and-versioning-policy)
+- [Dependencies](#dependencies)
+- [Installing](#installing)
+- [High Availability](#high-availability)
+- [Configuration](#configuration)
+  - [Default Configuration](#default-configuration)
+    - [Database defaults](#database-defaults)
+    - [Server defaults](#server-defaults)
+    - [Metrics defaults](#metrics-defaults)
+    - [Rootless Defaults](#rootless-defaults)
+  - [Single-Pod Configurations](#single-pod-configurations)
+  - [Additional _app.ini_ settings](#additional-appini-settings)
+    - [User defined environment variables in app.ini](#user-defined-environment-variables-in-appini)
+  - [External Database](#external-database)
+  - [Ports and external url](#ports-and-external-url)
+  - [ClusterIP](#clusterip)
+  - [SSH and Ingress](#ssh-and-ingress)
+  - [SSH on crio based kubernetes cluster](#ssh-on-crio-based-kubernetes-cluster)
+  - [Cache](#cache)
+  - [Persistence](#persistence)
+  - [Admin User](#admin-user)
+  - [LDAP Settings](#ldap-settings)
+  - [OAuth2 Settings](#oauth2-settings)
+- [Configure commit signing](#configure-commit-signing)
+- [Metrics and profiling](#metrics-and-profiling)
+- [Pod annotations](#pod-annotations)
+- [Themes](#themes)
+- [Renovate](#renovate)
+- [Parameters](#parameters)
+  - [Global](#global)
+  - [strategy](#strategy)
+  - [Image](#image)
+  - [Security](#security)
+  - [Service](#service)
+  - [Ingress](#ingress)
+  - [deployment](#deployment)
+  - [ServiceAccount](#serviceaccount)
+  - [Persistence](#persistence-1)
+  - [Init](#init)
+  - [Signing](#signing)
+  - [Gitea](#gitea)
+  - [LivenessProbe](#livenessprobe)
+  - [ReadinessProbe](#readinessprobe)
+  - [StartupProbe](#startupprobe)
+  - [redis-cluster](#redis-cluster)
+  - [PostgreSQL-ha](#postgresql-ha)
+  - [PostgreSQL](#postgresql)
+  - [Advanced](#advanced)
+- [Contributing](#contributing)
+- [Upgrading](#upgrading)
+
+[Forgejo](https://forgejo.org/) is a community managed lightweight code hosting solution written in Go.
+It is published under the MIT license.
 
 ## Introduction
 
 This helm chart is based on official [Gitea helm chart](https://gitea.com/gitea/helm-chart).
-Additionally, this chart provides LDAP and admin user configuration with values, as well as being deployed as a statefulset to retain stored repositories.
+Yet it takes a completely different approach in providing a database and cache with dependencies.
+Additionally, this chart allows to provide LDAP and admin user configuration with values.
 
 ## Update and versioning policy
 
@@ -30,8 +84,8 @@ This chart provides those dependencies, which can be enabled, or disabled via co
 
 Dependencies:
 
-- PostgreSQL ([configuration](#postgresql))
-- Memcached ([configuration](#memcached))
+- PostgreSQL HA ([configuration](#postgresql))
+- Redis Cluster ([configuration](#cache))
 
 ## Installing
 
@@ -47,18 +101,18 @@ helm install forgejo -f values.yaml oci://codeberg.org/forgejo-contrib/forgejo
 
 When upgrading, please refer to the [Upgrading](#upgrading) section at the bottom of this document for major and breaking changes.
 
-## Prerequisites
+## High Availability
 
-- Kubernetes 1.12+
-- Helm 3.0+
-- PV provisioner for persistent data support
+This chart supports running Forgejo and it's dependencies in HA mode.
+Care must be taken for production use as not all implementation details of Forgejo core are officially HA-ready yet.
 
-## Examples
+Deploying a HA-ready Forgejo instance requires some effort including using HA-ready dependencies.
+See the [HA Setup](docs/ha-setup.md) document for more details.
 
-### Forgejo Configuration
+## Configuration
 
 Forgejo offers lots of configuration options.
-This is fully described in the [Gitea Cheat Sheet](https://docs.gitea.io/en-us/config-cheat-sheet/).
+This is fully described in the [Gitea Cheat Sheet](https://docs.gitea.com/administration/config-cheat-sheet).
 
 ```yaml
 gitea:
@@ -77,12 +131,12 @@ All defaults can be overwritten in `gitea.config`.
 
 INSTALL_LOCK is always set to true, since we want to configure Forgejo with this helm chart and everything is taken care of.
 
-_All default settings are made directly in the generated app.ini, not in the Values._
+_All default settings are made directly in the generated `app.ini`, not in the Values._
 
 #### Database defaults
 
 If a builtIn database is enabled the database configuration is set automatically.
-For example, PostgreSQL builtIn will appear in the app.ini as:
+For example, PostgreSQL builtIn will appear in the `app.ini` as:
 
 ```ini
 [database]
@@ -91,18 +145,6 @@ HOST = RELEASE-NAME-postgresql.default.svc.cluster.local:5432
 NAME = gitea
 PASSWD = gitea
 USER = gitea
-```
-
-#### Memcached defaults
-
-Memcached is handled the exact same way as database builtIn.
-Once Memcached builtIn is enabled, this chart will generate the following part in the `app.ini`:
-
-```ini
-[cache]
-ADAPTER = memcache
-ENABLED = true
-HOST = RELEASE-NAME-memcached.default.svc.cluster.local:11211
 ```
 
 #### Server defaults
@@ -133,9 +175,101 @@ The Prometheus `/metrics` endpoint is disabled by default.
 ENABLED = false
 ```
 
+#### Rootless Defaults
+
+If `.Values.image.rootless: true`, then the following will occur. In case you use `.Values.image.fullOverride`, check that this works in your image:
+
+- `$HOME` becomes `/data/gitea/git`
+
+  [see deployment.yaml](./templates/gitea/deployment.yaml) template inside (init-)container "env" declarations
+
+- `START_SSH_SERVER: true` (Unless explicity overwritten by `gitea.config.server.START_SSH_SERVER`)
+
+  [see \_helpers.tpl](./templates/_helpers.tpl) in `gitea.inline_configuration.defaults.server` definition
+
+- `SSH_LISTEN_PORT: 2222` (Unless explicity overwritten by `gitea.config.server.SSH_LISTEN_PORT`)
+
+  [see \_helpers.tpl](./templates/_helpers.tpl) in `gitea.inline_configuration.defaults.server` definition
+
+- `SSH_LOG_LEVEL` environment variable is not injected into the container
+
+  [see deployment.yaml](./templates/gitea/deployment.yaml) template inside container "env" declarations
+
+### Single-Pod Configurations
+
+If HA is not needed/desired, the following configurations can be used to deploy a single-pod Forgejo instance.
+
+1. For a production-ready single-pod Forgejo instance without external dependencies (using the chart dependency `postgresql`):
+
+   <details>
+
+   <summary>values.yml</summary>
+
+   ```yaml
+   redis-cluster:
+     enabled: false
+   postgresql:
+     enabled: true
+   postgresql-ha:
+     enabled: false
+
+   persistence:
+     enabled: true
+
+   gitea:
+     config:
+       database:
+         DB_TYPE: postgres
+       session:
+         PROVIDER: db
+       cache:
+         ADAPTER: memory
+       queue:
+         TYPE: level
+       indexer:
+         ISSUE_INDEXER_TYPE: bleve
+         REPO_INDEXER_ENABLED: true
+   ```
+
+   </details>
+
+2. For a minimal DEV installation (using the built-in sqlite DB instead of Postgres):
+
+   This will result in a single-pod Forgejo instance _without any dependencies and persistence_.
+   **Do not use this configuration for production use**.
+
+   <details>
+
+   <summary>values.yml</summary>
+
+   ```yaml
+   redis-cluster:
+     enabled: false
+   postgresql:
+     enabled: false
+   postgresql-ha:
+     enabled: false
+
+   persistence:
+     enabled: false
+
+   gitea:
+     config:
+       database:
+         DB_TYPE: sqlite3
+       session:
+         PROVIDER: memory
+       cache:
+         ADAPTER: memory
+       queue:
+         TYPE: level
+   ```
+
+   </details>
+
 ### Additional _app.ini_ settings
 
-> **The [generic](https://docs.gitea.io/en-us/config-cheat-sheet/#overall-default)
+> **The [generic](https://docs.gitea.com/administration/config-cheat-sheet#overall-default)
 > section cannot be defined that way.**
 
 Some settings inside _app.ini_ (like passwords or whole authentication configurations) must be considered sensitive and therefore should not be passed via plain text inside the _values.yaml_ file.
@@ -153,8 +287,7 @@ gitea:
         name: gitea-app-ini-plaintext
 ```
 
-This would mount the two additional volumes (`oauth` and `some-additionals`)
-from different sources to the init containerwhere the _app.ini_ gets updated.
+This would mount the two additional volumes (`oauth` and `some-additionals`) from different sources to the init container where the _app.ini_ gets updated.
 All files mounted that way will be read and converted to environment variables and then added to the _app.ini_ using [environment-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini).
 
 The key of such additional source represents the section inside the _app.ini_.
@@ -195,8 +328,10 @@ stringData:
 Users are able to define their own environment variables, which are loaded into the containers.
 We also support to directly interact with the generated _app.ini_.
 
-To inject self defined variables into the _app.ini_, environment variables need
-to be prefixed with `FORGEJO`.
+To inject self defined variables into the _app.ini_ a certain format needs to be honored.
+This is described in detail on the [env-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini) page.
+
+Environment variables need to be prefixed with `FORGEJO`.
 
 For example a database setting needs to have the following format:
 
@@ -215,12 +350,13 @@ gitea:
 Priority (highest to lowest) for defining app.ini variables:
 
 1. Environment variables prefixed with `FORGEJO`
+
 1. Additional config sources
 1. Values defined in `gitea.config`
 
 ### External Database
 
-Any external Database listed in [https://docs.gitea.io/en-us/database-prep/](https://docs.gitea.io/en-us/database-prep/) can be used instead of the built-in PostgreSQL.
+Any external database listed in [https://docs.gitea.com/installation/database-prep](https://docs.gitea.com/installation/database-prep) can be used instead of the built-in PostgreSQL.
 In fact, it is **highly recommended** to use an external database to ensure a stable Forgejo installation longterm.
 
 If an external database is used, no matter which type, make sure to set `postgresql.enabled` to `false` to disable the use of the built-in PostgreSQL.
@@ -306,34 +442,23 @@ More about this issue [here](https://gitea.com/gitea/helm-chart/issues/161).
 
 ### Cache
 
-This helm chart can use a built in cache.
-The default is Memcached from bitnami.
+The cache handling is done via `redis-cluster` (via the `bitnami` chart) by default.
+This deployment is HA-ready but can also be used for single-pod deployments.
+By default, 6 replicas are deployed for a working `redis-cluster` deployment.
+Many cloud providers offer a managed redis service, which can be used instead of the built-in `redis-cluster`.
 
 ```yaml
-memcached:
+redis-cluster:
   enabled: true
-```
-
-If the built in cache should not be used simply configure the cache in `gitea.config`.
-
-```yaml
-gitea:
-  config:
-    cache:
-      ENABLED: true
-      ADAPTER: memory
-      INTERVAL: 60
-      HOST: 127.0.0.1:9090
 ```
 
 ### Persistence
 
-Forgejo will be deployed as a statefulset.
+Forgejo will be deployed as a deployment.
 By simply enabling the persistence and setting the storage class according to your cluster everything else will be taken care of.
-The following example will create a PVC as a part of the statefulset.
-This PVC will not be deleted even if you uninstall the chart.
+The following example will create a PVC as a part of the deployment.
 
-Please note, that an empty storageClass in the persistence will result in kubernetes using your default storage class.
+Please note, that an empty `storageClass` in the persistence will result in kubernetes using your default storage class.
 
 If you want to use your own storage class define it as follows:
 
@@ -343,14 +468,12 @@ persistence:
   storageClass: myOwnStorageClass
 ```
 
-When using PostgreSQL as dependency, this will also be deployed as a statefulset by default.
-
 If you want to manage your own PVC you can simply pass the PVC name to the chart.
 
 ```yaml
 persistence:
   enabled: true
-  existingClaim: MyAwesomeGiteaClaim
+  claimName: MyAwesomeGiteaClaim
 ```
 
 In case that persistence has been disabled it will simply use an empty dir volume.
@@ -362,13 +485,13 @@ You can interact with the postgres settings as displayed in the following exampl
 postgresql:
   persistence:
     enabled: true
-    existingClaim: MyAwesomeGiteaPostgresClaim
+    claimName: MyAwesomeGiteaPostgresClaim
 ```
 
 ### Admin User
 
 This chart enables you to create a default admin user.
-It is also possible to update the password for this user by upgrading or redeloying the chart.
+It is also possible to update the password for this user by upgrading or redeploying the chart.
 It is not possible to delete an admin user after it has been created.
 This has to be done in the ui.
 You cannot use `admin` as username.
@@ -403,7 +526,7 @@ gitea:
 ### LDAP Settings
 
 Like the admin user the LDAP settings can be updated.
-All LDAP values from <https://docs.gitea.io/en-us/command-line/#admin> are available.
+All LDAP values from <https://docs.gitea.com/administration/command-line#admin> are available.
 
 Multiple LDAP sources can be configured with additional LDAP list items.
 
@@ -457,7 +580,7 @@ Affected options:
 
 Like the admin user, OAuth2 settings can be updated and disabled but not deleted.
 Deleting OAuth2 settings has to be done in the ui.
-All OAuth2 values, which are documented [here](https://docs.gitea.io/en-us/command-line/#admin), are
+All OAuth2 values, which are documented [here](https://docs.gitea.com/administration/command-line#admin), are
 available.
 
 Multiple OAuth2 sources can be configured with additional OAuth list items.
@@ -534,9 +657,9 @@ signing:
 ```
 
 To use the gpg key, Forgejo needs to be configured accordingly.
-A detailed description can be found in the [official Gitea documentation](https://docs.gitea.io/en-us/signing/#general-configuration).
+A detailed description can be found in the [official Gitea documentation](https://docs.gitea.com/administration/signing#general-configuration).
 
-### Metrics and profiling
+## Metrics and profiling
 
 A Prometheus `/metrics` endpoint on the `HTTP_PORT` and `pprof` profiling endpoints on port 6060 can be enabled under `gitea`.
 Beware that the metrics endpoint is exposed via the ingress, manage access using ingress annotations for example.
@@ -555,7 +678,7 @@ gitea:
       ENABLE_PPROF: true
 ```
 
-### Pod Annotations
+## Pod annotations
 
 Annotations can be added to the Forgejo pod.
 
@@ -564,29 +687,137 @@ gitea:
   podAnnotations: {}
 ```
 
+## Themes
+
+Custom themes can be added via k8s secrets and referencing them in `values.yaml`.
+
+The [http provider](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) is useful here.
+
+```yaml
+extraVolumes:
+  - name: gitea-themes
+    secret:
+      secretName: gitea-themes
+
+extraVolumeMounts:
+  - name: gitea-themes
+    readOnly: true
+    mountPath: "/data/gitea/public/assets/css"
+```
+
+The secret can be created via `terraform`:
+
+```hcl
+resource "kubernetes_secret" "gitea-themes" {
+  metadata {
+    name      = "gitea-themes"
+    namespace = "gitea"
+  }
+
+  data = {
+    "my-theme.css"      = data.http.gitea-theme-light.body
+    "my-theme-dark.css" = data.http.gitea-theme-dark.body
+    "my-theme-auto.css" = data.http.gitea-theme-auto.body
+  }
+
+  type = "Opaque"
+}
+
+
+data "http" "gitea-theme-light" {
+  url = "<raw theme url>"
+
+  request_headers = {
+    Accept = "application/json"
+  }
+}
+
+data "http" "gitea-theme-dark" {
+  url = "<raw theme url>"
+
+  request_headers = {
+    Accept = "application/json"
+  }
+}
+
+data "http" "gitea-theme-auto" {
+  url = "<raw theme url>"
+
+  request_headers = {
+    Accept = "application/json"
+  }
+}
+```
+
+or natively via `kubectl`:
+
+```bash
+kubectl create secret generic gitea-themes --from-file={{FULL-PATH-TO-CSS}} --namespace gitea
+```
+
+## Renovate
+
+To be able to use a digest value which is automatically updated by `Renovate` a [customManager](https://docs.renovatebot.com/modules/manager/regex/) is required.
+Here's an examplary `values.yml` definition which makes use of a digest:
+
+```yaml
+image:
+  registry: codeberg.org
+  repository: forgejo/forgejo
+  tag: 1.20.2-0
+  digest: sha256:f597c14a403c2fdee9a62dae8bae29d6442f7b2cc85872cc9bb535a24cb1630e
+```
+
+By default Renovate adds digest after the `tag`.
+To comply with the Forgejo helm chart definition of the digest parameter, a "customManagers" definition is required:
+
+```json
+"customManagers": [
+  {
+    "customType": "regex",
+    "description": "Apply an explicit gitea digest field match",
+    "fileMatch": ["values\\.ya?ml"],
+    "matchStrings": ["(?<depName>forgejo\\/forgejo)\\n(?<indentation>\\s+)tag: (?<currentValue>[^@].*?)\\n\\s+digest: (?<currentDigest>sha256:[a-f0-9]+)"],
+    "datasourceTemplate": "docker",
+    "packageNameTemplate": "codeberg.org/{{depName}}",
+    "autoReplaceStringTemplate": "{{depName}}\n{{indentation}}tag: {{newValue}}\n{{indentation}}digest: {{#if newDigest}}{{{newDigest}}}{{else}}{{{currentDigest}}}{{/if}}"
+  }
+]
+```
+
 ## Parameters
 
 ### Global
 
-| Name                      | Description                                                               | Value           |
-| ------------------------- | ------------------------------------------------------------------------- | --------------- |
-| `global.imageRegistry`    | global image registry override                                            | `""`            |
-| `global.imagePullSecrets` | global image pull secrets override; can be extended by `imagePullSecrets` | `[]`            |
-| `global.storageClass`     | global storage class override                                             | `""`            |
-| `global.hostAliases`      | global hostAliases which will be added to the pod's hosts files           | `[]`            |
-| `replicaCount`            | number of replicas for the statefulset                                    | `1`             |
-| `clusterDomain`           | cluster domain                                                            | `cluster.local` |
+| Name                      | Description                                                               | Value |
+| ------------------------- | ------------------------------------------------------------------------- | ----- |
+| `global.imageRegistry`    | global image registry override                                            | `""`  |
+| `global.imagePullSecrets` | global image pull secrets override; can be extended by `imagePullSecrets` | `[]`  |
+| `global.storageClass`     | global storage class override                                             | `""`  |
+| `global.hostAliases`      | global hostAliases which will be added to the pod's hosts files           | `[]`  |
+| `replicaCount`            | number of replicas for the deployment                                     | `1`   |
+
+### strategy
+
+| Name                                    | Description    | Value           |
+| --------------------------------------- | -------------- | --------------- |
+| `strategy.type`                         | strategy type  | `RollingUpdate` |
+| `strategy.rollingUpdate.maxSurge`       | maxSurge       | `100%`          |
+| `strategy.rollingUpdate.maxUnavailable` | maxUnavailable | `0`             |
+| `clusterDomain`                         | cluster domain | `cluster.local` |
 
 ### Image
 
-| Name               | Description                                                                                                                         | Value             |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `image.registry`   | image registry, e.g. gcr.io,docker.io                                                                                               | `codeberg.org`    |
-| `image.repository` | Image to start for this pod                                                                                                         | `forgejo/forgejo` |
-| `image.tag`        | Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml. | `""`              |
-| `image.pullPolicy` | Image pull policy                                                                                                                   | `Always`          |
-| `image.rootless`   | Wether or not to pull the rootless version of Forgejo, only works on Forgejo 1.14.x or higher                                       | `false`           |
-| `imagePullSecrets` | Secret to use for pulling the image                                                                                                 | `[]`              |
+| Name                 | Description                                                                                                                                                      | Value          |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `image.registry`     | image registry, e.g. gcr.io,docker.io                                                                                                                            | `codeberg.org`           |
+| `image.repository`   | Image to start for this pod                                                                                                                                      | `forgejo/forgejo`  |
+| `image.tag`          | Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.                          | `""`           |
+| `image.digest`       | Image digest. Allows to pin the given image tag. Useful for having control over mutable tags like `latest`                                                       | `""`           |
+| `image.pullPolicy`   | Image pull policy                                                                                                                                                | `IfNotPresent` |
+| `image.rootless`     | Wether or not to pull the rootless version of Forgejo                                                                        | `true`         |
+| `image.fullOverride` | Completely overrides the image registry, path/image, tag and digest. **Adjust `image.rootless` accordingly and review [Rootless defaults](#rootless-defaults).** | `""`           |
+| `imagePullSecrets`   | Secret to use for pulling the image                                                                                                                              | `[]`           |
 
 ### Security
 
@@ -594,7 +825,8 @@ gitea:
 | ---------------------------- | --------------------------------------------------------------- | ------ |
 | `podSecurityContext.fsGroup` | Set the shared file system group for all containers in the pod. | `1000` |
 | `containerSecurityContext`   | Security context                                                | `{}`   |
-| `securityContext`            | Run init and Forgejo containers as a specific securityContext   | `{}`   |
+| `securityContext`            | Run init and Forgejo containers as a specific securityContext     | `{}`   |
+| `podDisruptionBudget`        | Pod disruption budget                                           | `{}`   |
 
 ### Service
 
@@ -602,7 +834,7 @@ gitea:
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `service.http.type`                     | Kubernetes service type for web traffic                                                                                                                                                              | `ClusterIP` |
 | `service.http.port`                     | Port number for web traffic                                                                                                                                                                          | `3000`      |
-| `service.http.clusterIP`                | ClusterIP setting for http autosetup for statefulset is None                                                                                                                                         | `None`      |
+| `service.http.clusterIP`                | ClusterIP setting for http autosetup for deployment is None                                                                                                                                          | `None`      |
 | `service.http.loadBalancerIP`           | LoadBalancer IP setting                                                                                                                                                                              | `nil`       |
 | `service.http.nodePort`                 | NodePort for http service                                                                                                                                                                            | `nil`       |
 | `service.http.externalTrafficPolicy`    | If `service.http.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation                                                                                         | `nil`       |
@@ -613,7 +845,7 @@ gitea:
 | `service.http.annotations`              | HTTP service annotations                                                                                                                                                                             | `{}`        |
 | `service.ssh.type`                      | Kubernetes service type for ssh traffic                                                                                                                                                              | `ClusterIP` |
 | `service.ssh.port`                      | Port number for ssh traffic                                                                                                                                                                          | `22`        |
-| `service.ssh.clusterIP`                 | ClusterIP setting for ssh autosetup for statefulset is None                                                                                                                                          | `None`      |
+| `service.ssh.clusterIP`                 | ClusterIP setting for ssh autosetup for deployment is None                                                                                                                                           | `None`      |
 | `service.ssh.loadBalancerIP`            | LoadBalancer IP setting                                                                                                                                                                              | `nil`       |
 | `service.ssh.nodePort`                  | NodePort for ssh service                                                                                                                                                                             | `nil`       |
 | `service.ssh.externalTrafficPolicy`     | If `service.ssh.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation                                                                                          | `nil`       |
@@ -637,38 +869,53 @@ gitea:
 | `ingress.tls`                        | Ingress tls settings                                                        | `[]`              |
 | `ingress.apiVersion`                 | Specify APIVersion of ingress object. Mostly would only be used for argocd. |                   |
 
-### StatefulSet
+### deployment
 
-| Name                                        | Description                                            | Value |
-| ------------------------------------------- | ------------------------------------------------------ | ----- |
-| `resources`                                 | Kubernetes resources                                   | `{}`  |
-| `schedulerName`                             | Use an alternate scheduler, e.g. "stork"               | `""`  |
-| `nodeSelector`                              | NodeSelector for the statefulset                       | `{}`  |
-| `tolerations`                               | Tolerations for the statefulset                        | `[]`  |
-| `affinity`                                  | Affinity for the statefulset                           | `{}`  |
-| `dnsConfig`                                 | dnsConfig for the statefulset                          | `{}`  |
-| `priorityClassName`                         | priorityClassName for the statefulset                  | `""`  |
-| `statefulset.env`                           | Additional environment variables to pass to containers | `[]`  |
-| `statefulset.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod         | `60`  |
-| `statefulset.labels`                        | Labels for the statefulset                             | `{}`  |
-| `statefulset.annotations`                   | Annotations for the Forgejo StatefulSet to be created  | `{}`  |
+| Name                                       | Description                                            | Value |
+| ------------------------------------------ | ------------------------------------------------------ | ----- |
+| `resources`                                | Kubernetes resources                                   | `{}`  |
+| `schedulerName`                            | Use an alternate scheduler, e.g. "stork"               | `""`  |
+| `nodeSelector`                             | NodeSelector for the deployment                        | `{}`  |
+| `tolerations`                              | Tolerations for the deployment                         | `[]`  |
+| `affinity`                                 | Affinity for the deployment                            | `{}`  |
+| `topologySpreadConstraints`                | TopologySpreadConstraints for the deployment           | `[]`  |
+| `dnsConfig`                                | dnsConfig for the deployment                           | `{}`  |
+| `priorityClassName`                        | priorityClassName for the deployment                   | `""`  |
+| `deployment.env`                           | Additional environment variables to pass to containers | `[]`  |
+| `deployment.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod         | `60`  |
+| `deployment.labels`                        | Labels for the deployment                              | `{}`  |
+| `deployment.annotations`                   | Annotations for the Gitea deployment to be created     | `{}`  |
+
+### ServiceAccount
+
+| Name                                          | Description                                                                                                                               | Value   |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `serviceAccount.create`                       | Enable the creation of a ServiceAccount                                                                                                   | `false` |
+| `serviceAccount.name`                         | Name of the created ServiceAccount, defaults to release name. Can also link to an externally provided ServiceAccount that should be used. | `""`    |
+| `serviceAccount.automountServiceAccountToken` | Enable/disable auto mounting of the service account token                                                                                 | `false` |
+| `serviceAccount.imagePullSecrets`             | Image pull secrets, available to the ServiceAccount                                                                                       | `[]`    |
+| `serviceAccount.annotations`                  | Custom annotations for the ServiceAccount                                                                                                 | `{}`    |
+| `serviceAccount.labels`                       | Custom labels for the ServiceAccount                                                                                                      | `{}`    |
 
 ### Persistence
 
-| Name                         | Description                                                                                             | Value               |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------- |
-| `persistence.enabled`        | Enable persistent storage                                                                               | `true`              |
-| `persistence.existingClaim`  | Use an existing claim to store repository information                                                   | `nil`               |
-| `persistence.size`           | Size for persistence to store repo information                                                          | `10Gi`              |
-| `persistence.accessModes`    | AccessMode for persistence                                                                              | `["ReadWriteOnce"]` |
-| `persistence.labels`         | Labels for the persistence volume claim to be created                                                   | `{}`                |
-| `persistence.annotations`    | Annotations for the persistence volume claim to be created                                              | `{}`                |
-| `persistence.storageClass`   | Name of the storage class to use                                                                        | `nil`               |
-| `persistence.subPath`        | Subdirectory of the volume to mount at                                                                  | `nil`               |
-| `extraVolumes`               | Additional volumes to mount to the Forgejo statefulset                                                  | `[]`                |
-| `extraContainerVolumeMounts` | Mounts that are only mapped into the Forgejo runtime/main container, to e.g. override custom templates. | `[]`                |
-| `extraInitVolumeMounts`      | Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.      | `[]`                |
-| `extraVolumeMounts`          | **DEPRECATED** Additional volume mounts for init containers and the Forgejo main container              | `[]`                |
+| Name                                              | Description                                                                                           | Value                  |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------- |
+| `persistence.enabled`                             | Enable persistent storage                                                                             | `true`                 |
+| `persistence.create`                              | Whether to create the persistentVolumeClaim for shared storage                                        | `true`                 |
+| `persistence.mount`                               | Whether the persistentVolumeClaim should be mounted (even if not created)                             | `true`                 |
+| `persistence.claimName`                           | Use an existing claim to store repository information                                                 | `gitea-shared-storage` |
+| `persistence.size`                                | Size for persistence to store repo information                                                        | `10Gi`                 |
+| `persistence.accessModes`                         | AccessMode for persistence                                                                            | `["ReadWriteOnce"]`    |
+| `persistence.labels`                              | Labels for the persistence volume claim to be created                                                 | `{}`                   |
+| `persistence.annotations.helm.sh/resource-policy` | Resource policy for the persistence volume claim                                                      | `keep`                 |
+| `persistence.storageClass`                        | Name of the storage class to use                                                                      | `nil`                  |
+| `persistence.subPath`                             | Subdirectory of the volume to mount at                                                                | `nil`                  |
+| `persistence.volumeName`                          | Name of persistent volume in PVC                                                                      | `""`                   |
+| `extraVolumes`                                    | Additional volumes to mount to the Forgejo deployment                                                   | `[]`                   |
+| `extraContainerVolumeMounts`                      | Mounts that are only mapped into the Forgejo runtime/main container, to e.g. override custom templates. | `[]`                   |
+| `extraInitVolumeMounts`                           | Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.    | `[]`                   |
+| `extraVolumeMounts`                               | **DEPRECATED** Additional volume mounts for init containers and the Forgejo main container              | `[]`                   |
 
 ### Init
 
@@ -690,21 +937,22 @@ gitea:
 
 ### Gitea
 
-| Name                                   | Description                                                                                                     | Value                |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `gitea.admin.username`                 | Username for the Forgejo admin user                                                                             | `gitea_admin`        |
-| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                                                          | `nil`                |
-| `gitea.admin.password`                 | Password for the Forgejo admin user                                                                             | `r8sA8CPHD9!bt6d`    |
-| `gitea.admin.email`                    | Email for the Forgejo admin user                                                                                | `gitea@local.domain` |
-| `gitea.metrics.enabled`                | Enable Forgejo metrics                                                                                          | `false`              |
-| `gitea.metrics.serviceMonitor.enabled` | Enable Forgejo metrics service monitor                                                                          | `false`              |
-| `gitea.ldap`                           | LDAP configuration                                                                                              | `[]`                 |
-| `gitea.oauth`                          | OAuth configuration                                                                                             | `[]`                 |
-| `gitea.config`                         | Configuration for the Forgejo server,ref: [config-cheat-sheet](https://docs.gitea.io/en-us/config-cheat-sheet/) | `{}`                 |
-| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                                                               | `[]`                 |
-| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables                                                     | `[]`                 |
-| `gitea.podAnnotations`                 | Annotations for the Forgejo pod                                                                                 | `{}`                 |
-| `gitea.ssh.logLevel`                   | Configure OpenSSH's log level. Only available for root-based Forgejo image.                                     | `INFO`               |
+| Name                                   | Description                                                               | Value                |
+| -------------------------------------- | ------------------------------------------------------------------------- | -------------------- |
+| `gitea.admin.username`                 | Username for the Forgejo admin user                                         | `gitea_admin`        |
+| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                    | `nil`                |
+| `gitea.admin.password`                 | Password for the Forgejo admin user                                         | `r8sA8CPHD9!bt6d`    |
+| `gitea.admin.email`                    | Email for the Forgejo admin user                                            | `gitea@local.domain` |
+| `gitea.metrics.enabled`                | Enable Forgejo metrics                                                      | `false`              |
+| `gitea.metrics.serviceMonitor.enabled` | Enable Forgejo metrics service monitor                                      | `false`              |
+| `gitea.ldap`                           | LDAP configuration                                                        | `[]`                 |
+| `gitea.oauth`                          | OAuth configuration                                                       | `[]`                 |
+| `gitea.config.server.SSH_PORT`         | SSH port for rootlful Forgejo image                                         | `22`                 |
+| `gitea.config.server.SSH_LISTEN_PORT`  | SSH port for rootless Forgejo image                                         | `2222`               |
+| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                         | `[]`                 |
+| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables               | `[]`                 |
+| `gitea.podAnnotations`                 | Annotations for the Forgejo pod                                             | `{}`                 |
+| `gitea.ssh.logLevel`                   | Configure OpenSSH's log level. Only available for root-based Forgejo image. | `INFO`               |
 
 ### LivenessProbe
 
@@ -742,14 +990,29 @@ gitea:
 | `gitea.startupProbe.successThreshold`    | Success threshold for startup probe             | `1`     |
 | `gitea.startupProbe.failureThreshold`    | Failure threshold for startup probe             | `10`    |
 
-### Memcached
+### redis-cluster
 
-Memcached is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/memcached) if enabled in the values. Complete Configuration can be taken from their website.
+| Name                             | Description                                  | Value   |
+| -------------------------------- | -------------------------------------------- | ------- |
+| `redis-cluster.enabled`          | Enable redis                                 | `true`  |
+| `redis-cluster.usePassword`      | Whether to use password authentication       | `false` |
+| `redis-cluster.cluster.nodes`    | Number of redis cluster master nodes         | `3`     |
+| `redis-cluster.cluster.replicas` | Number of redis cluster master node replicas | `0`     |
 
-| Name                                | Description                                                                                                                                                                                           | Value   |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `memcached.enabled`                 | Memcached is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/memcached) if enabled in the values. Complete Configuration can be taken from their website. | `true`  |
-| `memcached.service.ports.memcached` | Port for Memcached                                                                                                                                                                                    | `11211` |
+### PostgreSQL-ha
+
+| Name                                        | Description                                                      | Value       |
+| ------------------------------------------- | ---------------------------------------------------------------- | ----------- |
+| `postgresql-ha.enabled`                     | Enable PostgreSQL-ha                                             | `true`      |
+| `postgresql-ha.postgresql.password`         | Password for the `gitea` user (overrides `auth.password`)        | `changeme4` |
+| `postgresql-ha.global.postgresql.database`  | Name for a custom database to create (overrides `auth.database`) | `gitea`     |
+| `postgresql-ha.global.postgresql.username`  | Name for a custom user to create (overrides `auth.username`)     | `gitea`     |
+| `postgresql-ha.global.postgresql.password`  | Name for a custom password to create (overrides `auth.password`) | `gitea`     |
+| `postgresql-ha.postgresql.repmgrPassword`   | Repmgr Password                                                  | `changeme2` |
+| `postgresql-ha.postgresql.postgresPassword` | postgres Password                                                | `changeme1` |
+| `postgresql-ha.pgpool.adminPassword`        | pgpool adminPassword                                             | `changeme3` |
+| `postgresql-ha.service.ports.postgresql`    | PostgreSQL service port (overrides `service.ports.postgresql`)   | `5432`      |
+| `postgresql-ha.primary.persistence.size`    | PVC Storage Request for PostgreSQL-ha volume                     | `10Gi`      |
 
 ### PostgreSQL
 
@@ -757,7 +1020,7 @@ PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/c
 
 | Name                                                    | Description                                                      | Value   |
 | ------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
-| `postgresql.enabled`                                    | Enable PostgreSQL                                                | `true`  |
+| `postgresql.enabled`                                    | Enable PostgreSQL                                                | `false` |
 | `postgresql.global.postgresql.auth.password`            | Password for the `gitea` user (overrides `auth.password`)        | `gitea` |
 | `postgresql.global.postgresql.auth.database`            | Name for a custom database to create (overrides `auth.database`) | `gitea` |
 | `postgresql.global.postgresql.auth.username`            | Name for a custom user to create (overrides `auth.username`)     | `gitea` |
@@ -782,5 +1045,6 @@ See [CONTRIBUTORS GUIDE](CONTRIBUTING.md) for details.
 
 ## Upgrading
 
-This section lists major and breaking changes of each Helm Chart version
-Please read them carefully to upgrade successfully.
+This section lists major and breaking changes of each Helm Chart version.
+Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
+If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
