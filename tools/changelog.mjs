@@ -67,5 +67,5 @@ conventionalChangelogCore(
   { version: process.argv[2], linkCompare: false },
   undefined,
   undefined,
-  { headerPartial: '' }
+  { headerPartial: '' },
 ).pipe(file);

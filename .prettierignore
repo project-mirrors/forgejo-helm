@@ -1,1 +1,5 @@
 Chart.lock
+node_modules/
+
+# won't work
+templates/**/*.yaml

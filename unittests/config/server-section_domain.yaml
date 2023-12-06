@@ -3,7 +3,7 @@ release:
   name: gitea-unittests
   namespace: testing
 tests:
-  - it: "[default values] uses ingress host for DOMAIN|SSH_DOMAIN|ROOT_URL"
+  - it: '[default values] uses ingress host for DOMAIN|SSH_DOMAIN|ROOT_URL'
     template: templates/gitea/config.yaml
     asserts:
       - documentIndex: 0
@@ -21,7 +21,7 @@ tests:
 
   ################################################
 
-  - it: "[no ingress hosts] uses gitea http service for DOMAIN|SSH_DOMAIN|ROOT_URL"
+  - it: '[no ingress hosts] uses gitea http service for DOMAIN|SSH_DOMAIN|ROOT_URL'
     template: templates/gitea/config.yaml
     set:
       ingress:
@@ -42,7 +42,7 @@ tests:
 
   ################################################
 
-  - it: "[provided via values] uses that for DOMAIN|SSH_DOMAIN|ROOT_URL"
+  - it: '[provided via values] uses that for DOMAIN|SSH_DOMAIN|ROOT_URL'
     template: templates/gitea/config.yaml
     set:
       gitea.config.server.DOMAIN: provided.example.com

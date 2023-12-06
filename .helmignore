@@ -43,3 +43,5 @@ unittests/
 .woodpecker/
 tmp/
 artifacthub-repo.yml
+
+ci/

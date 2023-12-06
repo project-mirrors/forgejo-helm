@@ -11,14 +11,14 @@ tests:
     set:
       signing:
         enabled: true
-        existingSecret: "custom-gpg-secret"
+        existingSecret: 'custom-gpg-secret'
     asserts:
       - equal:
           path: spec.template.spec.initContainers[2].name
           value: configure-gpg
       - equal:
           path: spec.template.spec.initContainers[2].command
-          value: ["/usr/sbin/configure_gpg_environment.sh"]
+          value: ['/usr/sbin/configure_gpg_environment.sh']
       - equal:
           path: spec.template.spec.initContainers[2].securityContext
           value:
@@ -42,7 +42,7 @@ tests:
     template: templates/gitea/deployment.yaml
     set:
       signing.enabled: true
-      signing.existingSecret: "custom-gpg-secret"
+      signing.existingSecret: 'custom-gpg-secret'
     asserts:
       - contains:
           path: spec.template.spec.initContainers[0].env
@@ -53,7 +53,7 @@ tests:
     template: templates/gitea/deployment.yaml
     set:
       signing.enabled: true
-      signing.existingSecret: "custom-gpg-secret"
+      signing.existingSecret: 'custom-gpg-secret'
     asserts:
       - contains:
           path: spec.template.spec.containers[0].env
@@ -65,7 +65,7 @@ tests:
     set:
       signing:
         enabled: true
-        existingSecret: "forgejo-unittests-gpg-key"
+        existingSecret: 'forgejo-unittests-gpg-key'
     asserts:
       - contains:
           path: spec.template.spec.volumes

@@ -14,15 +14,15 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "codeberg.org/forgejo/forgejo:1.19.3-rootless"
+          value: 'codeberg.org/forgejo/forgejo:1.19.3-rootless'
   - it: tag override
     template: templates/gitea/deployment.yaml
     set:
-      image.tag: "1.19.4"
+      image.tag: '1.19.4'
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "codeberg.org/forgejo/forgejo:1.19.4-rootless"
+          value: 'codeberg.org/forgejo/forgejo:1.19.4-rootless'
   - it: root-based image
     template: templates/gitea/deployment.yaml
     set:
@@ -30,23 +30,23 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "codeberg.org/forgejo/forgejo:1.19.3"
+          value: 'codeberg.org/forgejo/forgejo:1.19.3'
   - it: scoped registry
     template: templates/gitea/deployment.yaml
     set:
-      image.registry: "example.com"
+      image.registry: 'example.com'
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "example.com/forgejo/forgejo:1.19.3-rootless"
+          value: 'example.com/forgejo/forgejo:1.19.3-rootless'
   - it: global registry
     template: templates/gitea/deployment.yaml
     set:
-      global.imageRegistry: "global.example.com"
+      global.imageRegistry: 'global.example.com'
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "global.example.com/forgejo/forgejo:1.19.3-rootless"
+          value: 'global.example.com/forgejo/forgejo:1.19.3-rootless'
   - it: digest for rootless image
     template: templates/gitea/deployment.yaml
     set:
@@ -56,7 +56,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "codeberg.org/forgejo/forgejo:1.19.3-rootless@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a"
+          value: 'codeberg.org/forgejo/forgejo:1.19.3-rootless@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a'
   - it: image fullOverride (does not append rootless)
     template: templates/gitea/deployment.yaml
     set:
@@ -66,12 +66,12 @@ tests:
         rootless: true
         registry: example.com
         repository: example/image
-        tag: "1.0.0"
+        tag: '1.0.0'
         digest: sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "gitea/gitea:1.19.3"
+          value: 'gitea/gitea:1.19.3'
   - it: digest for root-based image
     template: templates/gitea/deployment.yaml
     set:
@@ -81,13 +81,13 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "codeberg.org/forgejo/forgejo:1.19.3@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a"
+          value: 'codeberg.org/forgejo/forgejo:1.19.3@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a'
   - it: digest and global registry
     template: templates/gitea/deployment.yaml
     set:
-      global.imageRegistry: "global.example.com"
-      image.digest: "sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a"
+      global.imageRegistry: 'global.example.com'
+      image.digest: 'sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a'
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "global.example.com/forgejo/forgejo:1.19.3-rootless@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a"
+          value: 'global.example.com/forgejo/forgejo:1.19.3-rootless@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a'

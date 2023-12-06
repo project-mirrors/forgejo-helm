@@ -7,13 +7,13 @@ templates:
 tests:
   - it: inline config stringData.server using TPL
     set:
-      global.giteaHostName: "gitea.example.com"
+      global.giteaHostName: 'gitea.example.com'
       ingress.enabled: true
-      ingress.hosts[0].host: "{{ .Values.global.giteaHostName }}"
+      ingress.hosts[0].host: '{{ .Values.global.giteaHostName }}'
       ingress.tls:
         - secretName: gitea-tls
           hosts:
-            - "{{ .Values.global.giteaHostName }}"
+            - '{{ .Values.global.giteaHostName }}'
     asserts:
       - documentIndex: 0
         matchRegex:

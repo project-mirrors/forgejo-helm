@@ -125,7 +125,7 @@ gitea:
       STORAGE_TYPE: minio
     picture:
       AVATAR_STORAGE_TYPE: minio
-    "storage.packages":
+    'storage.packages':
       STORAGE_TYPE: minio
 
     storage:

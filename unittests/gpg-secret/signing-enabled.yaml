@@ -16,7 +16,7 @@ tests:
     set:
       signing:
         enabled: true
-        existingSecret: "external-secret-reference"
+        existingSecret: 'external-secret-reference'
     asserts:
       - hasDocuments:
           count: 0
@@ -24,7 +24,7 @@ tests:
     set:
       signing:
         enabled: true
-        privateKey: "gpg-key-placeholder"
+        privateKey: 'gpg-key-placeholder'
     asserts:
       - hasDocuments:
           count: 1
@@ -37,4 +37,4 @@ tests:
           path: metadata.labels
       - equal:
           path: data.privateKey
-          value: "Z3BnLWtleS1wbGFjZWhvbGRlcg=="
+          value: 'Z3BnLWtleS1wbGFjZWhvbGRlcg=='
