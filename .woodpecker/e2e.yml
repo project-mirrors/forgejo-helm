@@ -38,7 +38,7 @@ pipeline:
       # replace localhost or 0.0.0.0 in the kubeconfig file with "docker", in order to be able to reach the cluster through the docker service
       - sed -i -E -e 's/localhost|0\.0\.0\.0/docker/g' $${KUBECONFIG}
 
-  chart-testing:
+  ct-install:
     image: quay.io/helmpack/chart-testing:v3.10.1
     pull: true
     commands:

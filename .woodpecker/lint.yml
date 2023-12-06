@@ -10,6 +10,13 @@ when:
     - release/**
 
 pipeline:
+  prettier:
+    image: alpine:3.18.5
+    pull: true
+    commands:
+      - apk add nodejs npm
+      - npm run prettier
+
   deps:
     image: alpine:3.18.5
     pull: true
@@ -49,13 +56,12 @@ pipeline:
       - git diff --exit-code --name-only README.md
 
   yaml-lint:
-    image: alpine:3.18.5
+    image: quay.io/helmpack/chart-testing:v3.10.1
     pull: true
     commands:
-      - apk add yamllint
       - yamllint -f colored .
 
-  chart-testing:
+  ct-lint:
     image: quay.io/helmpack/chart-testing:v3.10.1
     pull: true
     commands:
