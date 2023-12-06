@@ -1,4 +1,3 @@
-
 # Forgejo Helm Chart <!-- omit from toc -->
 
 [![status-badge](https://ci.dachary.org/api/badges/forgejo-contrib/forgejo-helm/status.svg)](https://ci.dachary.org/forgejo-contrib/forgejo-helm)
@@ -588,11 +587,11 @@ Multiple OAuth2 sources can be configured with additional OAuth list items.
 ```yaml
 gitea:
   oauth:
-    - name: "MyAwesomeGiteaOAuth"
-      provider: "openidConnect"
-      key: "hello"
-      secret: "world"
-      autoDiscoverUrl: "https://gitea.example.com/.well-known/openid-configuration"
+    - name: 'MyAwesomeGiteaOAuth'
+      provider: 'openidConnect'
+      key: 'hello'
+      secret: 'world'
+      autoDiscoverUrl: 'https://gitea.example.com/.well-known/openid-configuration'
       #useCustomUrls:
       #customAuthUrl:
       #customTokenUrl:
@@ -616,7 +615,7 @@ stringData:
 ```yaml
 gitea:
   oauth:
-    - name: "MyAwesomeGiteaOAuth"
+    - name: 'MyAwesomeGiteaOAuth'
       existingSecret: gitea-oauth-secret
 ```
 
@@ -702,7 +701,7 @@ extraVolumes:
 extraVolumeMounts:
   - name: gitea-themes
     readOnly: true
-    mountPath: "/data/gitea/public/assets/css"
+    mountPath: '/data/gitea/public/assets/css'
 ```
 
 The secret can be created via `terraform`:
@@ -808,16 +807,16 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Image
 
-| Name                 | Description                                                                                                                                                      | Value          |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `image.registry`     | image registry, e.g. gcr.io,docker.io                                                                                                                            | `codeberg.org`           |
-| `image.repository`   | Image to start for this pod                                                                                                                                      | `forgejo/forgejo`  |
-| `image.tag`          | Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.                          | `""`           |
-| `image.digest`       | Image digest. Allows to pin the given image tag. Useful for having control over mutable tags like `latest`                                                       | `""`           |
-| `image.pullPolicy`   | Image pull policy                                                                                                                                                | `IfNotPresent` |
-| `image.rootless`     | Wether or not to pull the rootless version of Forgejo                                                                        | `true`         |
-| `image.fullOverride` | Completely overrides the image registry, path/image, tag and digest. **Adjust `image.rootless` accordingly and review [Rootless defaults](#rootless-defaults).** | `""`           |
-| `imagePullSecrets`   | Secret to use for pulling the image                                                                                                                              | `[]`           |
+| Name                 | Description                                                                                                                                                      | Value             |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `image.registry`     | image registry, e.g. gcr.io,docker.io                                                                                                                            | `codeberg.org`    |
+| `image.repository`   | Image to start for this pod                                                                                                                                      | `forgejo/forgejo` |
+| `image.tag`          | Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.                              | `""`              |
+| `image.digest`       | Image digest. Allows to pin the given image tag. Useful for having control over mutable tags like `latest`                                                       | `""`              |
+| `image.pullPolicy`   | Image pull policy                                                                                                                                                | `IfNotPresent`    |
+| `image.rootless`     | Wether or not to pull the rootless version of Forgejo                                                                                                            | `true`            |
+| `image.fullOverride` | Completely overrides the image registry, path/image, tag and digest. **Adjust `image.rootless` accordingly and review [Rootless defaults](#rootless-defaults).** | `""`              |
+| `imagePullSecrets`   | Secret to use for pulling the image                                                                                                                              | `[]`              |
 
 ### Security
 
@@ -825,7 +824,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | ---------------------------- | --------------------------------------------------------------- | ------ |
 | `podSecurityContext.fsGroup` | Set the shared file system group for all containers in the pod. | `1000` |
 | `containerSecurityContext`   | Security context                                                | `{}`   |
-| `securityContext`            | Run init and Forgejo containers as a specific securityContext     | `{}`   |
+| `securityContext`            | Run init and Forgejo containers as a specific securityContext   | `{}`   |
 | `podDisruptionBudget`        | Pod disruption budget                                           | `{}`   |
 
 ### Service
@@ -884,7 +883,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `deployment.env`                           | Additional environment variables to pass to containers | `[]`  |
 | `deployment.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod         | `60`  |
 | `deployment.labels`                        | Labels for the deployment                              | `{}`  |
-| `deployment.annotations`                   | Annotations for the Gitea deployment to be created     | `{}`  |
+| `deployment.annotations`                   | Annotations for the Forgejo deployment to be created   | `{}`  |
 
 ### ServiceAccount
 
@@ -899,22 +898,22 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Persistence
 
-| Name                                              | Description                                                                                           | Value                  |
-| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------- |
-| `persistence.enabled`                             | Enable persistent storage                                                                             | `true`                 |
-| `persistence.create`                              | Whether to create the persistentVolumeClaim for shared storage                                        | `true`                 |
-| `persistence.mount`                               | Whether the persistentVolumeClaim should be mounted (even if not created)                             | `true`                 |
-| `persistence.claimName`                           | Use an existing claim to store repository information                                                 | `gitea-shared-storage` |
-| `persistence.size`                                | Size for persistence to store repo information                                                        | `10Gi`                 |
-| `persistence.accessModes`                         | AccessMode for persistence                                                                            | `["ReadWriteOnce"]`    |
-| `persistence.labels`                              | Labels for the persistence volume claim to be created                                                 | `{}`                   |
-| `persistence.annotations.helm.sh/resource-policy` | Resource policy for the persistence volume claim                                                      | `keep`                 |
-| `persistence.storageClass`                        | Name of the storage class to use                                                                      | `nil`                  |
-| `persistence.subPath`                             | Subdirectory of the volume to mount at                                                                | `nil`                  |
-| `persistence.volumeName`                          | Name of persistent volume in PVC                                                                      | `""`                   |
+| Name                                              | Description                                                                                             | Value                  |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `persistence.enabled`                             | Enable persistent storage                                                                               | `true`                 |
+| `persistence.create`                              | Whether to create the persistentVolumeClaim for shared storage                                          | `true`                 |
+| `persistence.mount`                               | Whether the persistentVolumeClaim should be mounted (even if not created)                               | `true`                 |
+| `persistence.claimName`                           | Use an existing claim to store repository information                                                   | `gitea-shared-storage` |
+| `persistence.size`                                | Size for persistence to store repo information                                                          | `10Gi`                 |
+| `persistence.accessModes`                         | AccessMode for persistence                                                                              | `["ReadWriteOnce"]`    |
+| `persistence.labels`                              | Labels for the persistence volume claim to be created                                                   | `{}`                   |
+| `persistence.annotations.helm.sh/resource-policy` | Resource policy for the persistence volume claim                                                        | `keep`                 |
+| `persistence.storageClass`                        | Name of the storage class to use                                                                        | `nil`                  |
+| `persistence.subPath`                             | Subdirectory of the volume to mount at                                                                  | `nil`                  |
+| `persistence.volumeName`                          | Name of persistent volume in PVC                                                                        | `""`                   |
 | `extraVolumes`                                    | Additional volumes to mount to the Forgejo deployment                                                   | `[]`                   |
 | `extraContainerVolumeMounts`                      | Mounts that are only mapped into the Forgejo runtime/main container, to e.g. override custom templates. | `[]`                   |
-| `extraInitVolumeMounts`                           | Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.    | `[]`                   |
+| `extraInitVolumeMounts`                           | Mounts that are only mapped into the init-containers. Can be used for additional preconfiguration.      | `[]`                   |
 | `extraVolumeMounts`                               | **DEPRECATED** Additional volume mounts for init containers and the Forgejo main container              | `[]`                   |
 
 ### Init
@@ -937,20 +936,20 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Gitea
 
-| Name                                   | Description                                                               | Value                |
-| -------------------------------------- | ------------------------------------------------------------------------- | -------------------- |
+| Name                                   | Description                                                                 | Value                |
+| -------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
 | `gitea.admin.username`                 | Username for the Forgejo admin user                                         | `gitea_admin`        |
-| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                    | `nil`                |
+| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                      | `nil`                |
 | `gitea.admin.password`                 | Password for the Forgejo admin user                                         | `r8sA8CPHD9!bt6d`    |
 | `gitea.admin.email`                    | Email for the Forgejo admin user                                            | `gitea@local.domain` |
 | `gitea.metrics.enabled`                | Enable Forgejo metrics                                                      | `false`              |
 | `gitea.metrics.serviceMonitor.enabled` | Enable Forgejo metrics service monitor                                      | `false`              |
-| `gitea.ldap`                           | LDAP configuration                                                        | `[]`                 |
-| `gitea.oauth`                          | OAuth configuration                                                       | `[]`                 |
+| `gitea.ldap`                           | LDAP configuration                                                          | `[]`                 |
+| `gitea.oauth`                          | OAuth configuration                                                         | `[]`                 |
 | `gitea.config.server.SSH_PORT`         | SSH port for rootlful Forgejo image                                         | `22`                 |
 | `gitea.config.server.SSH_LISTEN_PORT`  | SSH port for rootless Forgejo image                                         | `2222`               |
-| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                         | `[]`                 |
-| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables               | `[]`                 |
+| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                           | `[]`                 |
+| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables                 | `[]`                 |
 | `gitea.podAnnotations`                 | Annotations for the Forgejo pod                                             | `{}`                 |
 | `gitea.ssh.logLevel`                   | Configure OpenSSH's log level. Only available for root-based Forgejo image. | `INFO`               |
 
