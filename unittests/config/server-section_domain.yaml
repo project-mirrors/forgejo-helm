@@ -30,15 +30,15 @@ tests:
       - documentIndex: 0
         matchRegex:
           path: stringData.server
-          pattern: \nDOMAIN=gitea-unittests-http.testing.svc.cluster.local
+          pattern: \nDOMAIN=gitea-unittests-forgejo-http.testing.svc.cluster.local
       - documentIndex: 0
         matchRegex:
           path: stringData.server
-          pattern: \nSSH_DOMAIN=gitea-unittests-http.testing.svc.cluster.local
+          pattern: \nSSH_DOMAIN=gitea-unittests-forgejo-http.testing.svc.cluster.local
       - documentIndex: 0
         matchRegex:
           path: stringData.server
-          pattern: \nROOT_URL=http://gitea-unittests-http.testing.svc.cluster.local
+          pattern: \nROOT_URL=http://gitea-unittests-forgejo-http.testing.svc.cluster.local
 
   ################################################
 

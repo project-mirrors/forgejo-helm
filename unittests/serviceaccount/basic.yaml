@@ -18,7 +18,7 @@ tests:
       - containsDocument:
           kind: ServiceAccount
           apiVersion: v1
-          name: gitea-unittests
+          name: gitea-unittests-forgejo
       - equal:
           path: automountServiceAccountToken
           value: false

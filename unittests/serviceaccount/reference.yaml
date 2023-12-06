@@ -19,7 +19,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.serviceAccountName
-          value: gitea-unittests
+          value: gitea-unittests-forgejo
   - it: allows referencing an externally created ServiceAccount to the deployment
     template: templates/gitea/deployment.yaml
     set:
