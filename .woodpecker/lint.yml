@@ -15,7 +15,9 @@ pipeline:
     pull: true
     commands:
       - apk add nodejs npm
+      - npm ci
       - npm run prettier
+      - npx markdownlint-cli .
 
   deps:
     image: alpine:3.18.5
