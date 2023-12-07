@@ -45,3 +45,18 @@ tmp/
 artifacthub-repo.yml
 
 ci/
+.forgejo/
+e2e/
+.husky/
+tools/
+.git/
+.editorconfig
+.lintstagedrc.json
+.editorconfig
+.gitignore
+.helmignore
+.node-version
+.prettier*
+.yamllint
+artifacthub*
+renovate.json
