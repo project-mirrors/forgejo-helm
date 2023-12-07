@@ -38,6 +38,18 @@
       "matchManagers": ["npm"],
       "matchDepTypes": ["devDependencies"],
       "automerge": true
+    },
+    {
+      "description": "Separate minor and patch updates for kindest",
+      "matchPackageNames": ["kindest/node"],
+      "separateMinorPatch": true
+    },
+    {
+      "description": "Require approval and no automerge for kindest major and minor updates",
+      "matchPackageNames": ["kindest/node"],
+      "matchUpdateTypes": ["major", "minor"],
+      "dependencyDashboardApproval": true,
+      "automerge": false
     }
   ],
   "customManagers": [
@@ -69,6 +81,16 @@
         "https:\\/\\/raw\\.githubusercontent\\.com\\/(?<depName>[^\\s]+?)\\/(?<currentValue>v[0-9.]+?)\\/schema\\/helm-testsuite\\.json"
       ],
       "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
+      "description": "Update kindest kubernetes references",
+      "fileMatch": ["^\\.forgejo\\/workflows\\/[^/]+\\.ya?ml$"],
+      "matchStrings": [
+        " +- (?<currentValue>v\\d+\\.\\d+\\.\\d+) # renovate: kindest\\n"
+      ],
+      "depNameTemplate": "kindest/node",
+      "datasourceTemplate": "docker"
     }
   ]
 }

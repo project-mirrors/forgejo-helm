@@ -10,6 +10,7 @@
   },
   "scripts": {
     "changelog": "node tools/changelog.mjs",
+    "forgejo:release": "node tools/gitea-release.js",
     "prepare": "husky install",
     "prettier": "prettier --check --ignore-unknown --cache \"**/*.*\"",
     "prettier-fix": "prettier --write --ignore-unknown --cache \"**/*.*\"",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@bitnami/readme-generator-for-helm": "^2.4.2",
+    "clipanion": "^3.2.1",
     "conventional-changelog-conventionalcommits": "^7.0.0",
     "conventional-changelog-core": "^7.0.0",
     "husky": "^8.0.3",

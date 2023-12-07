@@ -1,0 +1,26 @@
+# action.yml
+name: setup
+description: 'setup system'
+
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      name: create cache
+      run: |
+        mkdir -p /opt/hostedtoolcache
+        mkdir -p /srv/forgejo-renovate/.cache/act/tool_cache
+    - shell: bash
+      name: install deps
+      run: |
+        apt-get update -qq
+        apt-get -q install -qq \
+          ca-certificates \
+          curl \
+          gnupg \
+          make \
+          python3 \
+          python3-wheel \
+          python3-venv \
+          unzip \
+          ;
