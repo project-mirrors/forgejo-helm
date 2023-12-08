@@ -161,7 +161,7 @@ jobs:
       - name: install helm
         uses: https://github.com/azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
         with:
-          version: v3.13.2 # renovate: datasource=github-releases depName=helm packageName=helm/helm
+          version: ${{ env.HELM_VERSION }}
 
       - run: helm dependency build
       - run: helm package --version "${GITHUB_REF_NAME#v}" -d tmp/ ./
