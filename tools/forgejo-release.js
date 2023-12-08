@@ -1,26 +1,43 @@
 import { Command, runExit } from 'clipanion';
 import { getChangelog } from './changelog/util.js';
 
-const api = 'https://https://codeberg.org/api/v1';
-const repo = 'forgejo-contrib/forgejo-helm';
-
 class GiteaReleaseCommand extends Command {
   async execute() {
+    const api = process.env.GITHUB_API_URL;
+    const repo = process.env.GITHUB_REPOSITORY;
     const token = process.env.GITHUB_TOKEN;
+    const tag = process.env.GITHUB_REF_NAME;
+
+    if (!api) {
+      this.context.stdout.write(
+        'GITHUB_API_URL environment variable not set.\n',
+      );
+      return 1;
+    } else {
+      this.context.stdout.write(`Using api: ${api}.\n`);
+    }
 
     if (!token) {
       this.context.stdout.write('GITHUB_TOKEN environment variable not set.\n');
       return 1;
     }
 
-    this.context.stdout.write(`Getting tag.\n`);
-    const tag = process.env.GITHUB_REF_NAME;
+    if (!repo) {
+      this.context.stdout.write(
+        'GITHUB_REPOSITORY environment variable not set.\n',
+      );
+      return 1;
+    } else {
+      this.context.stdout.write(`Using repository: ${repo}.\n`);
+    }
 
     if (!tag) {
       this.context.stdout.write(
-        'No tag found for this commit. Please tag the commit and try again.\n',
+        'GITHUB_REF_NAME environment variable not set.',
       );
       return 1;
+    } else {
+      this.context.stdout.write(`Using tag: ${tag}.\n`);
     }
 
     this.context.stdout.write(`Checking remote tag ${tag}.\n`);
