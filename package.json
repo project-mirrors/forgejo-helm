@@ -10,7 +10,7 @@
   },
   "scripts": {
     "changelog": "node tools/changelog.mjs",
-    "forgejo:release": "node tools/gitea-release.js",
+    "forgejo:release": "node tools/forgejo-release.js",
     "prepare": "husky install",
     "prettier": "prettier --check --ignore-unknown --cache \"**/*.*\"",
     "prettier-fix": "prettier --write --ignore-unknown --cache \"**/*.*\"",
