@@ -5,7 +5,7 @@ description: 'setup node'
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
       with:
         node-version-file: .node-version
         cache: 'npm'
