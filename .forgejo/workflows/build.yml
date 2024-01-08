@@ -81,6 +81,7 @@ jobs:
           # from https://hub.docker.com/r/kindest/node/tags
           # - v1.25.11 # renovate: kindest
           - v1.28.0 # renovate: kindest
+          - v1.29.0 # renovate: kindest
 
     steps:
       - run: cat /etc/os-release
