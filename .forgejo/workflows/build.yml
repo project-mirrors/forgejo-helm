@@ -155,6 +155,8 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           show-progress: false
+          fetch-depth: 0 # Important for changelog
+          filter: blob:none # We don't need all blobs
 
       - uses: ./.forgejo/actions/setup
       - uses: ./.forgejo/actions/setup-node
