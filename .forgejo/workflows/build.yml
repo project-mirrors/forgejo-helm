@@ -178,7 +178,9 @@ jobs:
           FORGEJO_TOKEN: ${{secrets.FORGEJO_API_TOKEN}}
 
       - name: publish forgejo helm chart
-        run: helm push tmp/forgejo-${GITHUB_REF_NAME#v}.tgz oci://codeberg.org/forgejo-contrib
+        run: |
+          helm push tmp/forgejo-${GITHUB_REF_NAME#v}.tgz oci://codeberg.org/forgejo-contrib
+          helm push tmp/forgejo-${GITHUB_REF_NAME#v}.tgz oci://code.forgejo.org/forgejo-contrib
 
       - name: publish forgejo release
         run: npm run forgejo:release
