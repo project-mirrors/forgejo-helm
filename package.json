@@ -11,7 +11,7 @@
   "scripts": {
     "changelog": "node tools/changelog.mjs",
     "forgejo:release": "node tools/forgejo-release.js",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prettier": "prettier --check --ignore-unknown --cache \"**/*.*\"",
     "prettier-fix": "prettier --write --ignore-unknown --cache \"**/*.*\"",
     "readme:lint": "markdownlint *.md -f",
