@@ -80,7 +80,7 @@ jobs:
         k8s:
           # from https://hub.docker.com/r/kindest/node/tags
           - v1.27.10 # renovate: kindest
-          - v1.28.0 # renovate: kindest
+          - v1.28.6 # renovate: kindest
           - v1.29.1 # renovate: kindest
 
     steps:
