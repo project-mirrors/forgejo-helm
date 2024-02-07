@@ -1,5 +1,7 @@
 Chart.lock
 node_modules/
+pnpm-lock.yaml
+.pnpm-store/
 
 # won't work
 templates/**/*.yaml

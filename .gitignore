@@ -4,3 +4,5 @@ node_modules/
 unittests/*/__snapshot__/
 tmp/
 tmpcharts/
+
+.pnpm-store/

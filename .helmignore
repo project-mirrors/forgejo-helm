@@ -60,3 +60,6 @@ tools/
 .yamllint
 artifacthub*
 renovate.json
+
+pnpm-lock.yaml
+.pnpm-store/

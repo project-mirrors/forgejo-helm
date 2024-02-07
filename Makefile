@@ -1,11 +1,11 @@
 .PHONY: prepare-environment
 prepare-environment:
-	npm install
+	pnpm install
 
 .PHONY: readme
 readme: prepare-environment
-	npm run readme:parameters
-	npm run readme:lint
+	pnpm readme:parameters
+	pnpm readme:lint
 
 .PHONY: unittests
 unittests:

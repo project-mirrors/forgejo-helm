@@ -32,8 +32,8 @@ jobs:
       - uses: ./.forgejo/actions/setup
       - uses: ./.forgejo/actions/setup-node
 
-      - run: npm run prettier
-      - run: npx markdownlint-cli .
+      - run: pnpm prettier
+      - run: pnpm markdownlint .
       - run: make readme
       - run: git diff --exit-code --name-only README.md
 
@@ -190,4 +190,4 @@ jobs:
           helm push tmp/forgejo-${GITHUB_REF_NAME#v}.tgz oci://code.forgejo.org/forgejo-contrib
 
       - name: publish forgejo release
-        run: npm run forgejo:release
+        run: pnpm forgejo:release

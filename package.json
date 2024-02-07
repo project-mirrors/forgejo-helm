@@ -3,17 +3,12 @@
   "homepage": "https://codeberg.org/forgejo-contrib/forgejo-helm.git",
   "license": "MIT",
   "private": true,
-  "engineStrict": true,
-  "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
-  },
   "scripts": {
     "changelog": "node tools/changelog.mjs",
     "forgejo:release": "node tools/forgejo-release.js",
     "prepare": "husky",
-    "prettier": "prettier --check --ignore-unknown --cache \"**/*.*\"",
-    "prettier-fix": "prettier --write --ignore-unknown --cache \"**/*.*\"",
+    "prettier": "prettier --check --ignore-unknown --cache '**/*.*'",
+    "prettier-fix": "prettier --write --ignore-unknown --cache '**/*.*'",
     "readme:lint": "markdownlint *.md -f",
     "readme:parameters": "readme-generator -v values.yaml -r README.md"
   },
@@ -26,5 +21,10 @@
     "lint-staged": "^15.2.0",
     "markdownlint-cli": "^0.39.0",
     "prettier": "^3.1.0"
+  },
+  "packageManager": "pnpm@8.15.1",
+  "engines": {
+    "node": "^18.12.0 || >=20.9.0",
+    "pnpm": "^8.0.0"
   }
 }
