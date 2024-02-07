@@ -9,10 +9,6 @@ const config = conventionalChangelogPreset({
       section: 'Features',
     },
     {
-      type: 'feature',
-      section: 'Features',
-    },
-    {
       type: 'fix',
       section: 'Bug Fixes',
     },
@@ -33,10 +29,6 @@ const config = conventionalChangelogPreset({
       section: 'Styles',
     },
     {
-      type: 'chore',
-      section: 'Miscellaneous Chores',
-    },
-    {
       type: 'refactor',
       section: 'Code Refactoring',
     },
@@ -51,6 +43,10 @@ const config = conventionalChangelogPreset({
     {
       type: 'ci',
       section: 'Continuous Integration',
+    },
+    {
+      type: 'chore',
+      section: 'Miscellaneous Chores',
     },
   ],
 });
