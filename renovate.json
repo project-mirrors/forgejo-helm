@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
   "assignees": ["viceice"],
-  "enabledManagers": ["helmv3", "npm", "regex", "github-actions"],
+  "enabledManagers": ["helmv3", "nodenv", "npm", "regex", "github-actions"],
   "packageRules": [
     {
       "matchManagers": ["helmv3"],
