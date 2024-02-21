@@ -45,7 +45,7 @@ stringData:
       {{- end }}
     {{- end }}
   {{- end }}
-  
+
 {{- end }}
   config_environment.sh: |-
     #!/usr/bin/env bash
@@ -63,7 +63,7 @@ stringData:
         # skip empty line
         return
       fi
-      
+
       # 'xargs echo -n' trims all leading/trailing whitespaces and a trailing new line
       local setting="$(awk -F '=' '{print $1}' <<< "${line}" | xargs echo -n)"
 
@@ -173,8 +173,10 @@ stringData:
       env2ini::log "...Initial secrets generated\n"
     }
 
-    env | (grep FORGEJO || [[ $? == 1 ]]) > /tmp/existing-envs
-    
+    # save existing envs prior to script execution. Necessary to keep order of
+    # preexisting and custom envs
+    env | (grep -e '^FORGEJO__' || [[ $? == 1 ]]) > /tmp/existing-envs
+
     # MUST BE CALLED BEFORE OTHER CONFIGURATION
     env2ini::generate_initial_secrets
 
