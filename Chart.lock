@@ -7,6 +7,6 @@ dependencies:
   version: 13.4.2
 - name: redis-cluster
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 9.6.1
-digest: sha256:e5f83fe264492a04917011621b04651ea5bf82f4ac56273c602b78dfe052bdb8
-generated: "2024-02-22T12:31:14.049856973Z"
+  version: 9.6.2
+digest: sha256:ece8546194a8ec504447a64300e2dac920bf2878f7239f4ce3ef176634d48892
+generated: "2024-02-22T15:31:02.980950868Z"
