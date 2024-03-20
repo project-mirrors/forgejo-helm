@@ -76,29 +76,20 @@
       "datasourceTemplate": "docker"
     },
     {
-      "description": "Update helm unittest plugin",
+      "description": "Detect helm-unittest yaml schema file",
       "customType": "regex",
-      "fileMatch": ["^\\.woodpecker/[a-z-]+\\.yml$"],
+      "fileMatch": [".vscode/settings\\.json$"],
       "matchStrings": [
-        "helm plugin install --version (?<currentValue>.+?) https://github.com/helm-unittest/helm-unittest\\s"
+        "https://raw\\.githubusercontent\\.com/helm-unittest/helm-unittest/(?<currentValue>v[0-9.]+?)/schema/helm-testsuite\\.json"
       ],
       "depNameTemplate": "helm-unittest",
       "packageNameTemplate": "helm-unittest/helm-unittest",
       "datasourceTemplate": "github-releases"
     },
     {
-      "description": "Detect helm-unittest yaml schema file",
-      "customType": "regex",
-      "fileMatch": [".vscode/settings\\.json$"],
-      "matchStrings": [
-        "https:\\/\\/raw\\.githubusercontent\\.com\\/(?<depName>[^\\s]+?)\\/(?<currentValue>v[0-9.]+?)\\/schema\\/helm-testsuite\\.json"
-      ],
-      "datasourceTemplate": "github-releases"
-    },
-    {
       "customType": "regex",
       "description": "Update kindest kubernetes references",
-      "fileMatch": ["^\\.forgejo\\/workflows\\/[^/]+\\.ya?ml$"],
+      "fileMatch": ["^\\.forgejo/workflows/[^/]+\\.ya?ml$"],
       "matchStrings": [
         " +- (?<currentValue>v\\d+\\.\\d+\\.\\d+) # renovate: kindest\\n"
       ],
