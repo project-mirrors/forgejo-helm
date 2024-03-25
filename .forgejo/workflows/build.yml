@@ -48,6 +48,7 @@ jobs:
         with:
           show-progress: false
           fetch-depth: 0
+          filter: blob:none # We don't need all blobs
 
       - uses: ./.forgejo/actions/setup
 
@@ -90,6 +91,7 @@ jobs:
         with:
           show-progress: false
           fetch-depth: 0
+          filter: blob:none # We don't need all blobs
 
       - uses: ./.forgejo/actions/setup
 
