@@ -47,8 +47,8 @@
       "automerge": true
     },
     {
-      "description": "Automerge pnpm updates",
-      "matchDepNames": ["pnpm"],
+      "description": "Automerge some updates",
+      "matchDepNames": ["pnpm", "helm-unittest"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
