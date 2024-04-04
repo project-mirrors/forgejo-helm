@@ -63,7 +63,7 @@ It is published under the MIT license.
 
 ## Introduction
 
-This helm chart is based on official [Gitea helm chart](https://gitea.com/gitea/helm-chart).
+This Helm chart is based on the [Gitea chart](https://gitea.com/gitea/helm-chart).
 Yet it takes a completely different approach in providing a database and cache with dependencies.
 Additionally, this chart allows to provide LDAP and admin user configuration with values.
 
@@ -143,7 +143,7 @@ See the [HA Setup](docs/ha-setup.md) document for more details.
 ## Configuration
 
 Forgejo offers lots of configuration options.
-This is fully described in the [Gitea Cheat Sheet](https://docs.gitea.com/administration/config-cheat-sheet).
+This is fully described in the [Cheat Sheet](https://forgejo.org/docs/latest/admin/config-cheat-sheet/).
 
 ```yaml
 gitea:
@@ -310,7 +310,7 @@ If HA is not needed/desired, the following configurations can be used to deploy 
 
 ### Additional _app.ini_ settings
 
-> **The [generic](https://docs.gitea.com/administration/config-cheat-sheet#overall-default)
+> **The [generic](https://forgejo.org/docs/latest/admin/config-cheat-sheet/#overall-default)
 > section cannot be defined that way.**
 
 Some settings inside _app.ini_ (like passwords or whole authentication configurations) must be considered sensitive and therefore should not be passed via plain text inside the _values.yaml_ file.
@@ -397,7 +397,7 @@ Priority (highest to lowest) for defining app.ini variables:
 
 ### External Database
 
-Any external database listed in [https://docs.gitea.com/installation/database-prep](https://docs.gitea.com/installation/database-prep) can be used instead of the built-in PostgreSQL.
+A [supported external database](https://forgejo.org/docs/latest/admin/config-cheat-sheet/#database-database/)can be used instead of the built-in PostgreSQL.
 In fact, it is **highly recommended** to use an external database to ensure a stable Forgejo installation longterm.
 
 If an external database is used, no matter which type, make sure to set `postgresql.enabled` to `false` to disable the use of the built-in PostgreSQL.
@@ -567,7 +567,7 @@ gitea:
 ### LDAP Settings
 
 Like the admin user the LDAP settings can be updated.
-All LDAP values from <https://docs.gitea.com/administration/command-line#admin> are available.
+All LDAP values from <https://forgejo.org/docs/latest/admin/command-line/#admin> are available.
 
 Multiple LDAP sources can be configured with additional LDAP list items.
 
@@ -620,9 +620,8 @@ Affected options:
 ### OAuth2 Settings
 
 Like the admin user, OAuth2 settings can be updated and disabled but not deleted.
-Deleting OAuth2 settings has to be done in the ui.
-All OAuth2 values, which are documented [here](https://docs.gitea.com/administration/command-line#admin), are
-available.
+Deleting OAuth2 settings has to be done in the UI.
+All OAuth2 values, which are documented [here](https://forgejo.org/docs/latest/admin/command-line/#admin), are available.
 
 Multiple OAuth2 sources can be configured with additional OAuth list items.
 
@@ -698,7 +697,7 @@ signing:
 ```
 
 To use the gpg key, Forgejo needs to be configured accordingly.
-A detailed description can be found in the [official Gitea documentation](https://docs.gitea.com/administration/signing#general-configuration).
+A detailed description can be found in the [documentation](https://forgejo.org/docs/latest/admin/signing/#general-configuration).
 
 ## Metrics and profiling
 
