@@ -102,7 +102,7 @@ jobs:
 
       - name: Install chart-testing
         # TODO: pin to version when this is released: https://github.com/helm/chart-testing-action/pull/137
-        uses: helm/chart-testing-action@df9dfa7259f5d09615a31c4aae53338e2c621f8f # main
+        uses: helm/chart-testing-action@dbd7bf1354f0f25564f602276d44cb17913e0f9f # main
         with:
           version: ${{ env.HELM_CHART_TESTING_VERSION }}
 
