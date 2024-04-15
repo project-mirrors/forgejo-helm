@@ -58,7 +58,7 @@ jobs:
           version: ${{ env.HELM_CHART_TESTING_VERSION }}
 
       - name: install helm
-        uses: azure/setup-helm@b7246b12e77f7134dc2d460a3d5bad15bbe29390 # v4.1.0
+        uses: azure/setup-helm@fe7b79cd5ee1e45176fcad797de68ecaf3ca4814 # v4.2.0
         with:
           version: ${{ env.HELM_VERSION }}
 
@@ -96,7 +96,7 @@ jobs:
       - uses: ./.forgejo/actions/setup
 
       - name: install helm
-        uses: azure/setup-helm@b7246b12e77f7134dc2d460a3d5bad15bbe29390 # v4.1.0
+        uses: azure/setup-helm@fe7b79cd5ee1e45176fcad797de68ecaf3ca4814 # v4.2.0
         with:
           version: ${{ env.HELM_VERSION }}
 
@@ -171,7 +171,7 @@ jobs:
       - uses: ./.forgejo/actions/setup-node
 
       - name: install helm
-        uses: https://github.com/azure/setup-helm@b7246b12e77f7134dc2d460a3d5bad15bbe29390 # v4.1.0
+        uses: https://github.com/azure/setup-helm@fe7b79cd5ee1e45176fcad797de68ecaf3ca4814 # v4.2.0
         with:
           version: ${{ env.HELM_VERSION }}
 
