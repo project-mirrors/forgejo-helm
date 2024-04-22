@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@bitnami/readme-generator-for-helm':
         specifier: ^2.4.2
-        version: 2.6.0
+        version: 2.6.1
       clipanion:
         specifier: ^3.2.1
         version: 3.2.1(typanion@3.14.0)
@@ -47,8 +47,8 @@ packages:
     resolution: {integrity: sha512-acGdbYSfp2WheJoJm/EBBBLh/ID8KDc64ISZ9DYtBmC8/Q204PZJLHyzeB5qMzJ5trcOkybd78M4x2KWsUq++A==}
     engines: {node: '>=6.9.0'}
 
-  '@bitnami/readme-generator-for-helm@2.6.0':
-    resolution: {integrity: sha512-LcByNCryaC2OJExL9rnhyFJ18+vrZu1gVoN2Z7j/HI42EjV4kLgT4G1KEPNnrKbls9HvozBqMG+sKZIDh0McFg==}
+  '@bitnami/readme-generator-for-helm@2.6.1':
+    resolution: {integrity: sha512-rN0m0sfbOuaNdCmQWBfSj9o4kgzz+Dw67Dl1ssDVqghv/UpLkrDmNuTxhD1CWu+sesGL66UYJ2VplGz9KxlAdg==}
     hasBin: true
 
   '@hutson/parse-repository-url@5.0.0':
@@ -157,8 +157,8 @@ packages:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
     engines: {node: '>=16'}
 
-  commander@4.1.1:
-    resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
+  commander@6.2.1:
+    resolution: {integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==}
     engines: {node: '>= 6'}
 
   commander@7.2.0:
@@ -214,8 +214,8 @@ packages:
     resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
     engines: {node: '>=4.0.0'}
 
-  dot-object@2.1.4:
-    resolution: {integrity: sha512-7FXnyyCLFawNYJ+NhkqyP9Wd2yzuo+7n9pGiYpkmXCTYa8Ci2U0eUNDVg5OuO5Pm6aFXI2SWN8/N/w7SJWu1WA==}
+  dot-object@2.1.5:
+    resolution: {integrity: sha512-xHF8EP4XH/Ba9fvAF2LDd5O3IITVolerVV6xvkxoM8zlGEiCUrggpAnHyOoKJKCrhvPcGATFAUwIujj7bRG5UA==}
     hasBin: true
 
   dot-prop@5.3.0:
@@ -742,6 +742,11 @@ packages:
     resolution: {integrity: sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==}
     engines: {node: '>= 14'}
 
+  yaml@2.4.1:
+    resolution: {integrity: sha512-pIXzoImaqmfOrL7teGUBt/T7ZDnyeGBWyXQBvOVhLkWLN37GXv8NMLK406UY6dS51JfcQHsmcW5cJ441bHg6Lg==}
+    engines: {node: '>= 14'}
+    hasBin: true
+
   yocto-queue@1.0.0:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
@@ -761,13 +766,13 @@ snapshots:
       chalk: 2.4.2
       js-tokens: 4.0.0
 
-  '@bitnami/readme-generator-for-helm@2.6.0':
+  '@bitnami/readme-generator-for-helm@2.6.1':
     dependencies:
       commander: 7.2.0
-      dot-object: 2.1.4
+      dot-object: 2.1.5
       lodash: 4.17.21
       markdown-table: 2.0.0
-      yaml: 2.3.4
+      yaml: 2.4.1
 
   '@hutson/parse-repository-url@5.0.0': {}
 
@@ -866,7 +871,7 @@ snapshots:
 
   commander@11.1.0: {}
 
-  commander@4.1.1: {}
+  commander@6.2.1: {}
 
   commander@7.2.0: {}
 
@@ -926,9 +931,9 @@ snapshots:
 
   deep-extend@0.6.0: {}
 
-  dot-object@2.1.4:
+  dot-object@2.1.5:
     dependencies:
-      commander: 4.1.1
+      commander: 6.2.1
       glob: 7.2.3
 
   dot-prop@5.3.0:
@@ -1432,5 +1437,7 @@ snapshots:
   yallist@4.0.0: {}
 
   yaml@2.3.4: {}
+
+  yaml@2.4.1: {}
 
   yocto-queue@1.0.0: {}
