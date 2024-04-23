@@ -1,0 +1,25 @@
+image:
+  registry: codeberg.org
+  repository: forgejo-experimental/forgejo
+  tag: 7.0-test@sha256:3569aa096885f7c413248d978a339266a545f0cbbfb2fdc83484e141ba8f4424
+
+redis-cluster:
+  enabled: false
+postgresql:
+  enabled: false
+postgresql-ha:
+  enabled: false
+
+persistence:
+  enabled: false
+
+gitea:
+  config:
+    database:
+      DB_TYPE: sqlite3
+    session:
+      PROVIDER: memory
+    cache:
+      ADAPTER: memory
+    queue:
+      TYPE: level

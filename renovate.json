@@ -53,6 +53,11 @@
       "automerge": true
     },
     {
+      "description": "Automerge digest updates",
+      "matchUpdateTypes": ["digest"],
+      "automerge": true
+    },
+    {
       "description": "Separate minor and patch updates for kindest",
       "matchPackageNames": ["kindest/node"],
       "separateMinorPatch": true
@@ -63,6 +68,18 @@
       "matchUpdateTypes": ["major", "minor"],
       "dependencyDashboardApproval": true,
       "automerge": false
+    },
+    {
+      "description": "Use test scope for forgejo ci tests",
+      "matchFileNames": ["ci/*.yml"],
+      "additionalBranchPrefix": "ci-forgejo-",
+      "semanticCommitType": "ci",
+      "semanticCommitScope": "forgejo"
+    },
+    {
+      "description": "Update only daily for forgejo ci tests",
+      "matchFileNames": ["ci/*.yml"],
+      "extends": ["schedule:daily"]
     }
   ],
   "customManagers": [
