@@ -391,18 +391,6 @@ gitea:
     #   customProfileUrl:
     #   customEmailUrl:
 
-  ## @param gitea.config.server.SSH_PORT SSH port for rootlful Forgejo image
-  ## @param gitea.config.server.SSH_LISTEN_PORT SSH port for rootless Forgejo image
-  config:
-    #  APP_NAME: "Forgejo: Git with a cup of tea"
-    #  RUN_MODE: dev
-    server:
-      SSH_PORT: 22 # rootful image
-      SSH_LISTEN_PORT: 2222 # rootless image
-  #
-  #  security:
-  #    PASSWORD_COMPLEXITY: spec
-
   ## @param gitea.additionalConfigSources Additional configuration from secret or configmap
   additionalConfigSources: []
   #   - secret:
@@ -419,6 +407,158 @@ gitea:
   ## @param gitea.ssh.logLevel Configure OpenSSH's log level. Only available for root-based Forgejo image.
   ssh:
     logLevel: 'INFO'
+
+  ## @section `app.ini` overrides
+  ## @descriptionStart
+  ##
+  ## Every value described in the [Cheat
+  ## Sheet](https://forgejo.org/docs/latest/admin/config-cheat-sheet/) can be
+  ## set as a Helm value. Configuration sections map to (lowercased) YAML
+  ## blocks, while the keys themselves remain in all caps.
+  ##
+  ## @descriptionEnd
+  config:
+    # values in the DEFAULT section
+    # (https://forgejo.org/docs/latest/admin/config-cheat-sheet/#overall-default)
+    # are un-namespaced
+
+    ## @param gitea.config.APP_NAME Application name, used in the page title
+    APP_NAME: 'Forgejo: Beyond coding. We forge.'
+
+    ## @param gitea.config.RUN_MODE Application run mode, affects performance and debugging: `dev` or `prod`
+    RUN_MODE: prod
+
+    ## @param gitea.config.repository General repository settings
+    repository: {}
+
+    ## @param gitea.config.cors Cross-origin resource sharing settings
+    cors: {}
+
+    ## @param gitea.config.ui User interface settings
+    ui: {}
+
+    ## @param gitea.config.markdown Markdown parser settings
+    markdown: {}
+
+    ## @param gitea.config.server General server settings
+    server: {}
+
+    ## @param gitea.config.database Database configuration (only necessary with an [externally managed DB](https://codeberg.org/forgejo-contrib/forgejo-helm#external-database)).
+    database: {}
+
+    ## @param gitea.config.indexer Settings for what content is indexed and how
+    indexer: {}
+
+    ## @param gitea.config.queue Job queue configuration
+    queue: {}
+
+    ## @param gitea.config.admin Admin user settings
+    admin: {}
+
+    ## @param gitea.config.security Site security settings
+    security: {}
+
+    ## @param gitea.config.camo Settings for the [camo](https://github.com/cactus/go-camo) media proxy server (disabled by default)
+    camo: {}
+
+    ## @param gitea.config.openid Configuration for authentication with OpenID (disabled by default)
+    openid: {}
+
+    ## @param gitea.config.oauth2_client OAuth2 client settings
+    oauth2_client: {}
+
+    ## @param gitea.config.service Configuration for miscellaneous Forgejo services
+    service: {}
+
+    ## @param gitea.config.ssh.minimum_key_sizes SSH minimum key sizes
+    ssh.minimum_key_sizes: {}
+
+    ## @param gitea.config.webhook Webhook settings
+    webhook: {}
+
+    ## @param gitea.config.mailer Mailer configuration (disabled by default)
+    mailer: {}
+
+    ## @param gitea.config.email.incoming Configuration for handling incoming mail (disabled by default)
+    email.incoming: {}
+
+    ## @param gitea.config.cache Cache configuration
+    cache: {}
+
+    ## @param gitea.config.session Session/cookie handling
+    session: {}
+
+    ## @param gitea.config.picture User avatar settings
+    picture: {}
+
+    ## @param gitea.config.project Project board defaults
+    project: {}
+
+    ## @param gitea.config.attachment Issue and PR attachment configuration
+    attachment: {}
+
+    ## @param gitea.config.log Logging configuration
+    log: {}
+
+    ## @param gitea.config.cron Cron job configuration
+    cron: {}
+
+    ## @param gitea.config.git Global settings for Git
+    git: {}
+
+    ## @param gitea.config.metrics Settings for the Prometheus endpoint (disabled by default)
+    metrics: {}
+
+    ## @param gitea.config.api Settings for the Swagger API documentation endpoints
+    api: {}
+
+    ## @param gitea.config.oauth2 Settings for the [OAuth2 provider](https://forgejo.org/docs/latest/admin/oauth2-provider/)
+    oauth2: {}
+
+    ## @param gitea.config.i18n Internationalization settings
+    i18n: {}
+
+    ## @param gitea.config.markup Configuration for advanced markup processors
+    markup: {}
+
+    ## @param gitea.config.highlight.mapping File extension to language mapping overrides for syntax highlighting
+    highlight.mapping: {}
+
+    ## @param gitea.config.time Locale settings
+    time: {}
+
+    ## @param gitea.config.migrations Settings for Git repository migrations
+    migrations: {}
+
+    ## @param gitea.config.federation Federation configuration
+    federation: {}
+
+    ## @param gitea.config.packages Package registry settings
+    packages: {}
+
+    ## @param gitea.config.mirror Configuration for repository mirroring
+    mirror: {}
+
+    ## @param gitea.config.lfs Large File Storage configuration
+    lfs: {}
+
+    ## @param gitea.config.repo-avatar Repository avatar storage configuration
+    repo-avatar: {}
+
+    ## @param gitea.config.avatar User/org avatar storage configuration
+    avatar: {}
+
+    ## @param gitea.config.storage General storage settings
+    storage: {}
+
+    ## @param gitea.config.proxy Proxy configuration (disabled by default)
+    proxy: {}
+
+    ## @param gitea.config.actions Configuration for [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/)
+    actions: {}
+
+    ## @param gitea.config.other Uncategorized configuration options
+    other: {}
 
   ## @section LivenessProbe
   #
