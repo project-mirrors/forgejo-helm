@@ -440,8 +440,10 @@ gitea:
     ## @param gitea.config.markdown Markdown parser settings
     markdown: {}
 
-    ## @param gitea.config.server General server settings
-    server: {}
+    ## @param gitea.config.server [object] General server settings
+    server:
+      SSH_PORT: 22 # rootful image
+      SSH_LISTEN_PORT: 2222 # rootless image
 
     ## @param gitea.config.database Database configuration (only necessary with an [externally managed DB](https://codeberg.org/forgejo-contrib/forgejo-helm#external-database)).
     database: {}
