@@ -13,14 +13,14 @@
     "readme:parameters": "readme-generator -v values.yaml -r README.md"
   },
   "devDependencies": {
-    "@bitnami/readme-generator-for-helm": "^2.4.2",
-    "clipanion": "^3.2.1",
-    "conventional-changelog-conventionalcommits": "^8.0.0",
-    "conventional-changelog-core": "^8.0.0",
-    "husky": "^9.0.0",
-    "lint-staged": "^15.2.0",
-    "markdownlint-cli": "^0.40.0",
-    "prettier": "^3.1.0"
+    "@bitnami/readme-generator-for-helm": "2.6.1",
+    "clipanion": "3.2.1",
+    "conventional-changelog-conventionalcommits": "8.0.0",
+    "conventional-changelog-core": "8.0.0",
+    "husky": "9.0.11",
+    "lint-staged": "15.2.2",
+    "markdownlint-cli": "0.40.0",
+    "prettier": "3.2.5"
   },
   "packageManager": "pnpm@9.1.0",
   "engines": {
