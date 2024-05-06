@@ -2,7 +2,13 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
   "assignees": ["viceice"],
-  "enabledManagers": ["helmv3", "nodenv", "npm", "regex", "github-actions"],
+  "enabledManagers": [
+    "helmv3",
+    "nodenv",
+    "npm",
+    "custom.regex",
+    "github-actions"
+  ],
   "packageRules": [
     {
       "matchManagers": ["helmv3"],
@@ -15,13 +21,13 @@
       "semanticCommitType": "feat"
     },
     {
-      "matchManagers": ["regex"],
+      "matchManagers": ["custom.regex"],
       "matchDepNames": ["forgejo"],
       "matchUpdateTypes": ["patch"],
       "semanticCommitType": "fix"
     },
     {
-      "matchManagers": ["regex"],
+      "matchManagers": ["custom.regex"],
       "matchDepNames": ["forgejo"],
       "matchUpdateTypes": ["major", "minor"],
       "semanticCommitType": "feat"
@@ -29,7 +35,7 @@
     {
       "description": "Automerge patch deps updates",
       "matchManagers": ["helmv3"],
-      "matchFiles": ["Chart.yaml"],
+      "matchFileNames": ["Chart.yaml"],
       "matchUpdateTypes": ["patch"],
       "automerge": true
     },
