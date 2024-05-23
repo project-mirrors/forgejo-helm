@@ -1,7 +1,5 @@
 # Forgejo Helm Chart <!-- omit from toc -->
 
-[![status-badge](https://ci.dachary.org/api/badges/forgejo-contrib/forgejo-helm/status.svg)](https://ci.dachary.org/forgejo-contrib/forgejo-helm)
-
 - [Introduction](#introduction)
 - [Update and versioning policy](#update-and-versioning-policy)
 - [Dependencies](#dependencies)
@@ -1155,6 +1153,8 @@ Complete Configuration can be taken from their website.
 Expected workflow is: Fork -> Patch -> Push -> Pull Request
 
 See [CONTRIBUTORS GUIDE](CONTRIBUTING.md) for details.
+
+Hop into [our Matrix room](https://matrix.to/#/#forgejo-helm-chart:matrix.org) if you have any questions or want to get involved.
 
 ## Upgrading
 
