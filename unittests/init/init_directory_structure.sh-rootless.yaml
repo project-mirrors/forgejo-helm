@@ -1,6 +1,6 @@
-suite: Init template
+suite: Init template (rootless)
 release:
-  name: gitea-unittests
+  name: forgejo-unittests
   namespace: testing
 templates:
   - templates/gitea/init.yaml
@@ -67,7 +67,6 @@ tests:
               chown 1000:1000 "${GNUPGHOME}"
             fi
   - it: it does not chown /data even when image.fullOverride is set
-    template: templates/gitea/init.yaml
     set:
       image.fullOverride: gitea/gitea:1.20.5
     asserts:
