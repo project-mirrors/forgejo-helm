@@ -68,7 +68,7 @@ Additionally, this chart allows to provide LDAP and admin user configuration wit
 ## Update and versioning policy
 
 The Forgejo helm chart versioning does not follow Forgejo's versioning.
-The latest chart version can be looked up in <https://codeberg.org/forgejo-contrib/-/packages/container/forgejo/0.8.0> or in the [repository releases](https://codeberg.org/forgejo-contrib/forgejo-helm/releases).
+The latest chart version can be looked up in <https://codeberg.org/forgejo-contrib/-/packages/container/forgejo> or in the [repository releases](https://codeberg.org/forgejo-contrib/forgejo-helm/releases).
 
 The chart aims to follow Forgejo's releases closely.
 There might be times when the chart is behind the latest Forgejo release.
