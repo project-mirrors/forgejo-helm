@@ -1161,3 +1161,7 @@ Hop into [our Matrix room](https://matrix.to/#/#forgejo-helm-chart:matrix.org) i
 This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
 If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
+
+### To v6.0.0
+
+You need Forgejo v7+ to use this Helm Chart version.
