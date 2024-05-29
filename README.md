@@ -1165,3 +1165,4 @@ If you miss this, blindly upgrading may delete your Postgres instance and you ma
 ### To v6.0.0
 
 You need Forgejo v7+ to use this Helm Chart version.
+Use the v5 Helm Chart for Forgejo v1.21.
