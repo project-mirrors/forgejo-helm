@@ -9,6 +9,7 @@
     "custom.regex",
     "github-actions"
   ],
+  "baseBranches": ["main", "/^maint\\/.+/"],
   "packageRules": [
     {
       "matchManagers": ["helmv3"],
