@@ -1,6 +1,6 @@
 {
   "name": "forgejo-helm-chart",
-  "homepage": "https://code.forgejo.org/forgejo-helm/forgejo-helm.git",
+  "homepage": "https://code.forgejo.org/forgejo-helm/forgejo-helm",
   "license": "MIT",
   "private": true,
   "scripts": {
