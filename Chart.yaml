@@ -16,7 +16,7 @@ keywords:
   - gitea
   - gogs
 sources:
-  - https://codeberg.org/forgejo-contrib/forgejo-helm
+  - https://code.forgejo.org/forgejo-helm/forgejo-helm
   - https://codeberg.org/forgejo/forgejo
 maintainers:
   - name: Michael Kriese

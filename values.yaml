@@ -445,7 +445,7 @@ gitea:
       SSH_PORT: 22 # rootful image
       SSH_LISTEN_PORT: 2222 # rootless image
 
-    ## @param gitea.config.database Database configuration (only necessary with an [externally managed DB](https://codeberg.org/forgejo-contrib/forgejo-helm#external-database)).
+    ## @param gitea.config.database Database configuration (only necessary with an [externally managed DB](https://code.forgejo.org/forgejo-helm/forgejo-helm#external-database)).
     database: {}
 
     ## @param gitea.config.indexer Settings for what content is indexed and how
