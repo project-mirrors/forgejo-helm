@@ -87,6 +87,10 @@
       "description": "Update only daily for forgejo ci tests",
       "matchFileNames": ["ci/*.yml"],
       "extends": ["schedule:daily"]
+    },
+    {
+      "description": "branch automerge not possible",
+      "automergeType": "branch"
     }
   ],
   "customManagers": [
