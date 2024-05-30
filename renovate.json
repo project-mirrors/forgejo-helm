@@ -12,6 +12,13 @@
   "baseBranches": ["main", "/^maint\\/.+/"],
   "packageRules": [
     {
+      "description": "Disable major chart updates for maintenance branches",
+      "matchBaseBranches": ["/^maint\\/.+/"],
+      "matchUpdateTypes": ["major"],
+      "matchFileNames": ["Chart.yaml"],
+      "enabled": false
+    },
+    {
       "matchManagers": ["helmv3"],
       "matchUpdateTypes": ["minor", "patch"],
       "semanticCommitType": "fix"
