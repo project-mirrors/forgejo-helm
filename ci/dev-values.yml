@@ -1,3 +1,7 @@
+# Test codeberg.org image
+image:
+  registry: codeberg.org
+
 redis-cluster:
   enabled: false
 postgresql:

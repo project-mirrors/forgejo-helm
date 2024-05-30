@@ -10,7 +10,8 @@
     "prettier": "prettier --check --ignore-unknown --cache '**/*.*'",
     "prettier-fix": "prettier --write --ignore-unknown --cache '**/*.*'",
     "readme:lint": "markdownlint *.md -f",
-    "readme:parameters": "readme-generator -v values.yaml -r README.md"
+    "readme:parameters": "readme-generator -v values.yaml -r README.md",
+    "test": "helm unittest --strict -f 'unittests/**/*.yaml' -f 'unittests/dependency-major-image-check.yaml' ./"
   },
   "devDependencies": {
     "@bitnami/readme-generator-for-helm": "2.6.1",

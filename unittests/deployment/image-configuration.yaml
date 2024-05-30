@@ -14,7 +14,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: 'codeberg.org/forgejo/forgejo:1.19.3-rootless'
+          value: 'code.forgejo.org/forgejo/forgejo:1.19.3-rootless'
   - it: tag override
     template: templates/gitea/deployment.yaml
     set:
@@ -22,7 +22,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: 'codeberg.org/forgejo/forgejo:1.19.4-rootless'
+          value: 'code.forgejo.org/forgejo/forgejo:1.19.4-rootless'
   - it: root-based image
     template: templates/gitea/deployment.yaml
     set:
@@ -30,7 +30,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: 'codeberg.org/forgejo/forgejo:1.19.3'
+          value: 'code.forgejo.org/forgejo/forgejo:1.19.3'
   - it: scoped registry
     template: templates/gitea/deployment.yaml
     set:
@@ -56,7 +56,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: 'codeberg.org/forgejo/forgejo:1.19.3-rootless@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a'
+          value: 'code.forgejo.org/forgejo/forgejo:1.19.3-rootless@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a'
   - it: image fullOverride (does not append rootless)
     template: templates/gitea/deployment.yaml
     set:
@@ -81,7 +81,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: 'codeberg.org/forgejo/forgejo:1.19.3@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a'
+          value: 'code.forgejo.org/forgejo/forgejo:1.19.3@sha256:b28e8f3089b52ebe6693295df142f8c12eff354e9a4a5bfbb5c10f296c3a537a'
   - it: digest and global registry
     template: templates/gitea/deployment.yaml
     set:
@@ -98,13 +98,13 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.initContainers[0].image
-          value: 'codeberg.org/forgejo/forgejo:1.21-rootless'
+          value: 'code.forgejo.org/forgejo/forgejo:1.21-rootless'
       - equal:
           path: spec.template.spec.initContainers[1].image
-          value: 'codeberg.org/forgejo/forgejo:1.21-rootless'
+          value: 'code.forgejo.org/forgejo/forgejo:1.21-rootless'
       - equal:
           path: spec.template.spec.initContainers[2].image
-          value: 'codeberg.org/forgejo/forgejo:1.21-rootless'
+          value: 'code.forgejo.org/forgejo/forgejo:1.21-rootless'
       - equal:
           path: spec.template.spec.containers[0].image
-          value: 'codeberg.org/forgejo/forgejo:1.21-rootless'
+          value: 'code.forgejo.org/forgejo/forgejo:1.21-rootless'

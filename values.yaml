@@ -39,13 +39,13 @@ clusterDomain: cluster.local
 ## @section Image
 ## @param image.registry image registry, e.g. gcr.io,docker.io
 ## @param image.repository Image to start for this pod
-## @param image.tag Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.
+## @param image.tag Visit: [Image tag](https://code.forgejo.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.
 ## @param image.digest Image digest. Allows to pin the given image tag. Useful for having control over mutable tags like `latest`
 ## @param image.pullPolicy Image pull policy
 ## @param image.rootless Wether or not to pull the rootless version of Forgejo
 ## @param image.fullOverride Completely overrides the image registry, path/image, tag and digest. **Adjust `image.rootless` accordingly and review [Rootless defaults](#rootless-defaults).**
 image:
-  registry: codeberg.org
+  registry: code.forgejo.org
   repository: forgejo/forgejo
   # Overrides the image tag whose default is the chart appVersion.
   tag: ''

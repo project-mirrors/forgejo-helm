@@ -810,7 +810,7 @@ Here's an examplary `values.yml` definition which makes use of a digest:
 
 ```yaml
 image:
-  registry: codeberg.org
+  registry: code.forgejo.org
   repository: forgejo/forgejo
   tag: 1.20.2-0
   digest: sha256:f597c14a403c2fdee9a62dae8bae29d6442f7b2cc85872cc9bb535a24cb1630e
@@ -827,7 +827,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
     "fileMatch": ["values\\.ya?ml"],
     "matchStrings": ["(?<depName>forgejo\\/forgejo)\\n(?<indentation>\\s+)tag: (?<currentValue>[^@].*?)\\n\\s+digest: (?<currentDigest>sha256:[a-f0-9]+)"],
     "datasourceTemplate": "docker",
-    "packageNameTemplate": "codeberg.org/{{depName}}",
+    "packageNameTemplate": "code.forgejo.org/{{depName}}",
     "autoReplaceStringTemplate": "{{depName}}\n{{indentation}}tag: {{newValue}}\n{{indentation}}digest: {{#if newDigest}}{{{newDigest}}}{{else}}{{{currentDigest}}}{{/if}}"
   }
 ]
@@ -856,16 +856,16 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Image
 
-| Name                 | Description                                                                                                                                                      | Value             |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `image.registry`     | image registry, e.g. gcr.io,docker.io                                                                                                                            | `codeberg.org`    |
-| `image.repository`   | Image to start for this pod                                                                                                                                      | `forgejo/forgejo` |
-| `image.tag`          | Visit: [Image tag](https://codeberg.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.                              | `""`              |
-| `image.digest`       | Image digest. Allows to pin the given image tag. Useful for having control over mutable tags like `latest`                                                       | `""`              |
-| `image.pullPolicy`   | Image pull policy                                                                                                                                                | `IfNotPresent`    |
-| `image.rootless`     | Wether or not to pull the rootless version of Forgejo                                                                                                            | `true`            |
-| `image.fullOverride` | Completely overrides the image registry, path/image, tag and digest. **Adjust `image.rootless` accordingly and review [Rootless defaults](#rootless-defaults).** | `""`              |
-| `imagePullSecrets`   | Secret to use for pulling the image                                                                                                                              | `[]`              |
+| Name                 | Description                                                                                                                                                      | Value              |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `image.registry`     | image registry, e.g. gcr.io,docker.io                                                                                                                            | `code.forgejo.org` |
+| `image.repository`   | Image to start for this pod                                                                                                                                      | `forgejo/forgejo`  |
+| `image.tag`          | Visit: [Image tag](https://code.forgejo.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.                          | `""`               |
+| `image.digest`       | Image digest. Allows to pin the given image tag. Useful for having control over mutable tags like `latest`                                                       | `""`               |
+| `image.pullPolicy`   | Image pull policy                                                                                                                                                | `IfNotPresent`     |
+| `image.rootless`     | Wether or not to pull the rootless version of Forgejo                                                                                                            | `true`             |
+| `image.fullOverride` | Completely overrides the image registry, path/image, tag and digest. **Adjust `image.rootless` accordingly and review [Rootless defaults](#rootless-defaults).** | `""`               |
+| `imagePullSecrets`   | Secret to use for pulling the image                                                                                                                              | `[]`               |
 
 ### Security
 

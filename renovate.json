@@ -108,7 +108,7 @@
       "fileMatch": ["^Chart\\.yaml$"],
       "matchStrings": ["appVersion: (?<currentValue>.+?)\\s"],
       "depNameTemplate": "forgejo",
-      "packageNameTemplate": "codeberg.org/forgejo/forgejo",
+      "packageNameTemplate": "code.forgejo.org/forgejo/forgejo",
       "datasourceTemplate": "docker"
     },
     {
