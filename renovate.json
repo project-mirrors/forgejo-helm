@@ -90,6 +90,7 @@
     },
     {
       "description": "branch automerge not possible",
+      "matchPackagePatterns": [".+"],
       "automergeType": "branch"
     }
   ],
