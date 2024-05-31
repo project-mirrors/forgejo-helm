@@ -1162,7 +1162,25 @@ This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
 If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
 
-### To v6.0.0
+<summary>To v7.0.0</summary>
+
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable-next-line -->
+**Breaking changes**
+<!-- prettier-ignore-end -->
+
+The Forgejo docker image is pulled from `code.forgejo.org` instead of `codeberg.org`.
+
+</details>
+
+<summary>To v6.0.0</summary>
+
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable-next-line -->
+**Breaking changes**
+<!-- prettier-ignore-end -->
 
 You need Forgejo v7+ to use this Helm Chart version.
 Use the v5 Helm Chart for Forgejo v1.21.
+
+</details>
