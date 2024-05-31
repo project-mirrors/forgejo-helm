@@ -1,0 +1,24 @@
+on:
+  schedule:
+    - cron: '@hourly'
+
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  mirror:
+    runs-on: docker
+    steps:
+      - name: git mirror branches {main,maint/*] & tags
+        run: |
+          git init --bare .
+          git remote add origin https://code.forgejo.org/${{ env.GITHUB_REPOSITORY }}
+          git fetch origin refs/heads/main:refs/mirror/main --tags
+          git ls-remote origin refs/heads/main/* | while read sha full_ref ; do
+            ref=${full_ref#refs/heads/}
+            git fetch origin $full_ref:refs/mirror/$ref
+          done
+          git push --force https://any:$CODEBERG_TOKEN@codeberg.org/${{ env.GITHUB_REPOSITORY }} refs/mirror/*:refs/heads/* --tags
+        env:
+          CODEBERG_TOKEN: ${{secrets.CODEBERG_TOKEN}}
