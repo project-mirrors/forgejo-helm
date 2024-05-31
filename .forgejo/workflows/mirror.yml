@@ -19,6 +19,6 @@ jobs:
             ref=${full_ref#refs/heads/}
             git fetch origin $full_ref:refs/mirror/$ref
           done
-          git push --force https://any:$CODEBERG_TOKEN@codeberg.org/${{ env.GITHUB_REPOSITORY }} refs/mirror/*:refs/heads/* --tags
+          git push --force https://any:$CODEBERG_TOKEN@codeberg.org/forgejo-contrib/forgejo-helm refs/mirror/*:refs/heads/* --tags
         env:
           CODEBERG_TOKEN: ${{secrets.CODEBERG_TOKEN}}
