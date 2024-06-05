@@ -41,11 +41,12 @@
       "semanticCommitType": "feat"
     },
     {
-      "description": "Automerge patch deps updates",
+      "description": "Automerge and group helm subchart updates (minor & patch)",
       "matchManagers": ["helmv3"],
       "matchFileNames": ["Chart.yaml"],
-      "matchUpdateTypes": ["patch"],
-      "automerge": true
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "groupName": "subcharts"
     },
     {
       "description": "Automerge dev deps updates",
