@@ -39,5 +39,5 @@ dependencies:
   # https://github.com/bitnami/charts/blob/main/bitnami/redis-cluster/Chart.yaml
   - name: redis-cluster
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 10.2.5
+    version: 10.2.6
     condition: redis-cluster.enabled
