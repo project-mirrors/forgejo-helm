@@ -3,11 +3,12 @@
   "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
   "assignees": ["viceice"],
   "enabledManagers": [
-    "helmv3",
-    "nodenv",
-    "npm",
     "custom.regex",
-    "github-actions"
+    "github-actions",
+    "helmv3",
+    "helm-values",
+    "nodenv",
+    "npm"
   ],
   "baseBranches": ["main", "/^maint\\/.+/"],
   "packageRules": [
@@ -90,11 +91,7 @@
       "matchFileNames": ["ci/*.yml"],
       "additionalBranchPrefix": "ci-forgejo-",
       "semanticCommitType": "ci",
-      "semanticCommitScope": "forgejo"
-    },
-    {
-      "description": "Update only daily for forgejo ci tests",
-      "matchFileNames": ["ci/*.yml"],
+      "semanticCommitScope": "forgejo",
       "extends": ["schedule:daily"]
     },
     {
@@ -134,5 +131,8 @@
       "depNameTemplate": "kindest/node",
       "datasourceTemplate": "docker"
     }
-  ]
+  ],
+  "helm-values": {
+    "fileMatch": ["^/ci/.+\\.yml$"]
+  }
 }
