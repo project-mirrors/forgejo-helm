@@ -2,14 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
   "assignees": ["viceice"],
-  "enabledManagers": [
-    "custom.regex",
-    "github-actions",
-    "helmv3",
-    "helm-values",
-    "nodenv",
-    "npm"
-  ],
   "baseBranches": ["main", "/^maint\\/.+/"],
   "packageRules": [
     {
@@ -92,13 +84,13 @@
       "additionalBranchPrefix": "ci-forgejo-",
       "semanticCommitType": "ci",
       "semanticCommitScope": "forgejo",
-      "groupName": "ci-forgejo",
+      "groupName": "experimental docker digests",
       "extends": ["schedule:daily"]
     },
     {
-      "description": "Disable major updates for forgejo ci tests",
+      "description": "Disable updates for forgejo ci tests",
       "matchFileNames": ["ci/*.yml"],
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": ["major", "minor", "patch"],
       "enabled": false
     },
     {
