@@ -133,6 +133,6 @@
     }
   ],
   "helm-values": {
-    "fileMatch": ["^/ci/.+\\.yml$"]
+    "fileMatch": ["^ci/.+\\.yml$"]
   }
 }
