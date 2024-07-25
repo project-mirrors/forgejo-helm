@@ -92,7 +92,14 @@
       "additionalBranchPrefix": "ci-forgejo-",
       "semanticCommitType": "ci",
       "semanticCommitScope": "forgejo",
+      "groupName": "ci-forgejo",
       "extends": ["schedule:daily"]
+    },
+    {
+      "description": "Disable major updates for forgejo ci tests",
+      "matchFileNames": ["ci/*.yml"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     },
     {
       "description": "branch automerge not possible",
