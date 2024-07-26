@@ -95,8 +95,8 @@
     },
     {
       "description": "branch automerge not possible",
-      "matchPackagePatterns": [".+"],
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "matchPackageNames": ["/.+/"]
     }
   ],
   "customManagers": [
