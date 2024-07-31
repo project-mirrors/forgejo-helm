@@ -50,6 +50,7 @@
   - [ReadinessProbe](#readinessprobe)
   - [StartupProbe](#startupprobe)
   - [redis-cluster](#redis-cluster)
+  - [redis](#redis)
   - [PostgreSQL HA](#postgresql-ha)
   - [PostgreSQL](#postgresql)
   - [Advanced](#advanced)
@@ -94,7 +95,8 @@ These dependencies are enabled by default:
 
 Alternatively, the following non-HA replacements are available:
 
-- PostgreSQL ([Bitnami PostgreSQL](<postgresql](https://github.com/bitnami/charts/blob/main/bitnami/postgresql/Chart.yaml)>))
+- PostgreSQL ([Bitnami PostgreSQL](https://github.com/bitnami/charts/blob/main/bitnami/postgresql/Chart.yaml))
+- Redis ([Bitnami Redis](https://github.com/bitnami/charts/blob/main/bitnami/redis/Chart.yaml))
 
 ### Dependency Versioning
 
@@ -113,6 +115,7 @@ Please double-check the image repository and available tags in the sub-chart:
 - [PostgreSQL-HA](https://hub.docker.com/r/bitnami/postgresql-repmgr/tags)
 - [PostgreSQL](https://hub.docker.com/r/bitnami/postgresql/tags)
 - [Redis Cluster](https://hub.docker.com/r/bitnami/redis-cluster/tags)
+- [Redis](https://hub.docker.com/r/bitnami/redis/tags)
 
 and look up the image tag which fits your needs on Dockerhub.
 
@@ -247,7 +250,7 @@ External tools such as `redis-cluster` or `memcached` handle these workloads muc
 
 If HA is not needed/desired, the following configurations can be used to deploy a single-pod Forgejo instance.
 
-1. For a production-ready single-pod Forgejo instance without external dependencies (using the chart dependency `postgresql`):
+1. For a production-ready single-pod Forgejo instance without external dependencies (using the chart dependency `postgresql` and `redis`):
 
    <details>
 
@@ -256,6 +259,8 @@ If HA is not needed/desired, the following configurations can be used to deploy 
    ```yaml
    redis-cluster:
      enabled: false
+   redis:
+     enabled: true
    postgresql:
      enabled: true
    postgresql-ha:
@@ -268,12 +273,6 @@ If HA is not needed/desired, the following configurations can be used to deploy 
      config:
        database:
          DB_TYPE: postgres
-       session:
-         PROVIDER: db
-       cache:
-         ADAPTER: memory
-       queue:
-         TYPE: level
        indexer:
          ISSUE_INDEXER_TYPE: bleve
          REPO_INDEXER_ENABLED: true
@@ -292,6 +291,8 @@ If HA is not needed/desired, the following configurations can be used to deploy 
 
    ```yaml
    redis-cluster:
+     enabled: false
+   redis:
      enabled: false
    postgresql:
      enabled: false
@@ -570,6 +571,20 @@ stringData:
 gitea:
   admin:
     existingSecret: gitea-admin-secret
+```
+
+Whether you use the existing Secret or specify a user name and password, there are three modes for how the admin user password is created or set.
+
+- `keepUpdated` (the default) will set the admin user password, and reset it to the defined value every time the pod is recreated.
+- `initialOnlyNoReset` will set the admin user password when creating it, but never try to update the password.
+- `initialOnlyRequireReset` will set the admin user password when creating it, never update it, and require that the password be changed at the initial login.
+
+These modes can be set like the following:
+
+```yaml
+gitea:
+  admin:
+    passwordMode: initialOnlyRequireReset
 ```
 
 ### LDAP Settings
@@ -892,6 +907,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `service.http.loadBalancerSourceRanges` | Source range filter for http loadbalancer                                                                                                                                                            | `[]`        |
 | `service.http.annotations`              | HTTP service annotations                                                                                                                                                                             | `{}`        |
 | `service.http.labels`                   | HTTP service additional labels                                                                                                                                                                       | `{}`        |
+| `service.http.loadBalancerClass`        | Loadbalancer class                                                                                                                                                                                   | `nil`       |
 | `service.ssh.type`                      | Kubernetes service type for ssh traffic                                                                                                                                                              | `ClusterIP` |
 | `service.ssh.port`                      | Port number for ssh traffic                                                                                                                                                                          | `22`        |
 | `service.ssh.clusterIP`                 | ClusterIP setting for ssh autosetup for deployment is None                                                                                                                                           | `None`      |
@@ -905,6 +921,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `service.ssh.loadBalancerSourceRanges`  | Source range filter for ssh loadbalancer                                                                                                                                                             | `[]`        |
 | `service.ssh.annotations`               | SSH service annotations                                                                                                                                                                              | `{}`        |
 | `service.ssh.labels`                    | SSH service additional labels                                                                                                                                                                        | `{}`        |
+| `service.ssh.loadBalancerClass`         | Loadbalancer class                                                                                                                                                                                   | `nil`       |
 
 ### Ingress
 
@@ -987,20 +1004,21 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Gitea
 
-| Name                                   | Description                                                                 | Value                |
-| -------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
-| `gitea.admin.username`                 | Username for the Forgejo admin user                                         | `gitea_admin`        |
-| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                      | `nil`                |
-| `gitea.admin.password`                 | Password for the Forgejo admin user                                         | `r8sA8CPHD9!bt6d`    |
-| `gitea.admin.email`                    | Email for the Forgejo admin user                                            | `gitea@local.domain` |
-| `gitea.metrics.enabled`                | Enable Forgejo metrics                                                      | `false`              |
-| `gitea.metrics.serviceMonitor.enabled` | Enable Forgejo metrics service monitor                                      | `false`              |
-| `gitea.ldap`                           | LDAP configuration                                                          | `[]`                 |
-| `gitea.oauth`                          | OAuth configuration                                                         | `[]`                 |
-| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                           | `[]`                 |
-| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables                 | `[]`                 |
-| `gitea.podAnnotations`                 | Annotations for the Forgejo pod                                             | `{}`                 |
-| `gitea.ssh.logLevel`                   | Configure OpenSSH's log level. Only available for root-based Forgejo image. | `INFO`               |
+| Name                                   | Description                                                                                                                   | Value                |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `gitea.admin.username`                 | Username for the Forgejo admin user                                                                                           | `gitea_admin`        |
+| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                                                                        | `nil`                |
+| `gitea.admin.password`                 | Password for the Forgejo admin user                                                                                           | `r8sA8CPHD9!bt6d`    |
+| `gitea.admin.email`                    | Email for the Forgejo admin user                                                                                              | `gitea@local.domain` |
+| `gitea.admin.passwordMode`             | Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated | `keepUpdated`        |
+| `gitea.metrics.enabled`                | Enable Forgejo metrics                                                                                                        | `false`              |
+| `gitea.metrics.serviceMonitor.enabled` | Enable Forgejo metrics service monitor                                                                                        | `false`              |
+| `gitea.ldap`                           | LDAP configuration                                                                                                            | `[]`                 |
+| `gitea.oauth`                          | OAuth configuration                                                                                                           | `[]`                 |
+| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                                                                             | `[]`                 |
+| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables                                                                   | `[]`                 |
+| `gitea.podAnnotations`                 | Annotations for the Forgejo pod                                                                                               | `{}`                 |
+| `gitea.ssh.logLevel`                   | Configure OpenSSH's log level. Only available for root-based Forgejo image.                                                   | `INFO`               |
 
 ### `app.ini` overrides
 
@@ -1098,13 +1116,27 @@ blocks, while the keys themselves remain in all caps.
 
 Redis&reg; Cluster is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster) if enabled in the values.
 Complete Configuration can be taken from their website.
+Redis cluster and [Redis](#redis) cannot be enabled at the same time.
 
 | Name                             | Description                                  | Value   |
 | -------------------------------- | -------------------------------------------- | ------- |
-| `redis-cluster.enabled`          | Enable redis                                 | `true`  |
+| `redis-cluster.enabled`          | Enable redis cluster                         | `true`  |
 | `redis-cluster.usePassword`      | Whether to use password authentication       | `false` |
 | `redis-cluster.cluster.nodes`    | Number of redis cluster master nodes         | `3`     |
 | `redis-cluster.cluster.replicas` | Number of redis cluster master node replicas | `0`     |
+
+### Redis&reg;
+
+Redis&reg; is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis) if enabled in the values.
+Complete Configuration can be taken from their website.
+Redis and [Redis cluster](#redis-cluster) cannot be enabled at the same time.
+
+| Name                          | Description                                | Value        |
+| ----------------------------- | ------------------------------------------ | ------------ |
+| `redis.enabled`               | Enable redis standalone or replicated      | `false`      |
+| `redis.architecture`          | Whether to use standalone or replication   | `standalone` |
+| `redis.global.redis.password` | Required password                          | `changeme`   |
+| `redis.master.count`          | Number of Redis master instances to deploy | `1`          |
 
 ### PostgreSQL HA
 

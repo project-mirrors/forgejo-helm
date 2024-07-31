@@ -107,6 +107,7 @@ service:
   ## @param service.http.loadBalancerSourceRanges Source range filter for http loadbalancer
   ## @param service.http.annotations HTTP service annotations
   ## @param service.http.labels HTTP service additional labels
+  ## @param service.http.loadBalancerClass Loadbalancer class
   http:
     type: ClusterIP
     port: 3000
@@ -120,6 +121,7 @@ service:
     loadBalancerSourceRanges: []
     annotations: {}
     labels: {}
+    loadBalancerClass:
   ## @param service.ssh.type Kubernetes service type for ssh traffic
   ## @param service.ssh.port Port number for ssh traffic
   ## @param service.ssh.clusterIP ClusterIP setting for ssh autosetup for deployment is None
@@ -133,6 +135,7 @@ service:
   ## @param service.ssh.loadBalancerSourceRanges Source range filter for ssh loadbalancer
   ## @param service.ssh.annotations SSH service annotations
   ## @param service.ssh.labels SSH service additional labels
+  ## @param service.ssh.loadBalancerClass Loadbalancer class
   ssh:
     type: ClusterIP
     port: 22
@@ -147,6 +150,7 @@ service:
     loadBalancerSourceRanges: []
     annotations: {}
     labels: {}
+    loadBalancerClass:
 
 ## @section Ingress
 ## @param ingress.enabled Enable ingress
@@ -342,12 +346,14 @@ gitea:
   ## @param gitea.admin.existingSecret Use an existing secret to store admin user credentials
   ## @param gitea.admin.password Password for the Forgejo admin user
   ## @param gitea.admin.email Email for the Forgejo admin user
+  ## @param gitea.admin.passwordMode Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated
   admin:
     # existingSecret: gitea-admin-secret
     existingSecret:
     username: gitea_admin
     password: r8sA8CPHD9!bt6d
     email: 'gitea@local.domain'
+    passwordMode: keepUpdated
 
   ## @param gitea.metrics.enabled Enable Forgejo metrics
   ## @param gitea.metrics.serviceMonitor.enabled Enable Forgejo metrics service monitor
@@ -626,9 +632,10 @@ gitea:
 ## @descriptionStart
 ## Redis&reg; Cluster is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster) if enabled in the values.
 ## Complete Configuration can be taken from their website.
+## Redis cluster and [Redis](#redis) cannot be enabled at the same time.
 ## @descriptionEnd
 #
-## @param redis-cluster.enabled Enable redis
+## @param redis-cluster.enabled Enable redis cluster
 ## @param redis-cluster.usePassword Whether to use password authentication
 ## @param redis-cluster.cluster.nodes Number of redis cluster master nodes
 ## @param redis-cluster.cluster.replicas Number of redis cluster master node replicas
@@ -638,6 +645,26 @@ redis-cluster:
   cluster:
     nodes: 3 # default: 6
     replicas: 0 # default: 1
+
+## @section Redis&reg;
+## @descriptionStart
+## Redis&reg; is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis) if enabled in the values.
+## Complete Configuration can be taken from their website.
+## Redis and [Redis cluster](#redis-cluster) cannot be enabled at the same time.
+## @descriptionEnd
+#
+## @param redis.enabled Enable redis standalone or replicated
+## @param redis.architecture Whether to use standalone or replication
+## @param redis.global.redis.password Required password
+## @param redis.master.count Number of Redis master instances to deploy
+redis:
+  enabled: false
+  architecture: standalone
+  global:
+    redis:
+      password: changeme
+  master:
+    count: 1
 
 ## @section PostgreSQL HA
 ## @descriptionStart
