@@ -1,7 +1,7 @@
 image:
   registry: codeberg.org
   repository: forgejo-experimental/forgejo
-  tag: 8.0-test@sha256:3adb76144d71fbad2cda452b20fad77334ac7819ff8198d8a33c2a91835ae5f6
+  tag: 8.0-test@sha256:33a7fc5dc42fdb3210f353d5d4e8ae4ad8ab0d53c55e8976c358da25ccad9e72
 
 redis-cluster:
   enabled: false
