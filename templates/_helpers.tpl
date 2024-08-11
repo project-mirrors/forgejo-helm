@@ -208,7 +208,7 @@ https
         {{- $_ := set $inlines $key (join "\n" $section) -}}
       {{- end -}}
     {{- else }}
-      {{- if or (eq $key "APP_NAME") (eq $key "RUN_USER") (eq $key "RUN_MODE") -}}
+      {{- if or (eq $key "APP_NAME") (eq $key "RUN_USER") (eq $key "RUN_MODE") (eq $key "APP_SLOGAN") (eq $key "APP_DISPLAY_NAME_FORMAT") -}}
         {{- $generals = append $generals (printf "%s=%s" $key $value) -}}
       {{- else -}}
         {{- (printf "Key %s cannot be on top level of configuration" $key) | fail -}}
