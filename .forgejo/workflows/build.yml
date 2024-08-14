@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  HELM_VERSION: v3.15.3 # renovate: datasource=github-releases depName=helm packageName=helm/helm
+  HELM_VERSION: v3.15.4 # renovate: datasource=github-releases depName=helm packageName=helm/helm
   HELM_UNITTEST_VERSION: v0.5.2 # renovate: datasource=github-releases depName=helm-unittest packageName=helm-unittest/helm-unittest
   HELM_CHART_TESTING_VERSION: v3.11.0 # renovate: datasource=github-releases depName=chart-testing packageName=helm/chart-testing
   KIND_VERSION: v0.23.0 # renovate: datasource=github-releases depName=kind packageName=kubernetes-sigs/kind
