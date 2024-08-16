@@ -1,6 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
+  "extends": [
+    "forgejo-contrib/forgejo-renovate//base.json",
+    "github>visualon/renovate-config//k3s.json"
+  ],
   "assignees": ["viceice"],
   "baseBranches": ["main", "/^maint\\/.+/"],
   "packageRules": [
@@ -67,13 +70,13 @@
       "automerge": true
     },
     {
-      "description": "Separate minor and patch updates for kindest",
-      "matchPackageNames": ["kindest/node"],
+      "description": "Separate minor and patch updates for k3s",
+      "matchPackageNames": ["k3s-io/k3s"],
       "separateMinorPatch": true
     },
     {
-      "description": "Require approval and no automerge for kindest major and minor updates",
-      "matchPackageNames": ["kindest/node"],
+      "description": "Require approval and no automerge for k3s major and minor updates",
+      "matchPackageNames": ["k3s-io/k3s"],
       "matchUpdateTypes": ["major", "minor"],
       "dependencyDashboardApproval": true,
       "automerge": false
@@ -122,16 +125,15 @@
     },
     {
       "customType": "regex",
-      "description": "Update kindest kubernetes references",
+      "description": "Update k3s kubernetes references",
       "fileMatch": ["^\\.forgejo/workflows/[^/]+\\.ya?ml$"],
-      "matchStrings": [
-        " +- (?<currentValue>v\\d+\\.\\d+\\.\\d+) # renovate: kindest\\n"
-      ],
-      "depNameTemplate": "kindest/node",
-      "datasourceTemplate": "docker"
+      "matchStrings": [" +- (?<currentValue>.+?) # renovate: k3s\\n"],
+      "depNameTemplate": "k3s",
+      "packageNameTemplate": "k3s-io/k3s",
+      "datasourceTemplate": "github-releases"
     }
   ],
   "helm-values": {
-    "fileMatch": ["^ci/.+\\.yml$"]
+    "fileMatch": ["^ci/.+\\.ya?ml$"]
   }
 }

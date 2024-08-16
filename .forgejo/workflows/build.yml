@@ -16,8 +16,8 @@ env:
   HELM_VERSION: v3.15.4 # renovate: datasource=github-releases depName=helm packageName=helm/helm
   HELM_UNITTEST_VERSION: v0.5.2 # renovate: datasource=github-releases depName=helm-unittest packageName=helm-unittest/helm-unittest
   HELM_CHART_TESTING_VERSION: v3.11.0 # renovate: datasource=github-releases depName=chart-testing packageName=helm/chart-testing
-  KIND_VERSION: v0.24.0 # renovate: datasource=github-releases depName=kind packageName=kubernetes-sigs/kind
   KUBECTL_VERSION: v1.31.0 # renovate: datasource=github-releases depName=kubectl packageName=kubernetes/kubernetes
+  CT_GITHUB_GROUPS: true
 
 jobs:
   lint-node:
@@ -74,16 +74,18 @@ jobs:
       - run: ct lint --config tools/ct.yml --charts .
 
   e2e:
+    needs:
+      - lint-node
+      - lint-helm
     runs-on: k8s
 
     strategy:
       matrix:
-        k8s:
-          # from https://hub.docker.com/r/kindest/node/tags
-          - v1.27.16 # renovate: kindest
-          - v1.28.13 # renovate: kindest
-          - v1.29.8 # renovate: kindest
-          - v1.30.4 # renovate: kindest
+        k3s:
+          - v1.27.16+k3s1 # renovate: k3s
+          - v1.28.12+k3s1 # renovate: k3s
+          - v1.29.7+k3s1 # renovate: k3s
+          - v1.30.3+k3s1 # renovate: k3s
 
     steps:
       - run: cat /etc/os-release
@@ -107,14 +109,9 @@ jobs:
         with:
           version: ${{ env.HELM_CHART_TESTING_VERSION }}
 
-      - uses: ./.forgejo/actions/setup-docker
-
-      - name: Create kind cluster
-        uses: helm/kind-action@0025e74a8c7512023d06dc019c617aa3cf561fde # v1.10.0
+      - uses: ./.forgejo/actions/setup-k3s
         with:
-          node_image: kindest/node:${{ matrix.k8s }}
-          kubectl_version: ${{ env.KUBECTL_VERSION }}
-          version: ${{ env.KIND_VERSION }}
+          version: ${{ matrix.k3s }}
 
       - run: kubectl get no -o wide
 
