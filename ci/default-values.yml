@@ -1,0 +1,10 @@
+# default values with some modifications
+postgresql-ha:
+  # for better ci experience
+  postgresql:
+    startupProbe:
+      enabled: true
+redis:
+  redis:
+    startupProbe:
+      enabled: true

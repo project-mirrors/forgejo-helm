@@ -4,8 +4,6 @@ image:
 
 redis-cluster:
   enabled: false
-postgresql:
-  enabled: false
 postgresql-ha:
   enabled: false
 

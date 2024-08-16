@@ -1,11 +1,9 @@
 image:
   registry: codeberg.org
   repository: forgejo-experimental/forgejo
-  tag: 8.0-test@sha256:1505556f1f43ead63a3d64907804cb301951af3cfbc00837ca264de05aaf30ee
+  tag: 7.0-test@sha256:122db61afef4610ed79b4b8ec78ced3a79625480dbf0e2c8e444dd55755ffff0
 
 redis-cluster:
-  enabled: false
-postgresql:
   enabled: false
 postgresql-ha:
   enabled: false

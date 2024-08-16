@@ -121,10 +121,10 @@ jobs:
       - name: install chart
         uses: https://github.com/nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
-          timeout_minutes: 15
+          timeout_minutes: 30
           max_attempts: 3
           retry_on: error
-          retry_wait_seconds: 60
+          retry_wait_seconds: 120
           polling_interval_seconds: 5
           command: ct install --config tools/ct.yml --charts .
 

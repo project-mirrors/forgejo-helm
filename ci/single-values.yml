@@ -2,6 +2,10 @@ redis-cluster:
   enabled: false
 postgresql:
   enabled: true
+  # for better ci experience
+  postgresql:
+    startupProbe:
+      enabled: true
 postgresql-ha:
   enabled: false
 
