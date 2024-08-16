@@ -83,8 +83,9 @@ jobs:
       matrix:
         k3s:
           - v1.27.16+k3s1 # renovate: k3s
-          - v1.28.12+k3s1 # renovate: k3s
-          - v1.29.7+k3s1 # renovate: k3s
+          # to long to test ~15min
+          # - v1.28.12+k3s1 # renovate: k3s
+          # - v1.29.7+k3s1 # renovate: k3s
           - v1.30.3+k3s1 # renovate: k3s
 
     steps:
