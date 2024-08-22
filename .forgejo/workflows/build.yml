@@ -83,9 +83,8 @@ jobs:
       matrix:
         k3s:
           - v1.27.16+k3s1 # renovate: k3s
-          # to long to test ~15min
-          # - v1.28.12+k3s1 # renovate: k3s
-          # - v1.29.7+k3s1 # renovate: k3s
+          - v1.28.12+k3s1 # renovate: k3s
+          - v1.29.7+k3s1 # renovate: k3s
           - v1.30.3+k3s1 # renovate: k3s
 
     steps:
@@ -119,7 +118,7 @@ jobs:
       - name: install chart
         uses: https://github.com/nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
-          timeout_minutes: 30
+          timeout_minutes: 15
           max_attempts: 3
           retry_on: error
           retry_wait_seconds: 120
