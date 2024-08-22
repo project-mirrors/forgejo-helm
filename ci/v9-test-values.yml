@@ -2,6 +2,7 @@ image:
   registry: codeberg.org
   repository: forgejo-experimental/forgejo
   tag: 9.0-test@sha256:739baf8d8e10d1aa3c04aa48092db54b3cda539544b01b46b0361f164e2f202e
+  rootless: false # rootless doesn't work with tag with digest
 
 redis-cluster:
   enabled: false
