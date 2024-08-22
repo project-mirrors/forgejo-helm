@@ -1,9 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "forgejo-contrib/forgejo-renovate//base.json",
-    "github>visualon/renovate-config//k3s.json"
-  ],
+  "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
   "assignees": ["viceice"],
   "baseBranches": ["main", "/^maint\\/.+/"],
   "packageRules": [
@@ -87,12 +84,6 @@
       "matchPackageNames": ["k3s-io/k3s"],
       "matchUpdateTypes": ["major", "minor"],
       "automerge": false
-    },
-    {
-      "description": "Workaround for k3s https://github.com/visualon/renovate-config/blob/main/k3s.json#L8 https://github.com/renovatebot/renovate/pull/30957",
-      "matchDatasources": ["github-releases"],
-      "matchPackageNames": ["k3s-io/k3s"],
-      "allowedVersions": "/.+/"
     },
     {
       "description": "Use test scope for forgejo ci tests",
