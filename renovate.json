@@ -8,11 +8,16 @@
   "baseBranches": ["main", "/^maint\\/.+/"],
   "packageRules": [
     {
-      "description": "Disable major chart updates for maintenance branches",
+      "description": "Separate multiple major sub chart updates",
+      "matchFileNames": ["Chart.yaml"],
+      "separateMultipleMajor": true
+    },
+    {
+      "description": "Require approval for major sub chart updates for maintenance branches",
       "matchBaseBranches": ["/^maint\\/.+/"],
       "matchUpdateTypes": ["major"],
       "matchFileNames": ["Chart.yaml"],
-      "enabled": false
+      "dependencyDashboardApproval": true
     },
     {
       "matchManagers": ["helmv3"],
@@ -83,7 +88,7 @@
     },
     {
       "description": "Use test scope for forgejo ci tests",
-      "matchFileNames": ["ci/*.yml"],
+      "matchFileNames": ["ci/*.yaml"],
       "additionalBranchPrefix": "ci-forgejo-",
       "semanticCommitType": "ci",
       "semanticCommitScope": "forgejo",
@@ -92,7 +97,7 @@
     },
     {
       "description": "Disable updates for forgejo ci tests",
-      "matchFileNames": ["ci/*.yml"],
+      "matchFileNames": ["ci/*.yaml"],
       "matchUpdateTypes": ["major", "minor", "patch"],
       "enabled": false
     },
