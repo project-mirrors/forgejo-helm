@@ -1,8 +1,7 @@
 image:
   registry: codeberg.org
   repository: forgejo-experimental/forgejo
-  tag: 8.0-test@sha256:53a7c227c5e8a315cbbbb035647275beda70da2eb412a5e6b646cabae420d498
-  rootless: false # rootless doesn't work with tag with digest
+  tag: 8.0-test # don't pin, manifests can be missing
 
 redis-cluster:
   enabled: false
