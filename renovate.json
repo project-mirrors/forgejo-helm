@@ -101,6 +101,11 @@
       "enabled": false
     },
     {
+      "description": "Don't pin digests for forgejo ci tests, not supported",
+      "matchFileNames": ["ci/*.yaml"],
+      "pinDigests": false
+    },
+    {
       "description": "branch automerge not possible",
       "automergeType": "pr",
       "matchPackageNames": ["/.+/"]
