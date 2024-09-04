@@ -46,16 +46,20 @@
   - [Init](#init)
   - [Signing](#signing)
   - [Gitea](#gitea)
+  - [`app.ini` overrides](#appini-overrides)
   - [LivenessProbe](#livenessprobe)
   - [ReadinessProbe](#readinessprobe)
   - [StartupProbe](#startupprobe)
-  - [redis-cluster](#redis-cluster)
-  - [redis](#redis)
+  - [Redis&reg; Cluster](#redis-cluster)
+  - [Redis&reg;](#redis)
   - [PostgreSQL HA](#postgresql-ha)
   - [PostgreSQL](#postgresql)
   - [Advanced](#advanced)
 - [Contributing](#contributing)
 - [Upgrading](#upgrading)
+  - [To v8.0.0](#to-v800)
+  - [To v7.0.0](#to-v700)
+  - [To v6.0.0](#to-v600)
 
 [Forgejo](https://forgejo.org/) is a community managed lightweight code hosting solution written in Go.
 It is published under the MIT license.
