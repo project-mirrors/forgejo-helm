@@ -82,10 +82,8 @@ jobs:
     strategy:
       matrix:
         k3s:
-          - v1.27.16+k3s1 # renovate: k3s
           - v1.28.13+k3s1 # renovate: k3s
-          - v1.29.8+k3s1 # renovate: k3s
-          - v1.30.4+k3s1 # renovate: k3s
+          - v1.31.0+k3s1 # renovate: k3s
 
     steps:
       - run: cat /etc/os-release
