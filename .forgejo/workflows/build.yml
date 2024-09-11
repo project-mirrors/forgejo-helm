@@ -82,11 +82,12 @@ jobs:
     strategy:
       matrix:
         k3s:
-          - v1.27.16+k3s1 # renovate: k3s
-          # to long to test ~15min
-          # - v1.28.13+k3s1 # renovate: k3s
-          # - v1.29.8+k3s1 # renovate: k3s
+          # oldest supported version
+          - v1.28.13+k3s1 # renovate: k3s
+          # stable version
           - v1.30.4+k3s1 # renovate: k3s
+          # newest version
+          - v1.31.0+k3s1 # renovate: k3s
 
     steps:
       - run: cat /etc/os-release
