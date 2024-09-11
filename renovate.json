@@ -77,7 +77,8 @@
       "matchPackageNames": ["k3s-io/k3s"],
       "separateMultipleMinor": true,
       "separateMinorPatch": true,
-      "branchTopic": "{{{depNameSanitized}}}{{#if separateMinorPatch}}{{#if isMinor}}-minor{{/if}}{{/if}}-{{{newMajor}}}{{#if separateMinorPatch}}{{#if isPatch}}.{{{newMinor}}}{{/if}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}"
+      "branchTopic": "{{{depNameSanitized}}}{{#if isMinor}}-minor{{/if}}-{{{newMajor}}}{{#if isPatch}}.{{{newMinor}}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}",
+      "commitMessageSuffix": "{{#if isMinor}}(minor){{/if}}{{#if isPatch}}(patch){{/if}}"
     },
     {
       "description": "No automerge for k3s major and minor updates",
