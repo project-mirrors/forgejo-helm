@@ -88,6 +88,13 @@
       "automerge": false
     },
     {
+      "description": "Group k3s patch updates",
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["k3s-io/k3s"],
+      "matchUpdateTypes": ["patch"],
+      "groupName": "k3s"
+    },
+    {
       "description": "Use test scope for forgejo ci tests",
       "matchFileNames": ["ci/*.yaml"],
       "additionalBranchPrefix": "ci-forgejo-",
