@@ -86,7 +86,7 @@ jobs:
           # to long to test ~15min
           # - v1.28.13+k3s1 # renovate: k3s
           # - v1.29.7+k3s1 # renovate: k3s
-          - v1.30.3+k3s1 # renovate: k3s
+          - v1.30.4+k3s1 # renovate: k3s
 
     steps:
       - run: cat /etc/os-release
