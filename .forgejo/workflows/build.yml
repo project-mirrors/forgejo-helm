@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  HELM_VERSION: v3.16.0 # renovate: datasource=github-releases depName=helm packageName=helm/helm
+  HELM_VERSION: v3.16.1 # renovate: datasource=github-releases depName=helm packageName=helm/helm
   HELM_UNITTEST_VERSION: v0.6.1 # renovate: datasource=github-releases depName=helm-unittest packageName=helm-unittest/helm-unittest
   HELM_CHART_TESTING_VERSION: v3.11.0 # renovate: datasource=github-releases depName=chart-testing packageName=helm/chart-testing
   KUBECTL_VERSION: v1.31.1 # renovate: datasource=github-releases depName=kubectl packageName=kubernetes/kubernetes
