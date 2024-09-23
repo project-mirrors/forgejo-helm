@@ -84,12 +84,12 @@ jobs:
         k3s:
           # https://github.com/k3s-io/k3s/branches
           # oldest supported version
-          - v1.28.13+k3s1 # renovate: k3s
+          - v1.28.14+k3s1 # renovate: k3s
           # https://github.com/k3s-io/k3s/blob/master/channel.yaml#L3-L4
           # stable version
-          - v1.30.4+k3s1 # renovate: k3s
+          - v1.30.5+k3s1 # renovate: k3s
           # newest version
-          - v1.31.0+k3s1 # renovate: k3s
+          - v1.31.1+k3s1 # renovate: k3s
 
     steps:
       - run: cat /etc/os-release
