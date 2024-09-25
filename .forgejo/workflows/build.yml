@@ -170,6 +170,9 @@ jobs:
           fetch-depth: 0 # Important for changelog
           filter: blob:none # We don't need all blobs
 
+      # required for proper changelogs
+      - run: git checkout -b "${GITHUB_REF_NAME}"
+
       - uses: ./.forgejo/actions/setup
       - uses: ./.forgejo/actions/setup-node
 

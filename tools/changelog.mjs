@@ -5,4 +5,4 @@ const file = process.argv[3]
   ? fs.createWriteStream(process.argv[3])
   : process.stdout;
 
-getChangelog().pipe(file);
+getChangelog(process.argv[2], !!process.argv[2]).pipe(file);
