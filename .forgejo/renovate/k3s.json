@@ -1,0 +1,61 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": "Separate minor and patch updates for k3s",
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["k3s-io/k3s"],
+      "separateMultipleMinor": true,
+      "separateMinorPatch": true,
+      "branchTopic": "{{{depNameSanitized}}}{{#if isMinor}}-minor{{/if}}-{{{newMajor}}}{{#if isPatch}}.{{{newMinor}}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}",
+      "commitMessageSuffix": "{{#if isMinor}}(minor){{/if}}{{#if isPatch}}(patch){{/if}}"
+    },
+    {
+      "description": "No automerge for k3s major and minor updates",
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["k3s-io/k3s"],
+      "matchUpdateTypes": ["major", "minor"],
+      "automerge": false
+    },
+    {
+      "description": "Group k3s patch updates",
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["k3s-io/k3s"],
+      "matchUpdateTypes": ["patch"],
+      "groupName": "k3s"
+    },
+    {
+      "matchDatasources": ["github-releases"],
+      "matchFileNames": [".forgejo/workflows/**"],
+      "matchPackageNames": ["k3s-io/k3s"],
+      "matchUpdateTypes": ["major", "minor"],
+      "matchCurrentVersion": "<1.31",
+      "enabled": false
+    },
+    {
+      "description": "prepare k3s",
+      "matchDatasources": ["custom.k3s"],
+      "rangeStrategy": "replace"
+    }
+  ],
+  "customDatasources": {
+    "k3s": {
+      "defaultRegistryUrlTemplate": "https://update.k3s.io/v1-release/channels",
+      "transformTemplates": [
+        "($isVersion:=function($name){$contains($name,/^v\\d+.\\d+$/)};{\"releases\":[data[$isVersion(name)].{\"version\":latest}],\"sourceUrl\":\"https://github.com/k3s-io/k3s\",\"homepage\":\"https://k3s.io/\"})"
+      ]
+    }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [".forgejo/renovate/k3s.json"],
+      "matchStrings": [
+        "matchCurrentVersion\": \"(?<currentValue><\\d+\\.\\d+)\""
+      ],
+      "depNameTemplate": "k3s",
+      "versioningTemplate": "npm",
+      "datasourceTemplate": "custom.k3s"
+    }
+  ]
+}

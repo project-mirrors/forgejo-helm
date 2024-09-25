@@ -1,6 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["forgejo-contrib/forgejo-renovate//base.json"],
+  "extends": [
+    "forgejo-contrib/forgejo-renovate//base.json",
+    "forgejo-helm/forgejo-helm//.forgejo/renovate/k3s.json"
+  ],
   "assignees": ["viceice"],
   "baseBranches": ["main", "/^maint\\/.+/"],
   "packageRules": [
@@ -70,29 +73,6 @@
       "description": "Automerge digest updates",
       "matchUpdateTypes": ["digest"],
       "automerge": true
-    },
-    {
-      "description": "Separate minor and patch updates for k3s",
-      "matchDatasources": ["github-releases"],
-      "matchPackageNames": ["k3s-io/k3s"],
-      "separateMultipleMinor": true,
-      "separateMinorPatch": true,
-      "branchTopic": "{{{depNameSanitized}}}{{#if isMinor}}-minor{{/if}}-{{{newMajor}}}{{#if isPatch}}.{{{newMinor}}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}",
-      "commitMessageSuffix": "{{#if isMinor}}(minor){{/if}}{{#if isPatch}}(patch){{/if}}"
-    },
-    {
-      "description": "No automerge for k3s major and minor updates",
-      "matchDatasources": ["github-releases"],
-      "matchPackageNames": ["k3s-io/k3s"],
-      "matchUpdateTypes": ["major", "minor"],
-      "automerge": false
-    },
-    {
-      "description": "Group k3s patch updates",
-      "matchDatasources": ["github-releases"],
-      "matchPackageNames": ["k3s-io/k3s"],
-      "matchUpdateTypes": ["patch"],
-      "groupName": "k3s"
     },
     {
       "description": "Use test scope for forgejo ci tests",
