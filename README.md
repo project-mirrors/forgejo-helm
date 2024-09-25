@@ -862,6 +862,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `global.imagePullSecrets` | global image pull secrets override; can be extended by `imagePullSecrets` | `[]`  |
 | `global.storageClass`     | global storage class override                                             | `""`  |
 | `global.hostAliases`      | global hostAliases which will be added to the pod's hosts files           | `[]`  |
+| `namespaceOverride`       | String to fully override common.names.namespace                           | `""`  |
 | `replicaCount`            | number of replicas for the deployment                                     | `1`   |
 
 ### strategy
@@ -1008,21 +1009,22 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Gitea
 
-| Name                                   | Description                                                                                                                   | Value                |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `gitea.admin.username`                 | Username for the Forgejo admin user                                                                                           | `gitea_admin`        |
-| `gitea.admin.existingSecret`           | Use an existing secret to store admin user credentials                                                                        | `nil`                |
-| `gitea.admin.password`                 | Password for the Forgejo admin user                                                                                           | `r8sA8CPHD9!bt6d`    |
-| `gitea.admin.email`                    | Email for the Forgejo admin user                                                                                              | `gitea@local.domain` |
-| `gitea.admin.passwordMode`             | Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated | `keepUpdated`        |
-| `gitea.metrics.enabled`                | Enable Forgejo metrics                                                                                                        | `false`              |
-| `gitea.metrics.serviceMonitor.enabled` | Enable Forgejo metrics service monitor                                                                                        | `false`              |
-| `gitea.ldap`                           | LDAP configuration                                                                                                            | `[]`                 |
-| `gitea.oauth`                          | OAuth configuration                                                                                                           | `[]`                 |
-| `gitea.additionalConfigSources`        | Additional configuration from secret or configmap                                                                             | `[]`                 |
-| `gitea.additionalConfigFromEnvs`       | Additional configuration sources from environment variables                                                                   | `[]`                 |
-| `gitea.podAnnotations`                 | Annotations for the Forgejo pod                                                                                               | `{}`                 |
-| `gitea.ssh.logLevel`                   | Configure OpenSSH's log level. Only available for root-based Forgejo image.                                                   | `INFO`               |
+| Name                                     | Description                                                                                                                   | Value                |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `gitea.admin.username`                   | Username for the Forgejo admin user                                                                                           | `gitea_admin`        |
+| `gitea.admin.existingSecret`             | Use an existing secret to store admin user credentials                                                                        | `nil`                |
+| `gitea.admin.password`                   | Password for the Forgejo admin user                                                                                           | `r8sA8CPHD9!bt6d`    |
+| `gitea.admin.email`                      | Email for the Forgejo admin user                                                                                              | `gitea@local.domain` |
+| `gitea.admin.passwordMode`               | Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated | `keepUpdated`        |
+| `gitea.metrics.enabled`                  | Enable Forgejo metrics                                                                                                        | `false`              |
+| `gitea.metrics.serviceMonitor.enabled`   | Enable Forgejo metrics service monitor                                                                                        | `false`              |
+| `gitea.metrics.serviceMonitor.namespace` | Namespace in which Prometheus is running                                                                                      | `""`                 |
+| `gitea.ldap`                             | LDAP configuration                                                                                                            | `[]`                 |
+| `gitea.oauth`                            | OAuth configuration                                                                                                           | `[]`                 |
+| `gitea.additionalConfigSources`          | Additional configuration from secret or configmap                                                                             | `[]`                 |
+| `gitea.additionalConfigFromEnvs`         | Additional configuration sources from environment variables                                                                   | `[]`                 |
+| `gitea.podAnnotations`                   | Annotations for the Forgejo pod                                                                                               | `{}`                 |
+| `gitea.ssh.logLevel`                     | Configure OpenSSH's log level. Only available for root-based Forgejo image.                                                   | `INFO`               |
 
 ### `app.ini` overrides
 

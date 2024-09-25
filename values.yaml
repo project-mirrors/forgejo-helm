@@ -20,6 +20,10 @@ global:
   #   hostnames:
   #   - example.com
 
+## @param namespaceOverride String to fully override common.names.namespace
+##
+namespaceOverride: ''
+
 ## @param replicaCount number of replicas for the deployment
 replicaCount: 1
 
@@ -357,10 +361,12 @@ gitea:
 
   ## @param gitea.metrics.enabled Enable Forgejo metrics
   ## @param gitea.metrics.serviceMonitor.enabled Enable Forgejo metrics service monitor
+  ## @param gitea.metrics.serviceMonitor.namespace Namespace in which Prometheus is running
   metrics:
     enabled: false
     serviceMonitor:
       enabled: false
+      namespace: ''
       #  additionalLabels:
       #    prometheus-release: prom1
 
