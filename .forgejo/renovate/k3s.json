@@ -25,17 +25,13 @@
       "groupName": "k3s"
     },
     {
+      "description": "Disable k3s major and minor updates for old versions",
       "matchDatasources": ["github-releases"],
       "matchFileNames": [".forgejo/workflows/**"],
       "matchPackageNames": ["k3s-io/k3s"],
       "matchUpdateTypes": ["major", "minor"],
-      "matchCurrentVersion": "<1.32",
+      "matchCurrentVersion": "<1.31",
       "enabled": false
-    },
-    {
-      "description": "prepare k3s",
-      "matchDatasources": ["custom.k3s"],
-      "rangeStrategy": "replace"
     }
   ],
   "customDatasources": {
@@ -51,7 +47,7 @@
       "customType": "regex",
       "fileMatch": [".forgejo/renovate/k3s.json"],
       "matchStrings": [
-        "matchCurrentVersion\": \"(?<currentValue><\\d+\\.\\d+)\""
+        "matchCurrentVersion\": \"<(?<currentValue>\\d+\\.\\d+)\""
       ],
       "depNameTemplate": "k3s",
       "versioningTemplate": "npm",
