@@ -6,6 +6,8 @@ on:
     branches:
       - 'main'
 
+  workflow_dispatch:
+
 jobs:
   mirror:
     runs-on: docker
