@@ -29,7 +29,7 @@
       "matchFileNames": [".forgejo/workflows/**"],
       "matchPackageNames": ["k3s-io/k3s"],
       "matchUpdateTypes": ["major", "minor"],
-      "matchCurrentVersion": "<1.31",
+      "matchCurrentVersion": "<1.32",
       "enabled": false
     },
     {
