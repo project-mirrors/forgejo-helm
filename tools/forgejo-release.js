@@ -68,7 +68,7 @@ class GiteaReleaseCommand extends Command {
       return 1;
     }
 
-    const stream = getChangelog(undefined, false).setEncoding('utf8');
+    const stream = getChangelog(tag, true).setEncoding('utf8');
     const changes = (await stream.toArray()).join('');
 
     this.context.stdout.write(`Creating release ${tag}.\n`);
