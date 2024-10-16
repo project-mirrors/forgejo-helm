@@ -57,6 +57,7 @@
   - [Advanced](#advanced)
 - [Contributing](#contributing)
 - [Upgrading](#upgrading)
+  - [To v10.0.0](#to-v1000)
   - [To v9.0.0](#to-v900)
   - [To v8.0.0](#to-v800)
   - [To v7.0.0](#to-v700)
@@ -1200,6 +1201,11 @@ Hop into [our Matrix room](https://matrix.to/#/#forgejo-helm-chart:matrix.org) i
 This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
 If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
+
+### To v10.0.0
+
+You need Forgejo v9+ to use this Helm Chart version.
+Forgejo v8 is now EOL.
 
 ### To v9.0.0
 

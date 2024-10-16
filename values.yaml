@@ -422,12 +422,10 @@ gitea:
 
   ## @section `app.ini` overrides
   ## @descriptionStart
-  ##
   ## Every value described in the [Cheat
   ## Sheet](https://forgejo.org/docs/latest/admin/config-cheat-sheet/) can be
   ## set as a Helm value. Configuration sections map to (lowercased) YAML
   ## blocks, while the keys themselves remain in all caps.
-  ##
   ## @descriptionEnd
   config:
     # values in the DEFAULT section
