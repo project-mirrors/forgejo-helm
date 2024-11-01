@@ -28,6 +28,8 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           show-progress: false
+          fetch-depth: 0 # Important for changelog
+          filter: blob:none # We don't need all blobs
 
       - uses: ./.forgejo/actions/setup
       - uses: ./.forgejo/actions/setup-node
@@ -36,6 +38,10 @@ jobs:
       - run: pnpm markdownlint .
       - run: make readme
       - run: git diff --exit-code --name-only README.md
+
+      - name: changelog
+        run: |
+          pnpm changelog ${{ github.ref_type == 'tag' && 'true' || '' }}
 
   lint-helm:
     runs-on: docker
@@ -166,9 +172,6 @@ jobs:
           show-progress: false
           fetch-depth: 0 # Important for changelog
           filter: blob:none # We don't need all blobs
-
-      # required for proper changelogs
-      - run: git checkout -b "release/${GITHUB_REF_NAME#v}"
 
       - uses: ./.forgejo/actions/setup
       - uses: ./.forgejo/actions/setup-node

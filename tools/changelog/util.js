@@ -56,17 +56,16 @@ export const config = conventionalChangelogPreset({
 
 /**
  *
- * @param {string|undefined} version
  * @param {boolean|undefined} onTag
  * @returns
  */
-export function getChangelog(version = undefined, onTag = false) {
+export function getChangelog(onTag = false) {
   return conventionalChangelogCore(
     {
       config,
       releaseCount: onTag ? 2 : 1,
     },
-    { version, linkCompare: false },
+    undefined,
     undefined,
     undefined,
     { headerPartial: '' },
