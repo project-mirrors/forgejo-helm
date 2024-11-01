@@ -30,7 +30,7 @@
       "matchFileNames": [".forgejo/workflows/**"],
       "matchPackageNames": ["k3s-io/k3s"],
       "matchUpdateTypes": ["major", "minor"],
-      "matchCurrentVersion": "<1.31",
+      "matchCurrentValue": "!/^v1.31/",
       "enabled": false
     }
   ],
@@ -47,7 +47,7 @@
       "customType": "regex",
       "fileMatch": [".forgejo/renovate/k3s.json"],
       "matchStrings": [
-        "matchCurrentVersion\": \"<(?<currentValue>\\d+\\.\\d+)\""
+        "matchCurrentValue\": \"!\\/^v(?<currentValue>\\d+\\.\\d+)\\/"
       ],
       "depNameTemplate": "k3s",
       "versioningTemplate": "npm",
