@@ -1,8 +1,12 @@
 import { getChangelog } from './changelog/util.js';
-import fs from 'node:fs';
 
-const file = process.argv[3]
-  ? fs.createWriteStream(process.argv[3])
-  : process.stdout;
+const stream = getChangelog(!!process.argv[2]).setEncoding('utf8');
 
-getChangelog(process.argv[2], !!process.argv[2]).pipe(file);
+const changes = (await stream.toArray()).join('');
+
+if (!changes.length) {
+  console.error('No changelog found');
+  process.exit(1);
+}
+
+process.stdout.write(changes);
