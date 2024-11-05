@@ -56,8 +56,8 @@
   - [Advanced](#advanced)
 - [Contributing](#contributing)
 - [Upgrading](#upgrading)
-  - [To v7.0.0](#to-v700)
-  - [To v6.0.0](#to-v600)
+  - [To v7](#to-v7)
+  - [To v6](#to-v6)
 
 [Forgejo](https://forgejo.org/) is a community managed lightweight code hosting solution written in Go.
 It is published under the MIT license.
@@ -1165,11 +1165,11 @@ This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
 If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
 
-### To v7.0.0
+### To v7
 
 The Forgejo docker image is pulled from `code.forgejo.org` instead of `codeberg.org`.
 
-### To v6.0.0
+### To v6
 
 You need Forgejo v7+ to use this Helm Chart version.
 Use the v5 Helm Chart for Forgejo v1.21.
