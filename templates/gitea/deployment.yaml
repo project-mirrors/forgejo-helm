@@ -57,7 +57,7 @@ spec:
       {{- end }}
       {{- include "gitea.images.pullSecrets" . | nindent 6 }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.podSecurityContext "context" $) | nindent 8 }}
       initContainers:
         - name: init-directories
           image: "{{ include "gitea.image" . }}"
@@ -91,7 +91,7 @@ spec:
               {{- end }}
             {{- include "gitea.init-additional-mounts" . | nindent 12 }}
           securityContext:
-            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+            {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.containerSecurityContext "context" $) | nindent 12 }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         - name: init-app-ini
@@ -131,7 +131,7 @@ spec:
             {{- end }}
             {{- include "gitea.init-additional-mounts" . | nindent 12 }}
           securityContext:
-            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+            {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.containerSecurityContext "context" $) | nindent 12 }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         {{- if .Values.signing.enabled }}
@@ -145,7 +145,7 @@ spec:
             {{- if not (hasKey $csc "runAsUser") -}}
             {{- $_ := set $csc "runAsUser" 1000 -}}
             {{- end -}}
-            {{- toYaml $csc | nindent 12 }}
+            {{- include "common.compatibility.renderSecurityContext" (dict "secContext" $csc "context" $) | nindent 12 }}
           env:
             - name: GNUPGHOME
               value: {{ .Values.signing.gpgHome }}
@@ -176,7 +176,7 @@ spec:
             {{- if not (hasKey $csc "runAsUser") -}}
             {{- $_ := set $csc "runAsUser" 1000 -}}
             {{- end -}}
-            {{- toYaml $csc | nindent 12 }}
+            {{- include "common.compatibility.renderSecurityContext" (dict "secContext" $csc "context" $) | nindent 12 }}
           env:
             - name: GITEA_APP_INI
               value: /data/gitea/conf/app.ini
@@ -327,9 +327,9 @@ spec:
           securityContext:
             {{- /* Honor the deprecated securityContext variable when defined */ -}}
             {{- if .Values.containerSecurityContext -}}
-            {{ toYaml .Values.containerSecurityContext | nindent 12 -}}
+            {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.containerSecurityContext "context" $) | nindent 12 }}
             {{- else -}}
-            {{ toYaml .Values.securityContext | nindent 12 -}}
+            {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.securityContext "context" $) | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: temp
@@ -353,7 +353,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- with .Values.topologySpreadConstraints }}
-      topologySpreadConstraints: 
+      topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- with .Values.tolerations }}

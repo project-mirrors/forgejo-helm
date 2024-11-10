@@ -689,6 +689,17 @@ gitea:
       existingSecret: gitea-oauth-secret
 ```
 
+### Compatibility with OCP (OKD or OpenShift)
+
+Normally OCP is automatically detected and the compatibility mode set accordingly. To enforce the OCP compatibility mode use the following configuration:
+
+```yaml
+global:
+  compatibility:
+    openshift:
+      adaptSecurityContext: force
+```
+
 ## Configure commit signing
 
 When using the rootless image the gpg key folder is not persistent by default.
