@@ -1,0 +1,155 @@
+# $schema: https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: route template
+release:
+  name: gitea-unittests
+  namespace: testing
+templates:
+  - templates/gitea/route.yaml
+tests:
+  - it: hostname using TPL
+    set:
+      global.giteaHostName: 'gitea.example.com'
+      route.enabled: true
+      route.host: '{{ .Values.global.giteaHostName }}'
+    asserts:
+      - isKind:
+          of: Route
+      - equal:
+          path: spec.host
+          value: 'gitea.example.com'
+      - notExists:
+          path: spec.wildcardPolicy
+  - it: wildcard policy
+    set:
+      global.giteaHostName: 'gitea.example.com'
+      route.enabled: true
+      route.wildcardPolicy: 'Subdomain'
+    asserts:
+      - isKind:
+          of: Route
+      - equal:
+          path: spec.wildcardPolicy
+          value: 'Subdomain'
+  - it: existing certificate
+    set:
+      route.enabled: true
+      route.tls.existingSecret: certificate-secret
+      route.tls.certificate: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      route.tls.privateKey: |
+        -----BEGIN PRIVATE KEY-----
+        ...
+        -----END PRIVATE KEY-----
+      route.tls.caCertificate: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+    asserts:
+      - isKind:
+          of: Route
+      - equal:
+          path: spec.tls.externalCertificate
+          value: certificate-secret
+      - notExists:
+          path: spec.tls.certificate
+      - notExists:
+          path: spec.tls.key
+      - notExists:
+          path: spec.tls.caCertificate
+  - it: valid certificate values
+    set:
+      route.enabled: true
+      route.tls.certificate: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      route.tls.privateKey: |
+        -----BEGIN PRIVATE KEY-----
+        ...
+        -----END PRIVATE KEY-----
+      route.tls.caCertificate: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+    asserts:
+      - isKind:
+          of: Route
+      - notExists:
+          path: spec.tls.externalCertificate
+      - equal:
+          path: spec.tls.certificate
+          value: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+      - equal:
+          path: spec.tls.key
+          value: |
+            -----BEGIN PRIVATE KEY-----
+            ...
+            -----END PRIVATE KEY-----
+      - equal:
+          path: spec.tls.caCertificate
+          value: |
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+            -----BEGIN CERTIFICATE-----
+            ...
+            -----END CERTIFICATE-----
+  - it: missing certificate values
+    set:
+      route.enabled: true
+      route.tls.privateKey: |
+        -----BEGIN PRIVATE KEY-----
+        ...
+        -----END PRIVATE KEY-----
+      route.tls.caCertificate: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+    asserts:
+      - failedTemplate:
+          errorMessage: certificate, privateKey and caCertificate must be specified together
+  - it: missing privateKey values
+    set:
+      route.enabled: true
+      route.tls.certificate: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      route.tls.caCertificate: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+    asserts:
+      - failedTemplate:
+          errorMessage: certificate, privateKey and caCertificate must be specified together
+  - it: missing caCertificate values
+    set:
+      route.enabled: true
+      route.tls.certificate: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      route.tls.privateKey: |
+        -----BEGIN PRIVATE KEY-----
+        ...
+        -----END PRIVATE KEY-----
+    asserts:
+      - failedTemplate:
+          errorMessage: certificate, privateKey and caCertificate must be specified together

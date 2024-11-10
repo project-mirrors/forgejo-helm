@@ -700,6 +700,13 @@ global:
       adaptSecurityContext: force
 ```
 
+An OCP route to access Forgejo can be enabled with the following config:
+
+```yaml
+route:
+  enabled: true
+```
+
 ## Configure commit signing
 
 When using the rootless image the gpg key folder is not persistent by default.
@@ -953,6 +960,22 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `ingress.hosts[0].paths[0].pathType` | Ingress path type                                                           | `Prefix`          |
 | `ingress.tls`                        | Ingress tls settings                                                        | `[]`              |
 | `ingress.apiVersion`                 | Specify APIVersion of ingress object. Mostly would only be used for argocd. |                   |
+
+### Route
+
+| Name                                      | Description                                                                                                                                                                                       | Value      |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `route.enabled`                           | Enable route                                                                                                                                                                                      | `false`    |
+| `route.annotations`                       | Route annotations                                                                                                                                                                                 | `{}`       |
+| `route.host`                              | Host to use for the route (will be assigned automatically by OKD / OpenShift is not defined)                                                                                                      | `nil`      |
+| `route.wildcardPolicy`                    | Wildcard policy if any for the route, currently only 'Subdomain' or 'None' is allowed.                                                                                                            | `nil`      |
+| `route.tls.termination`                   | termination type (see [OKD documentation](https://docs.okd.io/latest/rest_api/network_apis/route-route-openshift-io-v1.html#spec-tls))                                                            | `edge`     |
+| `route.tls.insecureEdgeTerminationPolicy` | the desired behavior for insecure connections to a route (e.g. with http)                                                                                                                         | `Redirect` |
+| `route.tls.existingSecret`                | the name of a predefined secret of type kubernetes.io/tls with both key (tls.crt and tls.key) set accordingly (if defined attributes 'certificate', 'caCertificate' and 'privateKey' are ignored) | `nil`      |
+| `route.tls.certificate`                   | PEM encoded single certificate                                                                                                                                                                    | `nil`      |
+| `route.tls.privateKey`                    | PEM encoded private key                                                                                                                                                                           | `nil`      |
+| `route.tls.caCertificate`                 | PEM encoded CA certificate or chain that issued the certificate                                                                                                                                   | `nil`      |
+| `route.tls.destinationCACertificate`      | PEM encoded CA certificate used to verify the authenticity of final end point when 'termination' is set to 'passthrough' (ignored otherwise)                                                      | `nil`      |
 
 ### deployment
 

@@ -186,6 +186,48 @@ ingress:
   # If helm doesn't correctly detect your ingress API version you can set it here.
   # apiVersion: networking.k8s.io/v1
 
+## @section Route
+## @param route.enabled Enable route
+## @param route.annotations Route annotations
+## @param route.host Host to use for the route (will be assigned automatically by OKD / OpenShift is not defined)
+## @param route.wildcardPolicy Wildcard policy if any for the route, currently only 'Subdomain' or 'None' is allowed.
+## @param route.tls.termination termination type (see [OKD documentation](https://docs.okd.io/latest/rest_api/network_apis/route-route-openshift-io-v1.html#spec-tls))
+## @param route.tls.insecureEdgeTerminationPolicy the desired behavior for insecure connections to a route (e.g. with http)
+## @param route.tls.existingSecret the name of a predefined secret of type kubernetes.io/tls with both key (tls.crt and tls.key) set accordingly (if defined attributes 'certificate', 'caCertificate' and 'privateKey' are ignored)
+## @param route.tls.certificate PEM encoded single certificate
+## @param route.tls.privateKey PEM encoded private key
+## @param route.tls.caCertificate PEM encoded CA certificate or chain that issued the certificate
+## @param route.tls.destinationCACertificate PEM encoded CA certificate used to verify the authenticity of final end point when 'termination' is set to 'passthrough' (ignored otherwise)
+route:
+  enabled: false
+  annotations: {}
+  host:
+  wildcardPolicy:
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    existingSecret:
+    certificate:
+    # certificate: |-
+    # -----BEGIN CERTIFICATE-----
+    # ...
+    # -----END CERTIFICATE-----
+    privateKey:
+    # privateKey: |-
+    # -----BEGIN PRIVATE KEY-----
+    # ...
+    # -----END PRIVATE KEY-----
+    caCertificate:
+    # caCertificate: |-
+    # -----BEGIN CERTIFICATE-----
+    # ...
+    # -----END CERTIFICATE-----
+    destinationCACertificate:
+    # destinationCACertificate: |-
+    # -----BEGIN CERTIFICATE-----
+    # ...
+    # -----END CERTIFICATE-----
+
 ## @section deployment
 #
 ## @param resources Kubernetes resources
