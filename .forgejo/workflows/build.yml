@@ -91,9 +91,9 @@ jobs:
           # oldest supported version
           - v1.28.15+k3s1 # renovate: k3s
           # stable version
-          - v1.30.7+k3s1 # renovate: k3s
+          - v1.30.8+k3s1 # renovate: k3s
           # newest version
-          - v1.31.3+k3s1 # renovate: k3s
+          - v1.31.4+k3s1 # renovate: k3s
 
     steps:
       - run: cat /etc/os-release
