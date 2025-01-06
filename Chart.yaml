@@ -31,7 +31,7 @@ dependencies:
     repository: oci://registry-1.docker.io/bitnamicharts
     tags:
       - bitnami-common
-    version: 2.28.0
+    version: 2.29.0
   # https://github.com/bitnami/charts/blob/main/bitnami/postgresql/Chart.yaml
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
