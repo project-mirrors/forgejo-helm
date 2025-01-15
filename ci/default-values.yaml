@@ -2,14 +2,16 @@
 
 # Use mirror
 # https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+global:
+  security:
+    allowInsecureImages: true
 redis-cluster:
-  global:
-    imageRegistry: public.ecr.aws
-    security:
-      allowInsecureImages: true
-
+  image:
+    registry: public.ecr.aws
 postgresql-ha:
-  global:
-    imageRegistry: public.ecr.aws
-    security:
-      allowInsecureImages: true
+  postgresql:
+    image:
+      registry: public.ecr.aws
+  pgpool:
+    image:
+      registry: public.ecr.aws
