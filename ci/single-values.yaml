@@ -1,9 +1,16 @@
 redis-cluster:
   enabled: false
-postgresql:
-  enabled: true
 postgresql-ha:
   enabled: false
+
+postgresql:
+  enabled: true
+  # Use mirror
+  # https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+  global:
+    imageRegistry: public.ecr.aws
+    security:
+      allowInsecureImages: true
 
 persistence:
   enabled: true

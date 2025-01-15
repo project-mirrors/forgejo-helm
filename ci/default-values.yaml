@@ -1,1 +1,15 @@
 # default values with some modifications
+
+# Use mirror
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+redis-cluster:
+  global:
+    imageRegistry: public.ecr.aws
+    security:
+      allowInsecureImages: true
+
+postgresql-ha:
+  global:
+    imageRegistry: public.ecr.aws
+    security:
+      allowInsecureImages: true
