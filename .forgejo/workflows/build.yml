@@ -93,7 +93,7 @@ jobs:
           # stable version
           - v1.30.8+k3s1 # renovate: k3s
           # newest version
-          - v1.31.4+k3s1 # renovate: k3s
+          - v1.32.0+k3s1 # renovate: k3s
 
     steps:
       - run: cat /etc/os-release
