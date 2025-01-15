@@ -1,9 +1,21 @@
+# Use mirror
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+global:
+  security:
+    allowInsecureImages: true
+test:
+  image:
+    name: code.forgejo.org/oci/busybox
+
 redis-cluster:
   enabled: false
-postgresql:
-  enabled: true
 postgresql-ha:
   enabled: false
+
+postgresql:
+  enabled: true
+  image:
+    registry: public.ecr.aws # Use mirror
 
 persistence:
   enabled: true

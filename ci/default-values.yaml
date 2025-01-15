@@ -1,1 +1,20 @@
 # default values
+
+# Use mirror
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+global:
+  security:
+    allowInsecureImages: true
+redis-cluster:
+  image:
+    registry: public.ecr.aws
+postgresql-ha:
+  postgresql:
+    image:
+      registry: public.ecr.aws
+  pgpool:
+    image:
+      registry: public.ecr.aws
+test:
+  image:
+    name: code.forgejo.org/oci/busybox
