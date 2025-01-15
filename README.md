@@ -57,6 +57,7 @@
   - [Advanced](#advanced)
 - [Contributing](#contributing)
 - [Upgrading](#upgrading)
+  - [To v11](#to-v11)
   - [To v10](#to-v10)
   - [To v9](#to-v9)
   - [To v8](#to-v8)
@@ -1235,6 +1236,14 @@ Hop into [our Matrix room](https://matrix.to/#/#forgejo-helm-chart:matrix.org) i
 This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
 If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
+
+### To v11
+
+PostgreSQL and PostgreSQL HA are now using PostgreSQL v17.
+Please read PostgresSQL upgrade guide before upgrading.
+
+You need Forgejo v10+ to use this Helm Chart version.
+Forgejo v9 is now EOL.
 
 ### To v10
 
