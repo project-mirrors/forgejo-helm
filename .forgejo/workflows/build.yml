@@ -94,7 +94,7 @@ jobs:
           - v1.28.15+k3s1 # renovate: k3s
           # https://github.com/k3s-io/k3s/blob/master/channel.yaml#L3-L4
           # stable version
-          - v1.30.8+k3s1 # renovate: k3s
+          - v1.31.8+k3s1 # renovate: k3s
           # newest version
           - v1.32.0+k3s1 # renovate: k3s
 
