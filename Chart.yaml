@@ -22,33 +22,35 @@ maintainers:
   - name: Michael Kriese
     email: michael.kriese@visualon.de
 
-# Bitnami charts are served from Docker Hub
+# Bitnami charts are served from ghcr mirror because of rate limiting on Docker Hub
 # https://hub.docker.com/u/bitnamicharts
 # https://blog.bitnami.com/2023/01/bitnami-helm-charts-available-as-oci.html
+# https://github.com/bitnami/charts/issues/30853
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
 dependencies:
   # https://github.com/bitnami/charts/blob/main/bitnami/common/Chart.yaml
   - name: common
-    repository: oci://registry-1.docker.io/bitnamicharts
+    repository: oci://ghcr.io/visualon/bitnamicharts
     tags:
       - bitnami-common
     version: 2.29.0
   # https://github.com/bitnami/charts/blob/main/bitnami/postgresql/Chart.yaml
   - name: postgresql
-    repository: oci://registry-1.docker.io/bitnamicharts
+    repository: oci://ghcr.io/visualon/bitnamicharts
     version: 15.5.38
     condition: postgresql.enabled
   # https://github.com/bitnami/charts/blob/main/bitnami/postgresql-ha/Chart.yaml
   - name: postgresql-ha
-    repository: oci://registry-1.docker.io/bitnamicharts
+    repository: oci://ghcr.io/visualon/bitnamicharts
     version: 14.3.10
     condition: postgresql-ha.enabled
   # https://github.com/bitnami/charts/blob/main/bitnami/redis-cluster/Chart.yaml
   - name: redis-cluster
-    repository: oci://registry-1.docker.io/bitnamicharts
+    repository: oci://ghcr.io/visualon/bitnamicharts
     version: 11.3.0
     condition: redis-cluster.enabled
   # https://github.com/bitnami/charts/blob/main/bitnami/redis/Chart.yaml
   - name: redis
-    repository: oci://registry-1.docker.io/bitnamicharts
+    repository: oci://ghcr.io/visualon/bitnamicharts
     version: 20.6.2
     condition: redis.enabled
