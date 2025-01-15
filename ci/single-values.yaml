@@ -9,10 +9,15 @@ postgresql:
   # https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
   image:
     registry: public.ecr.aws
-
 global:
   security:
     allowInsecureImages: true
+
+# Use mirror
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+test:
+  image:
+    name: code.forgejo.org/oci/busybox
 
 persistence:
   enabled: true

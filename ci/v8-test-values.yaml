@@ -3,6 +3,12 @@ image:
   repository: forgejo-experimental/forgejo
   tag: 8.0-test # don't pin, manifests can be missing
 
+# Use mirror
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+test:
+  image:
+    name: code.forgejo.org/oci/busybox
+
 redis-cluster:
   enabled: false
 postgresql-ha:
