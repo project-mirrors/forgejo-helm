@@ -633,7 +633,8 @@ gitea:
   ## @section ReadinessProbe
   #
   ## @param gitea.readinessProbe.enabled Enable readiness probe
-  ## @param gitea.readinessProbe.tcpSocket.port Port to probe for readiness
+  ## @param gitea.readinessProbe.httpGet.path Path to probe for readiness
+  ## @param gitea.readinessProbe.httpGet.port Port to probe for readiness
   ## @param gitea.readinessProbe.initialDelaySeconds Initial delay before readiness probe is initiated
   ## @param gitea.readinessProbe.timeoutSeconds Timeout for readiness probe
   ## @param gitea.readinessProbe.periodSeconds Period for readiness probe
@@ -642,7 +643,8 @@ gitea:
   # Modify the readiness probe for your needs or completely disable it by commenting out.
   readinessProbe:
     enabled: true
-    tcpSocket:
+    httpGet:
+      path: /api/healthz
       port: http
     initialDelaySeconds: 5
     timeoutSeconds: 1

@@ -1114,15 +1114,16 @@ blocks, while the keys themselves remain in all caps.
 
 ### ReadinessProbe
 
-| Name                                       | Description                                       | Value  |
-| ------------------------------------------ | ------------------------------------------------- | ------ |
-| `gitea.readinessProbe.enabled`             | Enable readiness probe                            | `true` |
-| `gitea.readinessProbe.tcpSocket.port`      | Port to probe for readiness                       | `http` |
-| `gitea.readinessProbe.initialDelaySeconds` | Initial delay before readiness probe is initiated | `5`    |
-| `gitea.readinessProbe.timeoutSeconds`      | Timeout for readiness probe                       | `1`    |
-| `gitea.readinessProbe.periodSeconds`       | Period for readiness probe                        | `10`   |
-| `gitea.readinessProbe.successThreshold`    | Success threshold for readiness probe             | `1`    |
-| `gitea.readinessProbe.failureThreshold`    | Failure threshold for readiness probe             | `3`    |
+| Name                                       | Description                                       | Value          |
+| ------------------------------------------ | ------------------------------------------------- | -------------- |
+| `gitea.readinessProbe.enabled`             | Enable readiness probe                            | `true`         |
+| `gitea.readinessProbe.httpGet.path`        | Path to probe for readiness                       | `/api/healthz` |
+| `gitea.readinessProbe.httpGet.port`        | Port to probe for readiness                       | `http`         |
+| `gitea.readinessProbe.initialDelaySeconds` | Initial delay before readiness probe is initiated | `5`            |
+| `gitea.readinessProbe.timeoutSeconds`      | Timeout for readiness probe                       | `1`            |
+| `gitea.readinessProbe.periodSeconds`       | Period for readiness probe                        | `10`           |
+| `gitea.readinessProbe.successThreshold`    | Success threshold for readiness probe             | `1`            |
+| `gitea.readinessProbe.failureThreshold`    | Failure threshold for readiness probe             | `3`            |
 
 ### StartupProbe
 
@@ -1229,6 +1230,7 @@ Forgejo v9 is now EOL.
 ClusterIP is now emtpy instead of `None` for http and ssh service.
 Unsupported api versions for `Ingress` and `PodDisruptionBudget` are removed.
 `Ingress` and `Service` are now using named ports.
+The ReadinessProbe is now using the `/api/healthz` endpoint.
 
 ### To v10
 
