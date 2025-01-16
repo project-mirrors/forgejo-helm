@@ -458,7 +458,7 @@ You will need a LoadBalancer like `metallb` and a setting in your ssh service an
 service:
   ssh:
     annotations:
-      metallb.universe.tf/allow-shared-ip: test
+      metallb.io/allow-shared-ip: test
 ```
 
 ### SSH on crio based kubernetes cluster
