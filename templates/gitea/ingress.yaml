@@ -1,6 +1,5 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "gitea.fullname" . -}}
-{{- $httpPort := .Values.service.http.port -}}
 apiVersion: networking.k8s.io/v1/Ingress
 kind: Ingress
 metadata:
@@ -40,7 +39,7 @@ spec:
               service:
                 name: {{ $fullName }}-http
                 port:
-                  number: {{ $httpPort }}
+                  name: http
           {{- end }}
     {{- end }}
 {{- end }}

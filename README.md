@@ -1228,6 +1228,7 @@ Forgejo v9 is now EOL.
 
 ClusterIP is now emtpy instead of `None` for http and ssh service.
 Unsupported api versions for `Ingress` and `PodDisruptionBudget` are removed.
+`Ingress` and `Service` are now using named ports.
 
 ### To v10
 

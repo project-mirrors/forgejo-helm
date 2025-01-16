@@ -49,6 +49,6 @@ spec:
     {{- if  .Values.service.http.nodePort }}
     nodePort: {{ .Values.service.http.nodePort }}
     {{- end }}
-    targetPort: {{ .Values.gitea.config.server.HTTP_PORT }}
+    targetPort: http
   selector:
     {{- include "gitea.selectorLabels" . | nindent 4 }}
