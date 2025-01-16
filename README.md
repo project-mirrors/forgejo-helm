@@ -20,7 +20,6 @@
     - [User defined environment variables in app.ini](#user-defined-environment-variables-in-appini)
   - [External Database](#external-database)
   - [Ports and external url](#ports-and-external-url)
-  - [ClusterIP](#clusterip)
   - [SSH and Ingress](#ssh-and-ingress)
   - [SSH on crio based kubernetes cluster](#ssh-on-crio-based-kubernetes-cluster)
   - [Cache](#cache)
@@ -449,23 +448,6 @@ service:
 This helm chart automatically configures the clone urls to use the correct ports.
 You can change these ports by hand using the `gitea.config` dict.
 However you should know what you're doing.
-
-### ClusterIP
-
-By default the `clusterIP` will be set to `None`, which is the default for headless services.
-However if you want to omit the clusterIP field in the service, use the following values:
-
-```yaml
-service:
-  http:
-    type: ClusterIP
-    port: 3000
-    clusterIP:
-  ssh:
-    type: ClusterIP
-    port: 22
-    clusterIP:
-```
 
 ### SSH and Ingress
 
@@ -923,7 +905,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `service.http.type`                     | Kubernetes service type for web traffic                                                                                                                                                              | `ClusterIP` |
 | `service.http.port`                     | Port number for web traffic                                                                                                                                                                          | `3000`      |
-| `service.http.clusterIP`                | ClusterIP setting for http autosetup for deployment is None                                                                                                                                          | `None`      |
+| `service.http.clusterIP`                | ClusterIP setting for http autosetup for deployment                                                                                                                                                  | `nil`       |
 | `service.http.loadBalancerIP`           | LoadBalancer IP setting                                                                                                                                                                              | `nil`       |
 | `service.http.nodePort`                 | NodePort for http service                                                                                                                                                                            | `nil`       |
 | `service.http.externalTrafficPolicy`    | If `service.http.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation                                                                                         | `nil`       |
@@ -936,7 +918,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `service.http.loadBalancerClass`        | Loadbalancer class                                                                                                                                                                                   | `nil`       |
 | `service.ssh.type`                      | Kubernetes service type for ssh traffic                                                                                                                                                              | `ClusterIP` |
 | `service.ssh.port`                      | Port number for ssh traffic                                                                                                                                                                          | `22`        |
-| `service.ssh.clusterIP`                 | ClusterIP setting for ssh autosetup for deployment is None                                                                                                                                           | `None`      |
+| `service.ssh.clusterIP`                 | ClusterIP setting for ssh autosetup for deployment                                                                                                                                                   | `nil`       |
 | `service.ssh.loadBalancerIP`            | LoadBalancer IP setting                                                                                                                                                                              | `nil`       |
 | `service.ssh.nodePort`                  | NodePort for ssh service                                                                                                                                                                             | `nil`       |
 | `service.ssh.externalTrafficPolicy`     | If `service.ssh.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation                                                                                          | `nil`       |
@@ -1244,6 +1226,8 @@ Please read PostgresSQL upgrade guide before upgrading.
 
 You need Forgejo v10+ to use this Helm Chart version.
 Forgejo v9 is now EOL.
+
+ClusterIP is now emtpy instead of `None` for http and ssh service.
 
 ### To v10
 

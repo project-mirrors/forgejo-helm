@@ -101,7 +101,7 @@ podDisruptionBudget: {}
 service:
   ## @param service.http.type Kubernetes service type for web traffic
   ## @param service.http.port Port number for web traffic
-  ## @param service.http.clusterIP ClusterIP setting for http autosetup for deployment is None
+  ## @param service.http.clusterIP ClusterIP setting for http autosetup for deployment
   ## @param service.http.loadBalancerIP LoadBalancer IP setting
   ## @param service.http.nodePort NodePort for http service
   ## @param service.http.externalTrafficPolicy If `service.http.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation
@@ -115,7 +115,7 @@ service:
   http:
     type: ClusterIP
     port: 3000
-    clusterIP: None
+    clusterIP:
     loadBalancerIP:
     nodePort:
     externalTrafficPolicy:
@@ -128,7 +128,7 @@ service:
     loadBalancerClass:
   ## @param service.ssh.type Kubernetes service type for ssh traffic
   ## @param service.ssh.port Port number for ssh traffic
-  ## @param service.ssh.clusterIP ClusterIP setting for ssh autosetup for deployment is None
+  ## @param service.ssh.clusterIP ClusterIP setting for ssh autosetup for deployment
   ## @param service.ssh.loadBalancerIP LoadBalancer IP setting
   ## @param service.ssh.nodePort NodePort for ssh service
   ## @param service.ssh.externalTrafficPolicy If `service.ssh.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation
@@ -143,7 +143,7 @@ service:
   ssh:
     type: ClusterIP
     port: 22
-    clusterIP: None
+    clusterIP:
     loadBalancerIP:
     nodePort:
     externalTrafficPolicy:
