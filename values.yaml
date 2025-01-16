@@ -164,7 +164,6 @@ service:
 ## @param ingress.hosts[0].paths[0].path Default Ingress path
 ## @param ingress.hosts[0].paths[0].pathType Ingress path type
 ## @param ingress.tls Ingress tls settings
-## @extra ingress.apiVersion Specify APIVersion of ingress object. Mostly would only be used for argocd.
 ingress:
   enabled: false
   # className: nginx
@@ -182,9 +181,6 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - git.example.com
-  # Mostly for argocd or any other CI that uses `helm template | kubectl apply` or similar
-  # If helm doesn't correctly detect your ingress API version you can set it here.
-  # apiVersion: networking.k8s.io/v1
 
 ## @section Route
 ## @param route.enabled Enable route

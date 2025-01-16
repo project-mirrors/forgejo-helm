@@ -933,16 +933,15 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Ingress
 
-| Name                                 | Description                                                                 | Value             |
-| ------------------------------------ | --------------------------------------------------------------------------- | ----------------- |
-| `ingress.enabled`                    | Enable ingress                                                              | `false`           |
-| `ingress.className`                  | Ingress class name                                                          | `nil`             |
-| `ingress.annotations`                | Ingress annotations                                                         | `{}`              |
-| `ingress.hosts[0].host`              | Default Ingress host                                                        | `git.example.com` |
-| `ingress.hosts[0].paths[0].path`     | Default Ingress path                                                        | `/`               |
-| `ingress.hosts[0].paths[0].pathType` | Ingress path type                                                           | `Prefix`          |
-| `ingress.tls`                        | Ingress tls settings                                                        | `[]`              |
-| `ingress.apiVersion`                 | Specify APIVersion of ingress object. Mostly would only be used for argocd. |                   |
+| Name                                 | Description          | Value             |
+| ------------------------------------ | -------------------- | ----------------- |
+| `ingress.enabled`                    | Enable ingress       | `false`           |
+| `ingress.className`                  | Ingress class name   | `nil`             |
+| `ingress.annotations`                | Ingress annotations  | `{}`              |
+| `ingress.hosts[0].host`              | Default Ingress host | `git.example.com` |
+| `ingress.hosts[0].paths[0].path`     | Default Ingress path | `/`               |
+| `ingress.hosts[0].paths[0].pathType` | Ingress path type    | `Prefix`          |
+| `ingress.tls`                        | Ingress tls settings | `[]`              |
 
 ### Route
 
@@ -1228,6 +1227,7 @@ You need Forgejo v10+ to use this Helm Chart version.
 Forgejo v9 is now EOL.
 
 ClusterIP is now emtpy instead of `None` for http and ssh service.
+Unsupported api versions for `Ingress` and `PodDisruptionBudget` are removed.
 
 ### To v10
 
