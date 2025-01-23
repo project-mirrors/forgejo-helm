@@ -369,7 +369,7 @@ initContainers:
 #
 ## @param signing.enabled Enable commit/action signing
 ## @param signing.gpgHome GPG home directory
-## @param signing.privateKey Inline private gpg key for signed internal Git activity
+## @param signing.privateKey Inline private GPG key for signed internal Git activity
 ## @param signing.existingSecret Use an existing secret to store the value of `signing.privateKey`
 signing:
   enabled: false
@@ -675,7 +675,7 @@ gitea:
 ## @section Redis&reg; Cluster
 ## @descriptionStart
 ## Redis&reg; Cluster is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster) if enabled in the values.
-## Complete Configuration can be taken from their website.
+## Full configuration options are available on their website.
 ## Redis cluster and [Redis](#redis) cannot be enabled at the same time.
 ## @descriptionEnd
 #
@@ -693,7 +693,7 @@ redis-cluster:
 ## @section Redis&reg;
 ## @descriptionStart
 ## Redis&reg; is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis) if enabled in the values.
-## Complete Configuration can be taken from their website.
+## Full configuration options are available on their website.
 ## Redis and [Redis cluster](#redis-cluster) cannot be enabled at the same time.
 ## @descriptionEnd
 #
@@ -713,7 +713,7 @@ redis:
 ## @section PostgreSQL HA
 ## @descriptionStart
 ## PostgreSQL HA is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql-ha) if enabled in the values.
-## Complete Configuration can be taken from their website.
+## Full configuration options are available on their website.
 ## @descriptionEnd
 #
 ## @param postgresql-ha.enabled Enable PostgreSQL HA chart
@@ -749,7 +749,7 @@ postgresql-ha:
 ## @section PostgreSQL
 ## @descriptionStart
 ## PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) if enabled in the values.
-## Complete Configuration can be taken from their website.
+## Full configuration options are available on their website.
 ## @descriptionEnd
 #
 ## @param postgresql.enabled Enable PostgreSQL
@@ -776,8 +776,8 @@ postgresql:
 # By default, removed or moved settings that still remain in a user defined values.yaml will cause Helm to fail running the install/update.
 # Set it to false to skip this basic validation check.
 ## @section Advanced
-## @param checkDeprecation Set it to false to skip this basic validation check.
-## @param test.enabled Set it to false to disable test-connection Pod.
+## @param checkDeprecation Whether to run this basic validation check.
+## @param test.enabled Whether to use test-connection Pod.
 ## @param test.image.name Image name for the wget container used in the test-connection Pod.
 ## @param test.image.tag Image tag for the wget container used in the test-connection Pod.
 checkDeprecation: true
@@ -787,6 +787,6 @@ test:
     name: busybox
     tag: latest
 
-## @param extraDeploy Array of extra objects to deploy with the release
+## @param extraDeploy Array of extra objects to deploy with the release.
 ##
 extraDeploy: []

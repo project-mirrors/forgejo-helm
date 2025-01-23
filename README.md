@@ -176,14 +176,14 @@ gitea:
 This chart will set a few defaults in the Forgejo configuration based on the service and ingress settings.
 All defaults can be overwritten in `gitea.config`.
 
-INSTALL_LOCK is always set to true, since we want to configure Forgejo with this helm chart and everything is taken care of.
+INSTALL_LOCK is always set to true because the configuration in this helm chart makes any configuration via installer superfluous.
 
 _All default settings are made directly in the generated `app.ini`, not in the Values._
 
 #### Database defaults
 
-If a builtIn database is enabled the database configuration is set automatically.
-For example, PostgreSQL builtIn will appear in the `app.ini` as:
+If a database subchart is enabled, the database configuration is set automatically.
+For example, PostgreSQL will appear in the `app.ini` as:
 
 ```ini
 [database]
@@ -531,8 +531,6 @@ postgresql:
 
 This chart enables you to create a default admin user.
 It is also possible to update the password for this user by upgrading or redeploying the chart.
-It is not possible to delete an admin user after it has been created.
-This has to be done in the ui.
 You cannot use `admin` as username.
 
 ```yaml
@@ -562,7 +560,9 @@ gitea:
     existingSecret: gitea-admin-secret
 ```
 
-Whether you use the existing Secret or specify a user name and password, there are three modes for how the admin user password is created or set.
+To delete the admin user, set `username` or `password` to an empty value and delete the user in the UI.
+
+Whether you use the existing Secret or specify a username and password directly, there are three modes for how the admin user password is created or set.
 
 - `keepUpdated` (the default) will set the admin user password, and reset it to the defined value every time the pod is recreated.
 - `initialOnlyNoReset` will set the admin user password when creating it, but never try to update the password.
@@ -633,7 +633,7 @@ Affected options:
 
 Like the admin user, OAuth2 settings can be updated and disabled but not deleted.
 Deleting OAuth2 settings has to be done in the UI.
-All OAuth2 values, which are documented [here](https://forgejo.org/docs/latest/admin/command-line/#admin), are available.
+[All OAuth2 values](https://forgejo.org/docs/latest/admin/command-line/#admin-auth-add-oauth) are available.
 
 Multiple OAuth2 sources can be configured with additional OAuth list items.
 
@@ -692,12 +692,9 @@ route:
 
 ## Configure commit signing
 
-When using the rootless image the gpg key folder is not persistent by default.
-If you consider using signed commits for internal Forgejo activities (e.g. initial commit), you'd need to provide a signing key.
-Prior to [PR186](https://gitea.com/gitea/helm-chart/pulls/186), imported keys had to be re-imported once the container got replaced by another.
-
-The mentioned PR introduced a new configuration object `signing` allowing you to configure prerequisites for commit signing.
-By default this section is disabled to maintain backwards compatibility.
+When using the rootless image, the GPG key folder is not persistent by default.
+If you want commits by Forgejo (e.g. initial commit) to be signed,
+you need to provide a signing key:
 
 ```yaml
 signing:
@@ -705,8 +702,10 @@ signing:
   gpgHome: /data/git/.gnupg
 ```
 
-Regardless of the used container image the `signing` object allows to specify a private gpg key.
-Either using the `signing.privateKey` to define the key inline, or refer to an existing secret containing the key data by using `signing.existingSecret`.
+By default this section is disabled to maintain backwards compatibility.
+
+Regardless of the used container image the `signing` object allows to specify a private GPG key.
+Either using the `signing.privateKey` to define the key inline, or referring to an existing secret containing the key data with `signing.existingSecret`.
 
 ```yaml
 apiVersion: v1
@@ -726,7 +725,7 @@ signing:
   existingSecret: custom-gitea-gpg-key
 ```
 
-To use the gpg key, Forgejo needs to be configured accordingly.
+To use the GPG key, Forgejo needs to be configured accordingly.
 A detailed description can be found in the [documentation](https://forgejo.org/docs/latest/admin/signing/#general-configuration).
 
 ## Metrics and profiling
@@ -1022,7 +1021,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | ------------------------ | ----------------------------------------------------------------- | ------------------ |
 | `signing.enabled`        | Enable commit/action signing                                      | `false`            |
 | `signing.gpgHome`        | GPG home directory                                                | `/data/git/.gnupg` |
-| `signing.privateKey`     | Inline private gpg key for signed internal Git activity           | `""`               |
+| `signing.privateKey`     | Inline private GPG key for signed internal Git activity           | `""`               |
 | `signing.existingSecret` | Use an existing secret to store the value of `signing.privateKey` | `""`               |
 
 ### Gitea
@@ -1140,7 +1139,7 @@ blocks, while the keys themselves remain in all caps.
 ### Redis&reg; Cluster
 
 Redis&reg; Cluster is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis-cluster) if enabled in the values.
-Complete Configuration can be taken from their website.
+Full configuration options are available on their website.
 Redis cluster and [Redis](#redis) cannot be enabled at the same time.
 
 | Name                             | Description                                  | Value   |
@@ -1153,7 +1152,7 @@ Redis cluster and [Redis](#redis) cannot be enabled at the same time.
 ### Redis&reg;
 
 Redis&reg; is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/redis) if enabled in the values.
-Complete Configuration can be taken from their website.
+Full configuration options are available on their website.
 Redis and [Redis cluster](#redis-cluster) cannot be enabled at the same time.
 
 | Name                          | Description                                | Value        |
@@ -1166,7 +1165,7 @@ Redis and [Redis cluster](#redis-cluster) cannot be enabled at the same time.
 ### PostgreSQL HA
 
 PostgreSQL HA is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql-ha) if enabled in the values.
-Complete Configuration can be taken from their website.
+Full configuration options are available on their website.
 
 | Name                                        | Description                                                      | Value       |
 | ------------------------------------------- | ---------------------------------------------------------------- | ----------- |
@@ -1184,7 +1183,7 @@ Complete Configuration can be taken from their website.
 ### PostgreSQL
 
 PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) if enabled in the values.
-Complete Configuration can be taken from their website.
+Full configuration options are available on their website.
 
 | Name                                                    | Description                                                      | Value   |
 | ------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
@@ -1199,11 +1198,11 @@ Complete Configuration can be taken from their website.
 
 | Name               | Description                                                        | Value     |
 | ------------------ | ------------------------------------------------------------------ | --------- |
-| `checkDeprecation` | Set it to false to skip this basic validation check.               | `true`    |
-| `test.enabled`     | Set it to false to disable test-connection Pod.                    | `true`    |
+| `checkDeprecation` | Whether to run this basic validation check.                        | `true`    |
+| `test.enabled`     | Whether to use test-connection Pod.                                | `true`    |
 | `test.image.name`  | Image name for the wget container used in the test-connection Pod. | `busybox` |
 | `test.image.tag`   | Image tag for the wget container used in the test-connection Pod.  | `latest`  |
-| `extraDeploy`      | Array of extra objects to deploy with the release                  | `[]`      |
+| `extraDeploy`      | Array of extra objects to deploy with the release.                 | `[]`      |
 
 ## Contributing
 
