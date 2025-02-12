@@ -89,15 +89,18 @@ stringData:
 
       env2ini::log "    + '${setting}'"
 
+      local masked_setting="${setting//./_0X2E_}"                           # '//' instructs to replace all matches
+      masked_setting="${masked_setting//-/_0X2D_}"
+
       if [[ -z "${section}" ]]; then
-        export "FORGEJO____${setting^^}=${value}"                           # '^^' makes the variable content uppercase
+        export "FORGEJO____${masked_setting^^}=${value}"                           # '^^' makes the variable content uppercase
         return
       fi
 
       local masked_section="${section//./_0X2E_}"                           # '//' instructs to replace all matches
       masked_section="${masked_section//-/_0X2D_}"
 
-      export "FORGEJO__${masked_section^^}__${setting^^}=${value}"          # '^^' makes the variable content uppercase
+      export "FORGEJO__${masked_section^^}__${masked_setting^^}=${value}"          # '^^' makes the variable content uppercase
     }
 
     function env2ini::reload_preset_envs() {
