@@ -13,6 +13,6 @@ dependencies:
   version: 11.4.2
 - name: redis
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 20.7.0
-digest: sha256:82069ae8c25228288e66f32689d2135247fa9c43bfc657ead1408fe617f50a3a
-generated: "2025-02-17T02:31:35.571418232Z"
+  version: 20.7.1
+digest: sha256:3eeb852353d36db18c869a85c0a0055e9cb20848b5e18d53984ea31726f203ae
+generated: "2025-02-17T03:31:29.047001545Z"
