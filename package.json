@@ -17,7 +17,7 @@
     "@bitnami/readme-generator-for-helm": "2.7.0",
     "clipanion": "3.2.1",
     "conventional-changelog-conventionalcommits": "8.0.0",
-    "conventional-changelog-core": "8.0.0",
+    "conventional-changelog-core": "9.0.0",
     "husky": "9.1.7",
     "lint-staged": "15.4.3",
     "markdownlint-cli": "0.44.0",
