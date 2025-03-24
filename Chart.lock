@@ -7,6 +7,6 @@ dependencies:
   version: 14.3.10
 - name: redis-cluster
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 11.4.5
-digest: sha256:8fed36b6a1cbed0930e4c00ff1717ec07ab3a76f25db59624816a4a4a9cc92c1
-generated: "2025-03-17T00:01:28.415893191Z"
+  version: 11.4.6
+digest: sha256:f78e04d3701c52cc7997ef1c3ede95b3c2f9739435e9532c16ff94272dd5d619
+generated: "2025-03-24T00:04:00.959739035Z"
