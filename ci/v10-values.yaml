@@ -1,7 +1,7 @@
 image:
   registry: codeberg.org
   repository: forgejo-experimental/forgejo
-  tag: 10.0-test # don't pin, manifests can be missing
+  tag: 10 # don't pin, manifests can be missing
 
 # Use mirror
 # https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
