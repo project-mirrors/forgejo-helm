@@ -1218,6 +1218,11 @@ This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
 If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
 
+### To v12
+
+You need Forgejo v11+ to use this Helm Chart version.
+Forgejo v10 is now EOL.
+
 ### To v11
 
 PostgreSQL and PostgreSQL HA are now using PostgreSQL v17.
