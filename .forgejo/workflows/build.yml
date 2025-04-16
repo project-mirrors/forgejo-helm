@@ -189,7 +189,6 @@ jobs:
       - name: login to registries
         run: |
           echo ${CODEBERG_TOKEN} | helm registry login -u viceice --password-stdin codeberg.org/forgejo-contrib
-          echo ${FORGEJO_TOKEN} | helm registry login -u viceice --password-stdin code.forgejo.org/forgejo-contrib
           echo ${FORGEJO_TOKEN} | helm registry login -u viceice --password-stdin code.forgejo.org/forgejo-helm
         env:
           CODEBERG_TOKEN: ${{secrets.API_TOKEN}}
@@ -198,7 +197,6 @@ jobs:
       - name: publish forgejo helm chart
         run: |
           helm push tmp/forgejo-${GITHUB_REF_NAME#v}.tgz oci://codeberg.org/forgejo-contrib
-          helm push tmp/forgejo-${GITHUB_REF_NAME#v}.tgz oci://code.forgejo.org/forgejo-contrib
           helm push tmp/forgejo-${GITHUB_REF_NAME#v}.tgz oci://code.forgejo.org/forgejo-helm
 
       - name: publish forgejo release
