@@ -112,6 +112,7 @@ service:
   ## @param service.http.annotations HTTP service annotations
   ## @param service.http.labels HTTP service additional labels
   ## @param service.http.loadBalancerClass Loadbalancer class
+  ## @param service.http.extraPorts Additional ports
   http:
     type: ClusterIP
     port: 3000
@@ -126,6 +127,7 @@ service:
     annotations: {}
     labels: {}
     loadBalancerClass:
+    extraPorts: []
   ## @param service.ssh.type Kubernetes service type for ssh traffic
   ## @param service.ssh.port Port number for ssh traffic
   ## @param service.ssh.clusterIP ClusterIP setting for ssh autosetup for deployment

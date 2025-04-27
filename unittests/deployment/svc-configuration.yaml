@@ -126,3 +126,19 @@ tests:
       - matchRegex:
           path: spec.ports[0].name
           pattern: '^(?:ssh|http)$'
+
+  - it: renders service.http.extraPorts
+    template: templates/gitea/http-svc.yaml
+    set:
+      service:
+        http:
+          extraPorts:
+            - name: otherHttp
+              port: 1234
+    asserts:
+      - equal:
+          path: spec.ports[1].name
+          value: 'otherHttp'
+      - equal:
+          path: spec.ports[1].port
+          value: 1234

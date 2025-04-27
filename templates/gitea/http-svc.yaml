@@ -50,5 +50,8 @@ spec:
     nodePort: {{ .Values.service.http.nodePort }}
     {{- end }}
     targetPort: http
+  {{- if .Values.service.http.extraPorts }}
+  {{- toYaml .Values.service.http.extraPorts | nindent 2 }}
+  {{- end }}
   selector:
     {{- include "gitea.selectorLabels" . | nindent 4 }}
