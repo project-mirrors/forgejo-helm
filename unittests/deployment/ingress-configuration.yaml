@@ -45,3 +45,24 @@ tests:
       - equal:
           path: spec.ingressClassName
           value: 'ingress-class'
+
+  - it: Different port
+    set:
+      ingress.enabled: true
+      ingress.hosts:
+        - host: 'some-host'
+          paths:
+            - path: /
+              pathType: Prefix
+              port: anubis
+            - path: /abc
+              pathType: Prefix
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.name
+          value: anubis
+      - equal:
+          path: spec.rules[0].http.paths[1].backend.service.port.name
+          value: http

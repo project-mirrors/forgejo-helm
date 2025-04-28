@@ -165,6 +165,7 @@ service:
 ## @param ingress.hosts[0].host Default Ingress host
 ## @param ingress.hosts[0].paths[0].path Default Ingress path
 ## @param ingress.hosts[0].paths[0].pathType Ingress path type
+## @param ingress.hosts[0].paths[0].port Target port for Ingress
 ## @param ingress.tls Ingress tls settings
 ingress:
   enabled: false
@@ -179,6 +180,7 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          port: http
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

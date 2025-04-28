@@ -933,15 +933,16 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Ingress
 
-| Name                                 | Description          | Value             |
-| ------------------------------------ | -------------------- | ----------------- |
-| `ingress.enabled`                    | Enable ingress       | `false`           |
-| `ingress.className`                  | Ingress class name   | `nil`             |
-| `ingress.annotations`                | Ingress annotations  | `{}`              |
-| `ingress.hosts[0].host`              | Default Ingress host | `git.example.com` |
-| `ingress.hosts[0].paths[0].path`     | Default Ingress path | `/`               |
-| `ingress.hosts[0].paths[0].pathType` | Ingress path type    | `Prefix`          |
-| `ingress.tls`                        | Ingress tls settings | `[]`              |
+| Name                                 | Description             | Value             |
+| ------------------------------------ | ----------------------- | ----------------- |
+| `ingress.enabled`                    | Enable ingress          | `false`           |
+| `ingress.className`                  | Ingress class name      | `nil`             |
+| `ingress.annotations`                | Ingress annotations     | `{}`              |
+| `ingress.hosts[0].host`              | Default Ingress host    | `git.example.com` |
+| `ingress.hosts[0].paths[0].path`     | Default Ingress path    | `/`               |
+| `ingress.hosts[0].paths[0].pathType` | Ingress path type       | `Prefix`          |
+| `ingress.hosts[0].paths[0].port`     | Target port for Ingress | `http`            |
+| `ingress.tls`                        | Ingress tls settings    | `[]`              |
 
 ### Route
 

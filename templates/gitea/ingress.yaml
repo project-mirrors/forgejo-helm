@@ -39,7 +39,7 @@ spec:
               service:
                 name: {{ $fullName }}-http
                 port:
-                  name: http
+                  name: {{ .port | default "http" }}
           {{- end }}
     {{- end }}
 {{- end }}
