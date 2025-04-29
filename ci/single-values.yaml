@@ -3,6 +3,13 @@ redis-cluster:
 postgresql-ha:
   enabled: false
 
+redis:
+  enabled: true
+  # Use mirror
+  # https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+  image:
+    registry: public.ecr.aws
+
 postgresql:
   enabled: true
   # Use mirror
