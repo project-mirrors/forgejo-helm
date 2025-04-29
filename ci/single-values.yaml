@@ -15,7 +15,7 @@ postgresql:
   # Use mirror
   # https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
   image:
-    registry: public.ecr.aws
+    registry: ghcr.io/visualon
 global:
   security:
     allowInsecureImages: true

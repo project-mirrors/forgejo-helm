@@ -11,10 +11,10 @@ redis-cluster:
 postgresql-ha:
   postgresql:
     image:
-      registry: public.ecr.aws
+      registry: ghcr.io/visualon
   pgpool:
     image:
-      registry: public.ecr.aws
+      registry: ghcr.io/visualon
 test:
   image:
     name: code.forgejo.org/oci/busybox
