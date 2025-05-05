@@ -104,7 +104,7 @@
     {
       "description": "Update forgeo version in chart",
       "customType": "regex",
-      "fileMatch": ["^Chart\\.yaml$"],
+      "managerFilePatterns": ["Chart.yaml"],
       "matchStrings": ["appVersion: (?<currentValue>.+?)\\s"],
       "depNameTemplate": "forgejo",
       "packageNameTemplate": "code.forgejo.org/forgejo/forgejo",
@@ -113,7 +113,7 @@
     {
       "description": "Detect helm-unittest yaml schema file",
       "customType": "regex",
-      "fileMatch": [".vscode/settings\\.json$"],
+      "managerFilePatterns": [".vscode/settings.json"],
       "matchStrings": [
         "https://raw\\.githubusercontent\\.com/helm-unittest/helm-unittest/(?<currentValue>v[0-9.]+?)/schema/helm-testsuite\\.json"
       ],
@@ -124,7 +124,7 @@
     {
       "customType": "regex",
       "description": "Update k3s kubernetes references",
-      "fileMatch": ["^\\.forgejo/workflows/[^/]+\\.ya?ml$"],
+      "managerFilePatterns": ["/^\\.forgejo/workflows/[^/]+\\.ya?ml$/"],
       "matchStrings": [" +- (?<currentValue>.+?) # renovate: k3s\\n"],
       "depNameTemplate": "k3s",
       "packageNameTemplate": "k3s-io/k3s",
@@ -132,6 +132,6 @@
     }
   ],
   "helm-values": {
-    "fileMatch": ["^ci/.+\\.yaml$"]
+    "managerFilePatterns": ["/^ci/.+\\.yaml$/"]
   }
 }
