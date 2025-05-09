@@ -1,0 +1,65 @@
+suite: httpRoute template
+release:
+  name: gitea-unittests
+  namespace: testing
+templates:
+  - templates/gitea/httpRoute.yaml
+tests:
+  - it: basic httproute configuration
+    set:
+      httpRoute.enabled: true
+      httpRoute.parentRefs:
+        - name: contour
+          namespace: projectcontour
+      httpRoute.hostnames:
+        - git.example.com
+      httpRoute.matches:
+        path:
+          type: PathPrefix
+          value: '/'
+    asserts:
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: spec.parentRefs[0].name
+          value: contour
+      - equal:
+          path: spec.parentRefs[0].namespace
+          value: projectcontour
+      - equal:
+          path: spec.hostnames[0]
+          value: git.example.com
+      - equal:
+          path: spec.rules[0].matches[0].path.type
+          value: PathPrefix
+      - equal:
+          path: spec.rules[0].matches[0].path.value
+          value: '/'
+      - equal:
+          path: spec.rules[0].backendRefs[0].port
+          value: 3000
+
+  - it: with filters configuration
+    set:
+      httpRoute.enabled: true
+      httpRoute.parentRefs:
+        - name: contour
+          namespace: projectcontour
+      httpRoute.filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: X-Forwarded-Proto
+                value: https
+    asserts:
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: spec.rules[0].filters[0].type
+          value: RequestHeaderModifier
+      - equal:
+          path: spec.rules[0].filters[0].requestHeaderModifier.set[0].name
+          value: X-Forwarded-Proto
+      - equal:
+          path: spec.rules[0].filters[0].requestHeaderModifier.set[0].value
+          value: https

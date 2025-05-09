@@ -944,6 +944,18 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `ingress.hosts[0].paths[0].port`     | Target port for Ingress | `http`            |
 | `ingress.tls`                        | Ingress tls settings    | `[]`              |
 
+### Gateway-API HTTPRoute
+
+| Name                           | Description                                                                              | Value        |
+| ------------------------------ | ---------------------------------------------------------------------------------------- | ------------ |
+| `httpRoute.enabled`            | Enables Gateway API HTTPRoute as a replacement for traditional Ingress resources         | `false`      |
+| `httpRoute.annotations`        | Annotations to add to the HTTPRoute resource                                             | `{}`         |
+| `httpRoute.parentRefs`         | List of parentRefs for the HTTPRoute, typically referencing the Gateway(name, namespace) | `[]`         |
+| `httpRoute.hostnames`          | Hostnames this HTTPRoute applies to                                                      | `[]`         |
+| `httpRoute.matches.path.type`  | Type of path match (e.g., PathPrefix or Exact or RegularExpression)                      | `PathPrefix` |
+| `httpRoute.matches.path.value` | Path value for matching incoming requests                                                | `/`          |
+| `httpRoute.filters`            | Filters to apply on HTTP requests, such as header rewrites or request redirects          | `[]`         |
+
 ### Route
 
 | Name                                      | Description                                                                                                                                                                                       | Value      |

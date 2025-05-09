@@ -186,6 +186,35 @@ ingress:
   #    hosts:
   #      - git.example.com
 
+# Enables Gateway API HTTPRoute as a replacement for traditional Ingress resources
+## @section Gateway-API HTTPRoute
+## @param httpRoute.enabled Enables Gateway API HTTPRoute as a replacement for traditional Ingress resources
+## @param httpRoute.annotations Annotations to add to the HTTPRoute resource
+## @param httpRoute.parentRefs List of parentRefs for the HTTPRoute, typically referencing the Gateway(name, namespace)
+## @param httpRoute.hostnames Hostnames this HTTPRoute applies to
+## @param httpRoute.matches.path.type Type of path match (e.g., PathPrefix or Exact or RegularExpression)
+## @param httpRoute.matches.path.value Path value for matching incoming requests
+## @param httpRoute.filters Filters to apply on HTTP requests, such as header rewrites or request redirects
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+    []
+    # - name: contour #name of the gateway resource
+    #   namespace: projectcontour #name space where gateway resource running
+  hostnames: []
+  # - my-filter.example.com
+  matches:
+    path:
+      type: PathPrefix
+      value: '/'
+  filters: []
+  # - type: RequestHeaderModifier
+  #   requestHeaderModifier:
+  #     set:
+  #       - name: X-Forwarded-Proto
+  #         value: https
+
 ## @section Route
 ## @param route.enabled Enable route
 ## @param route.annotations Route annotations
