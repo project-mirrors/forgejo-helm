@@ -33,16 +33,16 @@ dependencies:
     repository: oci://ghcr.io/visualon/bitnamicharts
     tags:
       - bitnami-common
-    version: 2.30.2
+    version: 2.31.1
   # https://github.com/bitnami/charts/blob/main/bitnami/postgresql/Chart.yaml
   - name: postgresql
     repository: oci://ghcr.io/visualon/bitnamicharts
-    version: 16.6.6
+    version: 16.7.2
     condition: postgresql.enabled
   # https://github.com/bitnami/charts/blob/main/bitnami/postgresql-ha/Chart.yaml
   - name: postgresql-ha
     repository: oci://ghcr.io/visualon/bitnamicharts
-    version: 15.3.15
+    version: 15.3.17
     condition: postgresql-ha.enabled
   # https://github.com/bitnami/charts/blob/main/bitnami/redis-cluster/Chart.yaml
   - name: redis-cluster
