@@ -63,3 +63,26 @@ tests:
       - equal:
           path: spec.rules[0].filters[0].requestHeaderModifier.set[0].value
           value: https
+
+  - it: with timeouts configuration
+    set:
+      httpRoute.enabled: true
+      httpRoute.parentRefs:
+        - name: contour
+          namespace: projectcontour
+      httpRoute.matches:
+        path:
+          type: PathPrefix
+          value: '/'
+        timeouts:
+          request: 30s
+          backendRequest: 30s
+    asserts:
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: spec.rules[0].timeouts.request
+          value: 30s
+      - equal:
+          path: spec.rules[0].timeouts.backendRequest
+          value: 30s

@@ -954,6 +954,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `httpRoute.hostnames`          | Hostnames this HTTPRoute applies to                                                      | `[]`         |
 | `httpRoute.matches.path.type`  | Type of path match (e.g., PathPrefix or Exact or RegularExpression)                      | `PathPrefix` |
 | `httpRoute.matches.path.value` | Path value for matching incoming requests                                                | `/`          |
+| `httpRoute.matches.timeouts`   | Object containing timeouts.                                                              | `{}`         |
 | `httpRoute.filters`            | Filters to apply on HTTP requests, such as header rewrites or request redirects          | `[]`         |
 
 ### Route
