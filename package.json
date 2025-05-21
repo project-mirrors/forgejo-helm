@@ -16,7 +16,7 @@
   "devDependencies": {
     "@bitnami/readme-generator-for-helm": "2.7.0",
     "clipanion": "3.2.1",
-    "conventional-changelog-conventionalcommits": "8.0.0",
+    "conventional-changelog-conventionalcommits": "9.0.0",
     "conventional-changelog-core": "9.0.0",
     "husky": "9.1.7",
     "lint-staged": "16.0.0",
