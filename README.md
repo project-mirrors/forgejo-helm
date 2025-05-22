@@ -230,11 +230,11 @@ If `.Values.image.rootless: true`, then the following will occur. In case you us
 
   [see deployment.yaml](./templates/gitea/deployment.yaml) template inside (init-)container "env" declarations
 
-- `START_SSH_SERVER: true` (Unless explicity overwritten by `gitea.config.server.START_SSH_SERVER`)
+- `START_SSH_SERVER: true` (Unless explicitly overwritten by `gitea.config.server.START_SSH_SERVER`)
 
   [see \_helpers.tpl](./templates/_helpers.tpl) in `gitea.inline_configuration.defaults.server` definition
 
-- `SSH_LISTEN_PORT: 2222` (Unless explicity overwritten by `gitea.config.server.SSH_LISTEN_PORT`)
+- `SSH_LISTEN_PORT: 2222` (Unless explicitly overwritten by `gitea.config.server.SSH_LISTEN_PORT`)
 
   [see \_helpers.tpl](./templates/_helpers.tpl) in `gitea.inline_configuration.defaults.server` definition
 
@@ -885,7 +885,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `image.tag`          | Visit: [Image tag](https://code.forgejo.org/forgejo/-/packages/container/forgejo/versions). Defaults to `appVersion` within Chart.yaml.                          | `""`               |
 | `image.digest`       | Image digest. Allows to pin the given image tag. Useful for having control over mutable tags like `latest`                                                       | `""`               |
 | `image.pullPolicy`   | Image pull policy                                                                                                                                                | `IfNotPresent`     |
-| `image.rootless`     | Wether or not to pull the rootless version of Forgejo                                                                                                            | `true`             |
+| `image.rootless`     | Whether or not to pull the rootless version of Forgejo                                                                                                           | `true`             |
 | `image.fullOverride` | Completely overrides the image registry, path/image, tag and digest. **Adjust `image.rootless` accordingly and review [Rootless defaults](#rootless-defaults).** | `""`               |
 | `imagePullSecrets`   | Secret to use for pulling the image                                                                                                                              | `[]`               |
 
@@ -900,36 +900,36 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Service
 
-| Name                                    | Description                                                                                                                                                                                          | Value       |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `service.http.type`                     | Kubernetes service type for web traffic                                                                                                                                                              | `ClusterIP` |
-| `service.http.port`                     | Port number for web traffic                                                                                                                                                                          | `3000`      |
-| `service.http.clusterIP`                | ClusterIP setting for http autosetup for deployment                                                                                                                                                  | `nil`       |
-| `service.http.loadBalancerIP`           | LoadBalancer IP setting                                                                                                                                                                              | `nil`       |
-| `service.http.nodePort`                 | NodePort for http service                                                                                                                                                                            | `nil`       |
-| `service.http.externalTrafficPolicy`    | If `service.http.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation                                                                                         | `nil`       |
-| `service.http.externalIPs`              | External IPs for service                                                                                                                                                                             | `nil`       |
-| `service.http.ipFamilyPolicy`           | HTTP service dual-stack policy                                                                                                                                                                       | `nil`       |
-| `service.http.ipFamilies`               | HTTP service dual-stack familiy selection,for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/). | `nil`       |
-| `service.http.loadBalancerSourceRanges` | Source range filter for http loadbalancer                                                                                                                                                            | `[]`        |
-| `service.http.annotations`              | HTTP service annotations                                                                                                                                                                             | `{}`        |
-| `service.http.labels`                   | HTTP service additional labels                                                                                                                                                                       | `{}`        |
-| `service.http.loadBalancerClass`        | Loadbalancer class                                                                                                                                                                                   | `nil`       |
-| `service.http.extraPorts`               | Additional ports                                                                                                                                                                                     | `[]`        |
-| `service.ssh.type`                      | Kubernetes service type for ssh traffic                                                                                                                                                              | `ClusterIP` |
-| `service.ssh.port`                      | Port number for ssh traffic                                                                                                                                                                          | `22`        |
-| `service.ssh.clusterIP`                 | ClusterIP setting for ssh autosetup for deployment                                                                                                                                                   | `nil`       |
-| `service.ssh.loadBalancerIP`            | LoadBalancer IP setting                                                                                                                                                                              | `nil`       |
-| `service.ssh.nodePort`                  | NodePort for ssh service                                                                                                                                                                             | `nil`       |
-| `service.ssh.externalTrafficPolicy`     | If `service.ssh.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation                                                                                          | `nil`       |
-| `service.ssh.externalIPs`               | External IPs for service                                                                                                                                                                             | `nil`       |
-| `service.ssh.ipFamilyPolicy`            | SSH service dual-stack policy                                                                                                                                                                        | `nil`       |
-| `service.ssh.ipFamilies`                | SSH service dual-stack familiy selection,for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).  | `nil`       |
-| `service.ssh.hostPort`                  | HostPort for ssh service                                                                                                                                                                             | `nil`       |
-| `service.ssh.loadBalancerSourceRanges`  | Source range filter for ssh loadbalancer                                                                                                                                                             | `[]`        |
-| `service.ssh.annotations`               | SSH service annotations                                                                                                                                                                              | `{}`        |
-| `service.ssh.labels`                    | SSH service additional labels                                                                                                                                                                        | `{}`        |
-| `service.ssh.loadBalancerClass`         | Loadbalancer class                                                                                                                                                                                   | `nil`       |
+| Name                                    | Description                                                                                                                                                                                         | Value       |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `service.http.type`                     | Kubernetes service type for web traffic                                                                                                                                                             | `ClusterIP` |
+| `service.http.port`                     | Port number for web traffic                                                                                                                                                                         | `3000`      |
+| `service.http.clusterIP`                | ClusterIP setting for http autosetup for deployment                                                                                                                                                 | `nil`       |
+| `service.http.loadBalancerIP`           | LoadBalancer IP setting                                                                                                                                                                             | `nil`       |
+| `service.http.nodePort`                 | NodePort for http service                                                                                                                                                                           | `nil`       |
+| `service.http.externalTrafficPolicy`    | If `service.http.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation                                                                                        | `nil`       |
+| `service.http.externalIPs`              | External IPs for service                                                                                                                                                                            | `nil`       |
+| `service.http.ipFamilyPolicy`           | HTTP service dual-stack policy                                                                                                                                                                      | `nil`       |
+| `service.http.ipFamilies`               | HTTP service dual-stack family selection,for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/). | `nil`       |
+| `service.http.loadBalancerSourceRanges` | Source range filter for http loadbalancer                                                                                                                                                           | `[]`        |
+| `service.http.annotations`              | HTTP service annotations                                                                                                                                                                            | `{}`        |
+| `service.http.labels`                   | HTTP service additional labels                                                                                                                                                                      | `{}`        |
+| `service.http.loadBalancerClass`        | Loadbalancer class                                                                                                                                                                                  | `nil`       |
+| `service.http.extraPorts`               | Additional ports                                                                                                                                                                                    | `[]`        |
+| `service.ssh.type`                      | Kubernetes service type for ssh traffic                                                                                                                                                             | `ClusterIP` |
+| `service.ssh.port`                      | Port number for ssh traffic                                                                                                                                                                         | `22`        |
+| `service.ssh.clusterIP`                 | ClusterIP setting for ssh autosetup for deployment                                                                                                                                                  | `nil`       |
+| `service.ssh.loadBalancerIP`            | LoadBalancer IP setting                                                                                                                                                                             | `nil`       |
+| `service.ssh.nodePort`                  | NodePort for ssh service                                                                                                                                                                            | `nil`       |
+| `service.ssh.externalTrafficPolicy`     | If `service.ssh.type` is `NodePort` or `LoadBalancer`, set this to `Local` to enable source IP preservation                                                                                         | `nil`       |
+| `service.ssh.externalIPs`               | External IPs for service                                                                                                                                                                            | `nil`       |
+| `service.ssh.ipFamilyPolicy`            | SSH service dual-stack policy                                                                                                                                                                       | `nil`       |
+| `service.ssh.ipFamilies`                | SSH service dual-stack family selection,for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).  | `nil`       |
+| `service.ssh.hostPort`                  | HostPort for ssh service                                                                                                                                                                            | `nil`       |
+| `service.ssh.loadBalancerSourceRanges`  | Source range filter for ssh loadbalancer                                                                                                                                                            | `[]`        |
+| `service.ssh.annotations`               | SSH service annotations                                                                                                                                                                             | `{}`        |
+| `service.ssh.labels`                    | SSH service additional labels                                                                                                                                                                       | `{}`        |
+| `service.ssh.loadBalancerClass`         | Loadbalancer class                                                                                                                                                                                  | `nil`       |
 
 ### Ingress
 
@@ -1247,7 +1247,7 @@ Please read PostgresSQL upgrade guide before upgrading.
 You need Forgejo v10+ to use this Helm Chart version.
 Forgejo v9 is now EOL.
 
-ClusterIP is now emtpy instead of `None` for http and ssh service.
+ClusterIP is now empty instead of `None` for http and ssh service.
 Unsupported api versions for `Ingress` and `PodDisruptionBudget` are removed.
 `Ingress` and `Service` are now using named ports.
 The ReadinessProbe is now using the `/api/healthz` endpoint.

@@ -67,8 +67,8 @@ stringData:
     function test_redis_connection() {
       local RETRY=0
       local MAX=30
-      
-      echo 'Wait for redis to become avialable...'
+
+      echo 'Wait for redis to become available...'
       until [ "${RETRY}" -ge "${MAX}" ]; do
         nc -vz -w2 {{ include "redis.servicename" . }} {{ include "redis.port" . }} && break
         RETRY=$[${RETRY}+1]
@@ -83,7 +83,7 @@ stringData:
 
     test_redis_connection
     {{- end }}
-    
+
 
     {{- if or .Values.gitea.admin.existingSecret (and .Values.gitea.admin.username .Values.gitea.admin.password) }}
     function configure_admin_user() {
