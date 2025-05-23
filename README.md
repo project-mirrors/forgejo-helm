@@ -490,7 +490,7 @@ and the repository exists.
 ```
 
 To solve this problem add the capability `SYS_CHROOT` to the `securityContext`.
-More about this issue [here](https://gitea.com/gitea/helm-chart/issues/161).
+More about this issue can be found at [`gitea/helm-chart#161`](https://gitea.com/gitea/helm-chart/issues/161).
 
 ### Cache
 
@@ -632,7 +632,7 @@ Affected options:
 
 Like the admin user, OAuth2 settings can be updated and disabled but not deleted.
 Deleting OAuth2 settings has to be done in the UI.
-All OAuth2 values, which are documented [here](https://forgejo.org/docs/latest/admin/command-line/#admin), are available.
+All OAuth2 values, which are [documented](https://forgejo.org/docs/latest/admin/command-line/#admin-auth), are available.
 
 Multiple OAuth2 sources can be configured with additional OAuth list items.
 
