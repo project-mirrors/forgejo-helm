@@ -477,7 +477,7 @@ and the repository exists.
 ```
 
 To solve this problem add the capability `SYS_CHROOT` to the `securityContext`.
-More about this issue [here](https://gitea.com/gitea/helm-chart/issues/161).
+More about this issue at [`gitea/helm-chart#161`](https://gitea.com/gitea/helm-chart/issues/161).
 
 ### Cache
 
