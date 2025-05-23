@@ -632,7 +632,7 @@ Affected options:
 
 Like the admin user, OAuth2 settings can be updated and disabled but not deleted.
 Deleting OAuth2 settings has to be done in the UI.
-All OAuth2 values, which are [documented](https://forgejo.org/docs/latest/admin/command-line/#admin-auth), are available.
+[All OAuth2 values](https://forgejo.org/docs/latest/admin/command-line/#admin-auth-add-oauth) are available.
 
 Multiple OAuth2 sources can be configured with additional OAuth list items.
 
