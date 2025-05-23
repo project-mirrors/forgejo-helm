@@ -185,9 +185,8 @@ jobs:
 
       - name: login to registries
         run: |
-          echo ${CODEBERG_TOKEN} | helm registry login -u viceice --password-stdin codeberg.org/forgejo-contrib
-          echo ${FORGEJO_TOKEN} | helm registry login -u viceice --password-stdin code.forgejo.org/forgejo-contrib
-          echo ${FORGEJO_TOKEN} | helm registry login -u viceice --password-stdin code.forgejo.org/forgejo-helm
+          echo ${CODEBERG_TOKEN} | helm registry login -u viceice --password-stdin codeberg.org
+          echo ${FORGEJO_TOKEN} | helm registry login -u viceice --password-stdin code.forgejo.org
         env:
           CODEBERG_TOKEN: ${{secrets.API_TOKEN}}
           FORGEJO_TOKEN: ${{secrets.FORGEJO_API_TOKEN}}
