@@ -1,0 +1,49 @@
+suite: Init template | oauth
+release:
+  name: forgejo-unittests
+  namespace: testing
+templates:
+  - templates/gitea/init.yaml
+tests:
+  - it: works with oauth
+    set:
+      gitea.oauth:
+        - name: 'entraid'
+          provider: openidConnect
+          key: some-key
+          secret: some-secret
+          autoDiscoverUrl: https://login.microsoftonline.com/some-tenant/v2.0/.well-known/openid-configuration
+          useCustomUrls: false
+          groupClaimName: groups
+          groupTeamMap: '{}'
+          groupTeamMapRemoval: true
+          skipLocal-2fa: true
+    asserts:
+      - matchRegex:
+          path: stringData["configure_gitea.sh"]
+          pattern: --group-team-map-removal --key "some-key"
+      - matchRegex:
+          path: stringData["configure_gitea.sh"]
+          pattern: --skip-local-2fa
+      - matchSnapshot:
+          path: stringData["configure_gitea.sh"]
+  - it: works with oauth with kebab-case
+    set:
+      gitea.oauth:
+        - name: 'entraid'
+          provider: openidConnect
+          key: some-key
+          secret: some-secret
+          auto-discover-url: https://login.microsoftonline.com/some-tenant/v2.0/.well-known/openid-configuration
+          use-custom-urls: false
+          group-team-map-removal: true
+          skip-local-2fa: true
+    asserts:
+      - matchRegex:
+          path: stringData["configure_gitea.sh"]
+          pattern: --group-team-map-removal --key "some-key"
+      - matchRegex:
+          path: stringData["configure_gitea.sh"]
+          pattern: --skip-local-2fa
+      - matchSnapshot:
+          path: stringData["configure_gitea.sh"]
