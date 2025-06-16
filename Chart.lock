@@ -1,10 +1,10 @@
 dependencies:
 - name: common
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 2.31.1
+  version: 2.31.3
 - name: postgresql
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 16.7.10
+  version: 16.7.11
 - name: postgresql-ha
   repository: oci://ghcr.io/visualon/bitnamicharts
   version: 15.3.17
@@ -14,5 +14,5 @@ dependencies:
 - name: redis
   repository: oci://ghcr.io/visualon/bitnamicharts
   version: 20.13.4
-digest: sha256:294b381772d5b3ce27ed3053fa2fbcd876ce317df7da92aa0e4d0b8b0f651761
-generated: "2025-06-09T00:01:11.927706301Z"
+digest: sha256:daaeae5a18c11edbdb7f4d2180ef812355dba21d692579e5ec8b37d835c449cc
+generated: "2025-06-16T00:01:07.531601588Z"
