@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@bitnami/readme-generator-for-helm':
-        specifier: 2.7.0
-        version: 2.7.0
+        specifier: 2.7.1
+        version: 2.7.1
       clipanion:
         specifier: 3.2.1
         version: 3.2.1(typanion@3.14.0)
@@ -35,8 +35,8 @@ importers:
 
 packages:
 
-  '@bitnami/readme-generator-for-helm@2.7.0':
-    resolution: {integrity: sha512-fVxExmcuJ9NZb9ZE9OW3+lG8pUlXJAJdaO8UukV3A7WzYu4qOTr03MXPH9Gt5e/6mo3x4WYI/cXBksKfS0qn3w==}
+  '@bitnami/readme-generator-for-helm@2.7.1':
+    resolution: {integrity: sha512-HCt4wdEVYfPPVX8P6be8LgejVPEHJvnXXJBErdcSWmNgbbXowJhFwnB1uTdzkT00kqSBd8KQMdzjoQFGgv2/Ww==}
     hasBin: true
 
   '@conventional-changelog/git-client@1.0.0':
@@ -725,11 +725,6 @@ packages:
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
-  yaml@2.7.0:
-    resolution: {integrity: sha512-+hSoy/QHluxmC9kCIJyL/uyFmLmc+e5CFR5Wa+bpIhIj85LVb9ZH2nVnqrHoSvKogwODv0ClqZkmiSSaIH5LTA==}
-    engines: {node: '>= 14'}
-    hasBin: true
-
   yaml@2.8.0:
     resolution: {integrity: sha512-4lLa/EcQCB0cJkyts+FpIRx5G/llPxfP6VQU5KByHEhLxY3IJCH0f0Hy1MHI8sClTvsIb8qwRJ6R/ZdlDJ/leQ==}
     engines: {node: '>= 14.6'}
@@ -737,13 +732,13 @@ packages:
 
 snapshots:
 
-  '@bitnami/readme-generator-for-helm@2.7.0':
+  '@bitnami/readme-generator-for-helm@2.7.1':
     dependencies:
       commander: 13.1.0
       dot-object: 2.1.5
       lodash: 4.17.21
       markdown-table: 2.0.0
-      yaml: 2.7.0
+      yaml: 2.8.0
 
   '@conventional-changelog/git-client@1.0.0(conventional-commits-filter@4.0.0)(conventional-commits-parser@6.1.0)':
     dependencies:
@@ -1517,7 +1512,5 @@ snapshots:
   wrappy@1.0.2: {}
 
   yallist@4.0.0: {}
-
-  yaml@2.7.0: {}
 
   yaml@2.8.0: {}

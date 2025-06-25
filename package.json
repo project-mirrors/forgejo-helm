@@ -14,7 +14,7 @@
     "test": "helm unittest --strict -f 'unittests/**/*.yaml' ./"
   },
   "devDependencies": {
-    "@bitnami/readme-generator-for-helm": "2.7.0",
+    "@bitnami/readme-generator-for-helm": "2.7.1",
     "clipanion": "3.2.1",
     "conventional-changelog-conventionalcommits": "9.0.0",
     "conventional-changelog-core": "9.0.0",
