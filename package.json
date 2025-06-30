@@ -7,8 +7,8 @@
     "changelog": "node tools/changelog.mjs",
     "forgejo:release": "node tools/forgejo-release.js",
     "prepare": "husky",
-    "prettier": "prettier --check --ignore-unknown --cache '**/*.*'",
-    "prettier-fix": "prettier --write --ignore-unknown --cache '**/*.*'",
+    "prettier": "prettier --check --ignore-unknown --experimental-cli '**/*.*'",
+    "prettier-fix": "prettier --write --ignore-unknown --experimental-cli '**/*.*'",
     "readme:lint": "markdownlint *.md -f",
     "readme:parameters": "readme-generator -v values.yaml -r README.md",
     "test": "helm unittest --strict -f 'unittests/**/*.yaml' ./"

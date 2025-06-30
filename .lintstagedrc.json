@@ -1,6 +1,6 @@
 {
   "*.sh": "shellcheck",
   ".husky/*": "shellcheck",
-  "!*.{sh,md}": "prettier --cache --ignore-unknown --write",
-  "*.md": ["markdownlint --fix", "prettier --cache --write"]
+  "!*.{sh,md}": "prettier --ignore-unknown --write --experimental-cli",
+  "*.md": ["markdownlint --fix", "prettier --write --experimental-cli"]
 }
