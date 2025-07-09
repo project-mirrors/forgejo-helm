@@ -23,7 +23,7 @@
     "markdownlint-cli": "0.45.0",
     "prettier": "3.6.2"
   },
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.13.0",
   "engines": {
     "node": "^18.12.0 || >=20.9.0",
     "pnpm": "^10.0.0"
