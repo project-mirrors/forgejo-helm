@@ -5,7 +5,7 @@
     "forgejo-helm/forgejo-helm//.forgejo/renovate/k3s.json"
   ],
   "assignees": ["viceice"],
-  "baseBranches": ["main", "/^maint\\/.+/"],
+  "baseBranches": ["main", "zzz/don-not-delete"],
   "packageRules": [
     {
       "description": "Separate multiple major sub chart updates",
