@@ -1,0 +1,29 @@
+image:
+  registry: codeberg.org
+  repository: forgejo-experimental/forgejo
+  tag: 13 # don't pin, manifests can be missing
+
+# Use mirror
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+test:
+  image:
+    name: code.forgejo.org/oci/busybox
+
+valkey-cluster:
+  enabled: false
+postgresql-ha:
+  enabled: false
+
+persistence:
+  enabled: false
+
+gitea:
+  config:
+    database:
+      DB_TYPE: sqlite3
+    session:
+      PROVIDER: memory
+    cache:
+      ADAPTER: memory
+    queue:
+      TYPE: level
