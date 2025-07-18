@@ -3,12 +3,12 @@ release:
   name: gitea-unittests
   namespace: testing
 tests:
-  - it: 'session is configured correctly for redis-cluster'
+  - it: session is configured correctly for valkey-cluster
     template: templates/gitea/config.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: true
-      redis:
+      valkey:
         enabled: false
     asserts:
       - documentIndex: 0
@@ -16,14 +16,14 @@ tests:
           path: stringData.session
           value: |-
             PROVIDER=redis
-            PROVIDER_CONFIG=redis+cluster://:@gitea-unittests-redis-cluster-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+            PROVIDER_CONFIG=redis+cluster://:@gitea-unittests-valkey-cluster-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
 
-  - it: 'session is configured correctly for redis'
+  - it: 'session is configured correctly for valkey'
     template: templates/gitea/config.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: false
-      redis:
+      valkey:
         enabled: true
     asserts:
       - documentIndex: 0
@@ -31,14 +31,14 @@ tests:
           path: stringData.session
           value: |-
             PROVIDER=redis
-            PROVIDER_CONFIG=redis://:changeme@gitea-unittests-redis-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+            PROVIDER_CONFIG=redis://:changeme@gitea-unittests-valkey-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
 
-  - it: "session is configured correctly for 'memory' when redis (and redis-cluster) is disabled"
+  - it: "session is configured correctly for 'memory' when valkey (and valkey-cluster) is disabled"
     template: templates/gitea/config.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: false
-      redis:
+      valkey:
         enabled: false
     asserts:
       - documentIndex: 0
@@ -48,12 +48,12 @@ tests:
             PROVIDER=memory
             PROVIDER_CONFIG=
 
-  - it: 'session can be customized when redis (and redis-cluster) is disabled'
+  - it: 'session can be customized when valkey (and valkey-cluster) is disabled'
     template: templates/gitea/config.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: false
-      redis:
+      valkey:
         enabled: false
       gitea.config.session.PROVIDER: custom-provider
       gitea.config.session.PROVIDER_CONFIG: custom-provider-config

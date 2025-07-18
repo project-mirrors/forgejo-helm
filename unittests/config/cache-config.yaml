@@ -3,12 +3,12 @@ release:
   name: gitea-unittests
   namespace: testing
 tests:
-  - it: 'cache is configured correctly for redis-cluster'
+  - it: cache is configured correctly for valkey-cluster
     template: templates/gitea/config.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: true
-      redis:
+      valkey:
         enabled: false
     asserts:
       - documentIndex: 0
@@ -16,14 +16,14 @@ tests:
           path: stringData.cache
           value: |-
             ADAPTER=redis
-            HOST=redis+cluster://:@gitea-unittests-redis-cluster-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+            HOST=redis+cluster://:@gitea-unittests-valkey-cluster-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
 
-  - it: 'cache is configured correctly for redis'
+  - it: cache is configured correctly for valkey
     template: templates/gitea/config.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: false
-      redis:
+      valkey:
         enabled: true
     asserts:
       - documentIndex: 0
@@ -31,14 +31,14 @@ tests:
           path: stringData.cache
           value: |-
             ADAPTER=redis
-            HOST=redis://:changeme@gitea-unittests-redis-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
+            HOST=redis://:changeme@gitea-unittests-valkey-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
 
-  - it: "cache is configured correctly for 'memory' when redis (or redis-cluster) is disabled"
+  - it: "cache is configured correctly for 'memory' when valkey (or valkey-cluster) is disabled"
     template: templates/gitea/config.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: false
-      redis:
+      valkey:
         enabled: false
     asserts:
       - documentIndex: 0
@@ -48,12 +48,12 @@ tests:
             ADAPTER=memory
             HOST=
 
-  - it: 'cache can be customized when redis (or redis-cluster) is disabled'
+  - it: cache can be customized when valkey (or valkey-cluster) is disabled
     template: templates/gitea/config.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: false
-      redis:
+      valkey:
         enabled: false
       gitea.config.cache.ADAPTER: custom-adapter
       gitea.config.cache.HOST: custom-host

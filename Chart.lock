@@ -8,11 +8,11 @@ dependencies:
 - name: postgresql-ha
   repository: oci://ghcr.io/visualon/bitnamicharts
   version: 16.0.22
-- name: redis-cluster
-  repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 11.5.4
-- name: redis
-  repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 20.13.4
-digest: sha256:0674b77d7901e75e07bfef78e4e57eb409d0eea4f6aadb437e15f4b06643d751
-generated: "2025-07-15T19:31:33.214355456Z"
+- name: valkey-cluster
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 3.0.18
+- name: valkey
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 3.0.22
+digest: sha256:baff9f7d301239ecf3aa4541fc387423697c0c82b7c353364003b35df643f906
+generated: "2025-07-18T09:58:22.5296438+02:00"

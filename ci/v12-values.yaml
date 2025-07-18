@@ -9,7 +9,7 @@ test:
   image:
     name: code.forgejo.org/oci/busybox
 
-redis-cluster:
+valkey-cluster:
   enabled: false
 postgresql-ha:
   enabled: false

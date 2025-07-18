@@ -5,7 +5,7 @@
 global:
   security:
     allowInsecureImages: true
-redis-cluster:
+valkey-cluster:
   image:
     registry: public.ecr.aws
 postgresql-ha:

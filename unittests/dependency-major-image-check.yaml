@@ -29,29 +29,29 @@ tests:
           path: spec.template.spec.containers[0].image
           # IN CASE OF AN INTENTIONAL MAJOR BUMP, ADJUST THIS TEST
           pattern: ^docker.io/bitnami/postgresql:17.+$
-  - it: '[redis-cluster] ensures we detect major image version upgrades'
-    template: charts/redis-cluster/templates/redis-statefulset.yaml
+  - it: '[valkey-cluster] ensures we detect major image version upgrades'
+    template: charts/valkey-cluster/templates/valkey-statefulset.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: true
-      redis:
+      valkey:
         enabled: false
     asserts:
       - documentIndex: 0
         matchRegex:
           path: spec.template.spec.containers[0].image
           # IN CASE OF AN INTENTIONAL MAJOR BUMP, ADJUST THIS TEST
-          pattern: bitnami/redis-cluster:7.+$
-  - it: '[redis] ensures we detect major image version upgrades'
-    template: charts/redis/templates/master/application.yaml
+          pattern: ^docker.io/bitnami/valkey-cluster:8.+$
+  - it: '[valkey] ensures we detect major image version upgrades'
+    template: charts/valkey/templates/primary/application.yaml
     set:
-      redis-cluster:
+      valkey-cluster:
         enabled: false
-      redis:
+      valkey:
         enabled: true
     asserts:
       - documentIndex: 0
         matchRegex:
           path: spec.template.spec.containers[0].image
           # IN CASE OF AN INTENTIONAL MAJOR BUMP, ADJUST THIS TEST
-          pattern: bitnami/redis:7.+$
+          pattern: bitnami/valkey:8.+$
