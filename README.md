@@ -1248,9 +1248,16 @@ If you miss this, blindly upgrading may delete your Postgres instance and you ma
 
 ### To v13
 
+This chart now uses Forgejo v12 by default.
+
+The PostgreSQL HA got a major version bump.
+Please read the migration guide <https://artifacthub.io/packages/helm/bitnami/postgresql-ha#to-16-0-0>.
+
 Migrated from Redis/Redis Cluster to Valkey/Valkey Cluster charts.
 While marked as breaking, there should be no need to migrate data explicity.
 Cache will start to refill automatically.
+
+Forgejo v7 and Forgejo helm chart v7 are now EOL.
 
 ### To v12
 
