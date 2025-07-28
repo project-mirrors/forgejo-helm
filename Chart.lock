@@ -4,7 +4,7 @@ dependencies:
   version: 2.31.3
 - name: postgresql
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 16.7.20
+  version: 16.7.21
 - name: postgresql-ha
   repository: oci://ghcr.io/visualon/bitnamicharts
   version: 16.0.22
@@ -14,5 +14,5 @@ dependencies:
 - name: valkey
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 3.0.22
-digest: sha256:bcda69061caf453989be8f03745c1a9476e0c90786fafa185a962607663f28ab
-generated: "2025-07-21T02:35:56.946702552Z"
+digest: sha256:c4edfc80de6f3a5301c3e3422916711945460f7c7dcbce717cf0e28225c8b096
+generated: "2025-07-28T00:00:48.380600231Z"
