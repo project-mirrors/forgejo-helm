@@ -47,7 +47,7 @@
       "customType": "regex",
       "fileMatch": [".forgejo/renovate/k3s.json"],
       "matchStrings": [
-        "matchCurrentValue\": \"!\\/^v(?<currentValue>\\d+\\.\\d+)\\/"
+        "matchCurrentValue\": \"!\\/\\^v(?<currentValue>\\d+\\.\\d+)\\/"
       ],
       "depNameTemplate": "k3s",
       "versioningTemplate": "npm",
