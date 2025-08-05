@@ -21,6 +21,8 @@ sources:
 maintainers:
   - name: Michael Kriese
     email: michael.kriese@visualon.de
+  - name: Patrick Schratz
+    email: mail@pat-s.me
 
 # Bitnami charts are served from ghcr mirror because of rate limiting on Docker Hub
 # https://hub.docker.com/u/bitnamicharts
