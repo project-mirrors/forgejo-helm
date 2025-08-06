@@ -51,11 +51,12 @@
   - [StartupProbe](#startupprobe)
   - [Valkey Cluster](#valkey-cluster)
   - [Valkey](#valkey)
-  - [PostgreSQL HA](#postgresql-ha)
-  - [PostgreSQL](#postgresql)
   - [Advanced](#advanced)
 - [Contributing](#contributing)
 - [Upgrading](#upgrading)
+  - [To v14](#to-v14)
+  - [To v13](#to-v13)
+  - [To v12](#to-v12)
   - [To v11](#to-v11)
   - [To v10](#to-v10)
   - [To v9](#to-v9)
@@ -92,34 +93,34 @@ This chart provides those dependencies, which can be enabled, or disabled via co
 
 ### HA Dependencies
 
+> ⚠️ **WARNING** ⚠️  
+> Outdated document, Forgejo is not HA ready yet.
+> Do not run multiple replicas of Forgejo.
+
 These dependencies are enabled by default:
 
-- PostgreSQL HA ([Bitnami PostgreSQL-HA](https://github.com/bitnami/charts/blob/main/bitnami/postgresql-ha/Chart.yaml))
 - Valkey Cluster ([Bitnami Valkey-Cluster](https://github.com/bitnami/charts/blob/main/bitnami/valkey-cluster/Chart.yaml))
 
 ### Non-HA Dependencies
 
 Alternatively, the following non-HA replacements are available:
 
-- PostgreSQL ([Bitnami PostgreSQL](https://github.com/bitnami/charts/blob/main/bitnami/postgresql/Chart.yaml))
 - Valkey ([Bitnami Valkey](https://github.com/bitnami/charts/blob/main/bitnami/valkey/Chart.yaml))
 
 ### Dependency Versioning
 
-Updates of sub-charts will be incorporated into the Gitea chart as they are released.
+Updates of sub-charts will be incorporated into the Forgejo chart as they are released.
 The reasoning behind this is that new users of the chart will start with the most recent sub-chart dependency versions.
 
-**Note** If you want to stay on an older appVersion of a sub-chart dependency (e.g. PostgreSQL), you need to override the image tag in your `values.yaml` file.
+**Note** If you want to stay on an older appVersion of a sub-chart dependency (e.g. Valkey), you need to override the image tag in your `values.yaml` file.
 In fact, we recommend to do so right from the start to be independent of major sub-chart dependency changes as they are released.
-There is no need to update to every new PostgreSQL major version - you can happily skip some and do larger updates when you are ready for them.
+There is no need to update to every new Valkey major version - you can happily skip some and do larger updates when you are ready for them.
 
 We recommend to use a rolling tag like `:<majorVersion>-debian-<debian major version>` to incorporate minor and patch updates for the respective major version as they are released.
 Alternatively you can also use a versioning helper tool like [renovate](https://github.com/renovatebot/renovate).
 
 Please double-check the image repository and available tags in the sub-chart:
 
-- [PostgreSQL-HA](https://hub.docker.com/r/bitnami/postgresql-repmgr/tags)
-- [PostgreSQL](https://hub.docker.com/r/bitnami/postgresql/tags)
 - [Valkey Cluster](https://hub.docker.com/r/bitnami/valkey-cluster/tags)
 - [Valkey](https://hub.docker.com/r/bitnami/valkey/tags)
 
@@ -140,6 +141,10 @@ helm install forgejo -f values.yaml oci://code.forgejo.org/forgejo-helm/forgejo
 When upgrading, please refer to the [Upgrading](#upgrading) section at the bottom of this document for major and breaking changes.
 
 ## High Availability
+
+> ⚠️ **WARNING** ⚠️  
+> Outdated document, Forgejo is not HA ready yet.
+> Do not run multiple replicas of Forgejo.
 
 This chart supports running Forgejo and it's dependencies in HA mode.
 Care must be taken for production use as not all implementation details of Forgejo core are officially HA-ready yet.
@@ -182,17 +187,7 @@ _All default settings are made directly in the generated `app.ini`, not in the V
 
 #### Database defaults
 
-If a database subchart is enabled, the database configuration is set automatically.
-For example, PostgreSQL will appear in the `app.ini` as:
-
-```ini
-[database]
-DB_TYPE = postgres
-HOST = RELEASE-NAME-postgresql.default.svc.cluster.local:5432
-NAME = gitea
-PASSWD = gitea
-USER = gitea
-```
+This chart uses the default SQLite database.
 
 #### Server defaults
 
@@ -256,7 +251,7 @@ External tools such as `valkey-cluster` or `memcached` handle these workloads mu
 
 If HA is not needed/desired, the following configurations can be used to deploy a single-pod Forgejo instance.
 
-1. For a production-ready single-pod Forgejo instance without external dependencies (using the chart dependency `postgresql` and `valkey`):
+1. For a production-ready single-pod Forgejo instance without external dependencies (using the built-in SQLite and the chart dependency `valkey`):
 
    <details>
 
@@ -267,18 +262,12 @@ If HA is not needed/desired, the following configurations can be used to deploy 
      enabled: false
    valkey:
      enabled: true
-   postgresql:
-     enabled: true
-   postgresql-ha:
-     enabled: false
 
    persistence:
      enabled: true
 
    gitea:
      config:
-       database:
-         DB_TYPE: postgres
        indexer:
          ISSUE_INDEXER_TYPE: bleve
          REPO_INDEXER_ENABLED: true
@@ -286,7 +275,7 @@ If HA is not needed/desired, the following configurations can be used to deploy 
 
    </details>
 
-2. For a minimal DEV installation (using the built-in sqlite DB instead of Postgres):
+2. For a minimal DEV installation (using the built-in SQLite instead of Postgres):
 
    This will result in a single-pod Forgejo instance _without any dependencies and persistence_.
    **Do not use this configuration for production use**.
@@ -300,18 +289,12 @@ If HA is not needed/desired, the following configurations can be used to deploy 
      enabled: false
    valkey:
      enabled: false
-   postgresql:
-     enabled: false
-   postgresql-ha:
-     enabled: false
 
    persistence:
      enabled: false
 
    gitea:
      config:
-       database:
-         DB_TYPE: sqlite3
        session:
          PROVIDER: memory
        cache:
@@ -412,10 +395,8 @@ Priority (highest to lowest) for defining app.ini variables:
 
 ### External Database
 
-A [supported external database](https://forgejo.org/docs/latest/admin/config-cheat-sheet/#database-database/)can be used instead of the built-in PostgreSQL.
+A [supported external database](https://forgejo.org/docs/latest/admin/config-cheat-sheet/#database-database/)can be used instead of the built-in SQLite.
 In fact, it is **highly recommended** to use an external database to ensure a stable Forgejo installation longterm.
-
-If an external database is used, no matter which type, make sure to set `postgresql.enabled` to `false` to disable the use of the built-in PostgreSQL.
 
 ```yaml
 gitea:
@@ -427,9 +408,6 @@ gitea:
       USER: root
       PASSWD: gitea
       SCHEMA: gitea
-
-postgresql:
-  enabled: false
 ```
 
 ### Ports and external url
@@ -519,16 +497,6 @@ persistence:
 ```
 
 In case that persistence has been disabled it will simply use an empty dir volume.
-
-PostgreSQL handles the persistence in the exact same way.
-You can interact with the postgres settings as displayed in the following example:
-
-```yaml
-postgresql:
-  persistence:
-    enabled: true
-    claimName: MyAwesomeGiteaPostgresClaim
-```
 
 ### Admin User
 
@@ -1190,38 +1158,6 @@ Consider omitting such or open an issue in the Bitnami repo and let us know once
 | `valkey.primary.replicaCount`         | Number of Valkey primary instances to deploy | `1`          |
 | `valkey.primary.service.ports.valkey` | Port of Valkey service                       | `6379`       |
 
-### PostgreSQL HA
-
-PostgreSQL HA is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql-ha) if enabled in the values.
-Full configuration options are available on their website.
-
-| Name                                        | Description                                                      | Value       |
-| ------------------------------------------- | ---------------------------------------------------------------- | ----------- |
-| `postgresql-ha.enabled`                     | Enable PostgreSQL HA chart                                       | `true`      |
-| `postgresql-ha.postgresql.password`         | Password for the `gitea` user (overrides `auth.password`)        | `changeme4` |
-| `postgresql-ha.global.postgresql.database`  | Name for a custom database to create (overrides `auth.database`) | `gitea`     |
-| `postgresql-ha.global.postgresql.username`  | Name for a custom user to create (overrides `auth.username`)     | `gitea`     |
-| `postgresql-ha.global.postgresql.password`  | Name for a custom password to create (overrides `auth.password`) | `gitea`     |
-| `postgresql-ha.postgresql.repmgrPassword`   | Repmgr Password                                                  | `changeme2` |
-| `postgresql-ha.postgresql.postgresPassword` | postgres Password                                                | `changeme1` |
-| `postgresql-ha.pgpool.adminPassword`        | pgpool adminPassword                                             | `changeme3` |
-| `postgresql-ha.service.ports.postgresql`    | PostgreSQL service port (overrides `service.ports.postgresql`)   | `5432`      |
-| `postgresql-ha.persistence.size`            | PVC Storage Request for PostgreSQL HA volume                     | `10Gi`      |
-
-### PostgreSQL
-
-PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) if enabled in the values.
-Full configuration options are available on their website.
-
-| Name                                                    | Description                                                      | Value   |
-| ------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
-| `postgresql.enabled`                                    | Enable PostgreSQL                                                | `false` |
-| `postgresql.global.postgresql.auth.password`            | Password for the `gitea` user (overrides `auth.password`)        | `gitea` |
-| `postgresql.global.postgresql.auth.database`            | Name for a custom database to create (overrides `auth.database`) | `gitea` |
-| `postgresql.global.postgresql.auth.username`            | Name for a custom user to create (overrides `auth.username`)     | `gitea` |
-| `postgresql.global.postgresql.service.ports.postgresql` | PostgreSQL service port (overrides `service.ports.postgresql`)   | `5432`  |
-| `postgresql.primary.persistence.size`                   | PVC Storage Request for PostgreSQL volume                        | `10Gi`  |
-
 ### Advanced
 
 | Name               | Description                                                        | Value     |
@@ -1245,6 +1181,13 @@ Hop into [our Matrix room](https://matrix.to/#/#forgejo-helm-chart:matrix.org) i
 This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
 If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
+
+### To v14
+
+PostgreSQL and PostgreSQL HA subcharts are removed.
+You need to manually migrate to an external PostgreSQL instance.
+
+<https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1333>
 
 ### To v13
 

@@ -11,8 +11,6 @@ test:
 
 valkey-cluster:
   enabled: false
-postgresql-ha:
-  enabled: false
 
 persistence:
   enabled: false
