@@ -39,20 +39,20 @@ dependencies:
   # https://github.com/bitnami/charts/blob/main/bitnami/postgresql/Chart.yaml
   - name: postgresql
     repository: oci://ghcr.io/visualon/bitnamicharts
-    version: 16.7.21
+    version: 16.7.24
     condition: postgresql.enabled
   # https://github.com/bitnami/charts/blob/main/bitnami/postgresql-ha/Chart.yaml
   - name: postgresql-ha
     repository: oci://ghcr.io/visualon/bitnamicharts
-    version: 16.0.22
+    version: 16.1.2
     condition: postgresql-ha.enabled
   # https://github.com/bitnami/charts/blob/main/bitnami/valkey-cluster/Chart.yaml
   - name: valkey-cluster
     repository: oci://ghcr.io/visualon/bitnamicharts
-    version: 3.0.18
+    version: 3.0.22
     condition: valkey-cluster.enabled
   # https://github.com/bitnami/charts/blob/main/bitnami/valkey/Chart.yaml
   - name: valkey
     repository: oci://ghcr.io/visualon/bitnamicharts
-    version: 3.0.22
+    version: 3.0.28
     condition: valkey.enabled
