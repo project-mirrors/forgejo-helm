@@ -1130,13 +1130,17 @@ Valkey and [Valkey cluster](#valkey-cluster) cannot be enabled at the same time.
 ⚠️ The valkey charts do not work well with special characters in the password (<https://gitea.com/gitea/helm-chart/issues/690>).
 Consider omitting such or open an issue in the Bitnami repo and let us know once this got fixed.
 
-| Name                                  | Description                                  | Value        |
-| ------------------------------------- | -------------------------------------------- | ------------ |
-| `valkey.enabled`                      | Enable valkey standalone or replicated       | `false`      |
-| `valkey.architecture`                 | Whether to use standalone or replication     | `standalone` |
-| `valkey.global.valkey.password`       | Required password                            | `changeme`   |
-| `valkey.primary.replicaCount`         | Number of Valkey primary instances to deploy | `1`          |
-| `valkey.primary.service.ports.valkey` | Port of Valkey service                       | `6379`       |
+| Name                                         | Description                                  | Value              |
+| -------------------------------------------- | -------------------------------------------- | ------------------ |
+| `valkey.enabled`                             | Enable valkey standalone or replicated       | `false`            |
+| `valkey.architecture`                        | Whether to use standalone or replication     | `standalone`       |
+| `valkey.image.registry`                      | Image registry                               | `ghcr.io`          |
+| `valkey.image.repository`                    | Image repository                             | `valkey-io/valkey` |
+| `valkey.image.tag`                           | Image tag                                    | `9`                |
+| `valkey.global.valkey.password`              | Required password                            | `changeme`         |
+| `valkey.global.security.allowInsecureImages` | Whether to allow setting alternative images  | `true`             |
+| `valkey.primary.replicaCount`                | Number of Valkey primary instances to deploy | `1`                |
+| `valkey.primary.service.ports.valkey`        | Port of Valkey service                       | `6379`             |
 
 ### Advanced
 

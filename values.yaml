@@ -747,13 +747,23 @@ valkey-cluster:
 ## @descriptionEnd
 ## @param valkey.enabled Enable valkey standalone or replicated
 ## @param valkey.architecture Whether to use standalone or replication
+## @param valkey.image.registry Image registry
+## @param valkey.image.repository Image repository
+## @param valkey.image.tag Image tag
 ## @param valkey.global.valkey.password Required password
+## @param valkey.global.security.allowInsecureImages Whether to allow setting alternative images
 ## @param valkey.primary.replicaCount Number of Valkey primary instances to deploy
 ## @param valkey.primary.service.ports.valkey Port of Valkey service
 valkey:
   enabled: false
   architecture: standalone
+  image:
+    registry: ghcr.io
+    repository: valkey-io/valkey
+    tag: 9.0
   global:
+    security:
+      allowInsecureImages: true
     valkey:
       password: changeme
   primary:
