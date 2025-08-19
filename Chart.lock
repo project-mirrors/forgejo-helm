@@ -1,12 +1,12 @@
 dependencies:
 - name: common
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 2.31.3
+  version: 2.31.4
 - name: valkey-cluster
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 3.0.22
+  version: 3.0.23
 - name: valkey
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 3.0.28
-digest: sha256:71e97f18188bad6ff013af75f1c7a025c0346ec2a4928a7b383d1dac30330d3e
-generated: "2025-08-19T10:18:34.0287852+02:00"
+  version: 3.0.30
+digest: sha256:457619038a2a1dbc7f23941928072f9e61927c2f32b86ca1dae33373b1d4f342
+generated: "2025-08-19T08:38:39.935258423Z"
