@@ -102,14 +102,6 @@ When upgrading, please refer to the [Upgrading](#upgrading) section at the botto
 
 ## High Availability
 
-> ⚠️ **WARNING** ⚠️  
-> Outdated document, Forgejo is not HA ready yet.
-> Do not run multiple replicas of Forgejo.
-
-This chart supports running Forgejo and it's dependencies in HA mode.
-Care must be taken for production use as not all implementation details of Forgejo core are officially HA-ready yet.
-
-Deploying a HA-ready Forgejo instance requires some effort including using HA-ready dependencies.
 See the [HA Setup](docs/ha-setup.md) document for more details.
 
 ## Configuration
