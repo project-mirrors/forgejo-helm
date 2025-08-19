@@ -15,7 +15,7 @@ tests:
         matchRegex:
           path: spec.template.spec.containers[0].image
           # IN CASE OF AN INTENTIONAL MAJOR BUMP, ADJUST THIS TEST
-          pattern: ^ghcr.io/valkey-io/valkey:8.+$
+          pattern: ^docker.io/bitnami/valkey-cluster:8.+$
   - it: '[valkey] ensures we detect major image version upgrades'
     template: charts/valkey/templates/primary/application.yaml
     set:
@@ -28,4 +28,4 @@ tests:
         matchRegex:
           path: spec.template.spec.containers[0].image
           # IN CASE OF AN INTENTIONAL MAJOR BUMP, ADJUST THIS TEST
-          pattern: bitnami/valkey:8.+$
+          pattern: ^ghcr.io/valkey-io/valkey:8.+$
