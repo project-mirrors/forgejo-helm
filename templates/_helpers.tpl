@@ -108,18 +108,6 @@ app.kubernetes.io/name: {{ include "gitea.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
-{{- define "postgresql-ha.dns" -}}
-{{- if (index .Values "postgresql-ha").enabled -}}
-{{- printf "%s-postgresql-ha-pgpool.%s.svc.%s:%g" .Release.Name .Release.Namespace .Values.clusterDomain (index .Values "postgresql-ha" "service" "ports" "postgresql") -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "postgresql.dns" -}}
-{{- if (index .Values "postgresql").enabled -}}
-{{- printf "%s-postgresql.%s.svc.%s:%g" .Release.Name .Release.Namespace .Values.clusterDomain .Values.postgresql.global.postgresql.service.ports.postgresql -}}
-{{- end -}}
-{{- end -}}
-
 {{- define "valkey.dns" -}}
 {{- if and ((index .Values "valkey-cluster").enabled) ((index .Values "valkey").enabled) -}}
 {{- fail "valkey and valkey-cluster cannot be enabled at the same time. Please only choose one." -}}
@@ -278,7 +266,10 @@ https
 
 {{- define "gitea.inline_configuration.defaults" -}}
   {{- include "gitea.inline_configuration.defaults.server" . -}}
-  {{- include "gitea.inline_configuration.defaults.database" . -}}
+
+  {{- if not .Values.gitea.config.database.DB_TYPE -}}
+    {{- $_ := set .Values.gitea.config.database "DB_TYPE" "sqlite3" -}}
+  {{- end -}}  
 
   {{- if not .Values.gitea.config.repository.ROOT -}}
     {{- $_ := set .Values.gitea.config.repository "ROOT" "/data/git/gitea-repositories" -}}
@@ -362,27 +353,6 @@ https
   {{- end -}}
   {{- if not (hasKey .Values.gitea.config.server "ENABLE_PPROF") -}}
     {{- $_ := set .Values.gitea.config.server "ENABLE_PPROF" false -}}
-  {{- end -}}
-{{- end -}}
-
-{{- define "gitea.inline_configuration.defaults.database" -}}
-  {{- if (index .Values "postgresql-ha" "enabled") -}}
-    {{- $_ := set .Values.gitea.config.database "DB_TYPE"   "postgres" -}}
-    {{- if not (.Values.gitea.config.database.HOST) -}}
-      {{- $_ := set .Values.gitea.config.database "HOST"      (include "postgresql-ha.dns" .) -}}
-    {{- end -}}
-    {{- $_ := set .Values.gitea.config.database "NAME"      (index .Values "postgresql-ha" "global" "postgresql" "database") -}}
-    {{- $_ := set .Values.gitea.config.database "USER"      (index .Values "postgresql-ha" "global" "postgresql" "username") -}}
-    {{- $_ := set .Values.gitea.config.database "PASSWD"    (index .Values "postgresql-ha" "global" "postgresql" "password") -}}
-  {{- end -}}
-  {{- if (index .Values "postgresql" "enabled") -}}
-    {{- $_ := set .Values.gitea.config.database "DB_TYPE"   "postgres" -}}
-    {{- if not (.Values.gitea.config.database.HOST) -}}
-      {{- $_ := set .Values.gitea.config.database "HOST"      (include "postgresql.dns" .) -}}
-    {{- end -}}
-    {{- $_ := set .Values.gitea.config.database "NAME"      .Values.postgresql.global.postgresql.auth.database -}}
-    {{- $_ := set .Values.gitea.config.database "USER"      .Values.postgresql.global.postgresql.auth.username -}}
-    {{- $_ := set .Values.gitea.config.database "PASSWD"    .Values.postgresql.global.postgresql.auth.password -}}
   {{- end -}}
 {{- end -}}
 

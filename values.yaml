@@ -365,7 +365,7 @@ extraContainers: []
 extraVolumes: []
 # - name: postgres-ssl-vol
 #   secret:
-#     secretName: gitea-postgres-ssl
+#     secretName: forgejo-postgres-ssl
 
 ## @param extraContainerVolumeMounts Mounts that are only mapped into the Forgejo runtime/main container, to e.g. override custom templates.
 extraContainerVolumeMounts: []
@@ -761,68 +761,6 @@ valkey:
     service:
       ports:
         valkey: 6379
-
-## @section PostgreSQL HA
-## @descriptionStart
-## PostgreSQL HA is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql-ha) if enabled in the values.
-## Full configuration options are available on their website.
-## @descriptionEnd
-#
-## @param postgresql-ha.enabled Enable PostgreSQL HA chart
-## @param postgresql-ha.postgresql.password Password for the `gitea` user (overrides `auth.password`)
-## @param postgresql-ha.global.postgresql.database Name for a custom database to create (overrides `auth.database`)
-## @param postgresql-ha.global.postgresql.username Name for a custom user to create (overrides `auth.username`)
-## @param postgresql-ha.global.postgresql.password Name for a custom password to create (overrides `auth.password`)
-## @param postgresql-ha.postgresql.repmgrPassword Repmgr Password
-## @param postgresql-ha.postgresql.postgresPassword postgres Password
-## @param postgresql-ha.pgpool.adminPassword pgpool adminPassword
-## @param postgresql-ha.service.ports.postgresql PostgreSQL service port (overrides `service.ports.postgresql`)
-## @param postgresql-ha.persistence.size PVC Storage Request for PostgreSQL HA volume
-postgresql-ha:
-  global:
-    postgresql:
-      database: gitea
-      password: gitea
-      username: gitea
-  enabled: true
-  postgresql:
-    repmgrPassword: changeme2
-    postgresPassword: changeme1
-    password: changeme4
-  pgpool:
-    adminPassword: changeme3
-  service:
-    ports:
-      postgresql: 5432
-  persistence:
-    size: 10Gi
-
-## @section PostgreSQL
-## @descriptionStart
-## PostgreSQL is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) if enabled in the values.
-## Full configuration options are available on their website.
-## @descriptionEnd
-#
-## @param postgresql.enabled Enable PostgreSQL
-## @param postgresql.global.postgresql.auth.password Password for the `gitea` user (overrides `auth.password`)
-## @param postgresql.global.postgresql.auth.database Name for a custom database to create (overrides `auth.database`)
-## @param postgresql.global.postgresql.auth.username Name for a custom user to create (overrides `auth.username`)
-## @param postgresql.global.postgresql.service.ports.postgresql PostgreSQL service port (overrides `service.ports.postgresql`)
-## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
-postgresql:
-  enabled: false
-  global:
-    postgresql:
-      auth:
-        password: gitea
-        database: gitea
-        username: gitea
-      service:
-        ports:
-          postgresql: 5432
-  primary:
-    persistence:
-      size: 10Gi
 
 # By default, removed or moved settings that still remain in a user defined values.yaml will cause Helm to fail running the install/update.
 # Set it to false to skip this basic validation check.

@@ -1,0 +1,13 @@
+suite: config template | database config
+release:
+  name: forgejo-unittests
+  namespace: testing
+tests:
+  - it: database is configured correctly for SQLite
+    template: templates/gitea/config.yaml
+    asserts:
+      - documentIndex: 0
+        equal:
+          path: stringData.database
+          value: |-
+            DB_TYPE=sqlite3

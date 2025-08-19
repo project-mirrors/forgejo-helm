@@ -1,5 +1,9 @@
 # High Availability
 
+> ⚠️ **WARNING** ⚠️  
+> Outdated document, Forgejo is not HA ready yet.
+> Do not run multiple replicas of Forgejo.
+
 All components (in-memory DB, volume/asset storage, code indexer) used by Forgejo must be deployed in a HA-ready fashion to achieve a full HA-ready Forgejo deployment.
 The following document explains how to achieve this for all individual components.
 
@@ -28,8 +32,7 @@ In addition, the following components are required for full HA-readiness:
 - A HA-ready cache (`valkey-cluster`)
 - A HA-ready DB
 
-`postgres.enabled`, which default to `true`, must be set to `false` for a HA setup.
-The default `postgres` chart dependency is not HA-ready (there's a dedicated `postgres-ha` chart).
+You need to provide your own HA-ready external DB.
 
 The following sections discuss each of the components in more detail.
 Note that for each component discussed, the shown configurations only provides a (working) starting point, not necessarily the most optimal setup.
@@ -154,14 +157,9 @@ persistence:
 ## Database
 
 If you do not have an HA-ready DB, using a managed database service in the cloud might be the easiest and most robust solution.
-Remember: disable the built-in `postgres` dependency and configure the database connection manually via `gitea.config.database`:
 
 ```yml
 gitea:
-  database:
-    builtIn:
-      postgresql:
-        enabled: false
   config:
     database:
       DB_TYPE: postgres
