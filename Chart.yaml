@@ -36,13 +36,3 @@ dependencies:
     tags:
       - bitnami-common
     version: 2.31.4
-  # https://github.com/bitnami/charts/blob/main/bitnami/valkey-cluster/Chart.yaml
-  - name: valkey-cluster
-    repository: oci://ghcr.io/visualon/bitnamicharts
-    version: 3.0.23
-    condition: valkey-cluster.enabled
-  # https://github.com/bitnami/charts/blob/main/bitnami/valkey/Chart.yaml
-  - name: valkey
-    repository: oci://ghcr.io/visualon/bitnamicharts
-    version: 3.0.30
-    condition: valkey.enabled

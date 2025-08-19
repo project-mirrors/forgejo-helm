@@ -3,8 +3,6 @@
 - [Introduction](#introduction)
 - [Update and versioning policy](#update-and-versioning-policy)
 - [Dependencies](#dependencies)
-  - [HA Dependencies](#ha-dependencies)
-  - [Non-HA Dependencies](#non-ha-dependencies)
 - [Installing](#installing)
 - [High Availability](#high-availability)
 - [Configuration](#configuration)
@@ -48,8 +46,6 @@
   - [LivenessProbe](#livenessprobe)
   - [ReadinessProbe](#readinessprobe)
   - [StartupProbe](#startupprobe)
-  - [Valkey Cluster](#valkey-cluster)
-  - [Valkey](#valkey)
   - [Advanced](#advanced)
 - [Contributing](#contributing)
 - [Upgrading](#upgrading)
@@ -89,22 +85,6 @@ Yet most often no issues will be encountered and the chart maintainers aim to co
 
 Forgejo can be run with an external database and cache.
 This chart provides those dependencies, which can be enabled, or disabled via configuration.
-
-### HA Dependencies
-
-> ⚠️ **WARNING** ⚠️  
-> Outdated document, Forgejo is not HA ready yet.
-> Do not run multiple replicas of Forgejo.
-
-These dependencies are enabled by default:
-
-- Valkey Cluster ([Bitnami Valkey-Cluster](https://github.com/bitnami/charts/blob/main/bitnami/valkey-cluster/Chart.yaml))
-
-### Non-HA Dependencies
-
-Alternatively, the following non-HA replacements are available:
-
-- Valkey ([Bitnami Valkey](https://github.com/bitnami/charts/blob/main/bitnami/valkey/Chart.yaml))
 
 ## Installing
 
@@ -219,8 +199,7 @@ If `.Values.image.rootless: true`, then the following will occur. In case you us
 
 #### Session, Cache and Queue
 
-The session, cache and queue settings are set to use the built-in Valkey Cluster sub-chart dependency.
-If Valkey Cluster is disabled, the chart will fall back to the Gitea defaults which use "memory" for `session` and `cache` and "level" for `queue`.
+The chart will fall back to the Gitea defaults which use "memory" for `session` and `cache` and "level" for `queue`.
 
 While these will work and even not cause immediate issues after startup, **they are not recommended for production use**.
 Reasons being that a single pod will take on all the work for `session` and `cache` tasks in its available memory.
@@ -231,18 +210,13 @@ External tools such as `valkey-cluster` or `memcached` handle these workloads mu
 
 If HA is not needed/desired, the following configurations can be used to deploy a single-pod Forgejo instance.
 
-1. For a production-ready single-pod Forgejo instance without external dependencies (using the built-in SQLite and the chart dependency `valkey`):
+1. For a production-ready single-pod Forgejo instance without external dependencies (using the built-in SQLite):
 
    <details>
 
    <summary>values.yml</summary>
 
    ```yaml
-   valkey-cluster:
-     enabled: false
-   valkey:
-     enabled: true
-
    persistence:
      enabled: true
 
@@ -265,11 +239,6 @@ If HA is not needed/desired, the following configurations can be used to deploy 
    <summary>values.yml</summary>
 
    ```yaml
-   valkey-cluster:
-     enabled: false
-   valkey:
-     enabled: false
-
    persistence:
      enabled: false
 
@@ -439,18 +408,7 @@ More about this issue can be found at [`gitea/helm-chart#161`](https://gitea.com
 
 ### Cache
 
-The cache handling is done via `valkey-cluster` (via the `bitnami` chart) by default.
-This deployment is HA-ready but can also be used for single-pod deployments.
-By default, 6 replicas are deployed for a working `valkey-cluster` deployment.
-Many cloud providers offer a managed valkey service, which can be used instead of the built-in `valkey-cluster`.
-
-```yaml
-valkey-cluster:
-  enabled: true
-```
-
-⚠️ The valkey charts [do not work well with special characters in the password](https://gitea.com/gitea/helm-chart/issues/690).
-Consider omitting such or open an issue in the Bitnami repo and let us know once this got fixed.
+The chart will fall back to the Gitea defaults which use "memory" for `session` and `cache` and "level" for `queue`.
 
 ### Persistence
 
@@ -1103,41 +1061,6 @@ blocks, while the keys themselves remain in all caps.
 | `gitea.startupProbe.successThreshold`    | Success threshold for startup probe             | `1`     |
 | `gitea.startupProbe.failureThreshold`    | Failure threshold for startup probe             | `10`    |
 
-### Valkey Cluster
-
-Valkey Cluster is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/valkey-cluster) if enabled in the values.
-Full configuration options are available on their website.
-Valkey cluster and [Valkey](#valkey) cannot be enabled at the same time.
-
-⚠️ The valkey charts do not work well with special characters in the password (<https://gitea.com/gitea/helm-chart/issues/690>).
-Consider omitting such or open an issue in the Bitnami repo and let us know once this got fixed.
-
-| Name                                  | Description                                                          | Value   |
-| ------------------------------------- | -------------------------------------------------------------------- | ------- |
-| `valkey-cluster.enabled`              | Enable valkey cluster                                                | `true`  |
-| `valkey-cluster.usePassword`          | Whether to use password authentication                               | `false` |
-| `valkey-cluster.usePasswordFiles`     | Whether to mount passwords as files instead of environment variables | `false` |
-| `valkey-cluster.cluster.nodes`        | Number of valkey cluster primary nodes                               | `3`     |
-| `valkey-cluster.cluster.replicas`     | Number of valkey cluster primary node replicas                       | `0`     |
-| `valkey-cluster.service.ports.valkey` | Port of Valkey service                                               | `6379`  |
-
-### Valkey
-
-Valkey is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/valkey) if enabled in the values.
-Full configuration options are available on their website.
-Valkey and [Valkey cluster](#valkey-cluster) cannot be enabled at the same time.
-
-⚠️ The valkey charts do not work well with special characters in the password (<https://gitea.com/gitea/helm-chart/issues/690>).
-Consider omitting such or open an issue in the Bitnami repo and let us know once this got fixed.
-
-| Name                                  | Description                                  | Value        |
-| ------------------------------------- | -------------------------------------------- | ------------ |
-| `valkey.enabled`                      | Enable valkey standalone or replicated       | `false`      |
-| `valkey.architecture`                 | Whether to use standalone or replication     | `standalone` |
-| `valkey.global.valkey.password`       | Required password                            | `changeme`   |
-| `valkey.primary.replicaCount`         | Number of Valkey primary instances to deploy | `1`          |
-| `valkey.primary.service.ports.valkey` | Port of Valkey service                       | `6379`       |
-
 ### Advanced
 
 | Name               | Description                                                        | Value     |
@@ -1166,6 +1089,9 @@ If you miss this, blindly upgrading may delete your Postgres instance and you ma
 
 PostgreSQL and PostgreSQL HA subcharts have been removed.
 You need to manually migrate to an external PostgreSQL instance.
+
+Valkey and Valkey Cluster charts have been removed.
+You need to provide your own instances.
 
 <https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1333>
 
