@@ -1136,7 +1136,7 @@ Consider omitting such or open an issue in the Bitnami repo and let us know once
 | `valkey.architecture`                        | Whether to use standalone or replication     | `standalone`       |
 | `valkey.image.registry`                      | Image registry                               | `ghcr.io`          |
 | `valkey.image.repository`                    | Image repository                             | `valkey-io/valkey` |
-| `valkey.image.tag`                           | Image tag                                    | `9`                |
+| `valkey.image.tag`                           | Image tag                                    | `8.1.3`            |
 | `valkey.global.valkey.password`              | Required password                            | `changeme`         |
 | `valkey.global.security.allowInsecureImages` | Whether to allow setting alternative images  | `true`             |
 | `valkey.primary.replicaCount`                | Number of Valkey primary instances to deploy | `1`                |
