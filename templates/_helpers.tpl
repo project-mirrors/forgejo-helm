@@ -108,32 +108,6 @@ app.kubernetes.io/name: {{ include "gitea.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
-{{- define "valkey.dns" -}}
-{{- if and ((index .Values "valkey-cluster").enabled) ((index .Values "valkey").enabled) -}}
-{{- fail "valkey and valkey-cluster cannot be enabled at the same time. Please only choose one." -}}
-{{- else if (index .Values "valkey-cluster").enabled -}}
-{{- printf "redis+cluster://:%s@%s-valkey-cluster-headless.%s.svc.%s:%g/0?pool_size=100&idle_timeout=180s&" (index .Values "valkey-cluster").global.valkey.password .Release.Name .Release.Namespace .Values.clusterDomain (index .Values "valkey-cluster").service.ports.valkey -}}
-{{- else if (index .Values "valkey").enabled -}}
-{{- printf "redis://:%s@%s-valkey-headless.%s.svc.%s:%g/0?pool_size=100&idle_timeout=180s&" (index .Values "valkey").global.valkey.password .Release.Name .Release.Namespace .Values.clusterDomain (index .Values "valkey").primary.service.ports.valkey -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "valkey.port" -}}
-{{- if (index .Values "valkey-cluster").enabled -}}
-{{ (index .Values "valkey-cluster").service.ports.valkey }}
-{{- else if (index .Values "valkey").enabled -}}
-{{ (index .Values "valkey").primary.service.ports.valkey }}
-{{- end -}}
-{{- end -}}
-
-{{- define "valkey.servicename" -}}
-{{- if (index .Values "valkey-cluster").enabled -}}
-{{- printf "%s-valkey-cluster-headless.%s.svc.%s" .Release.Name .Release.Namespace .Values.clusterDomain -}}
-{{- else if (index .Values "valkey").enabled -}}
-{{- printf "%s-valkey-headless.%s.svc.%s" .Release.Name .Release.Namespace .Values.clusterDomain -}}
-{{- end -}}
-{{- end -}}
-
 {{- define "gitea.default_domain" -}}
 {{- printf "%s-http.%s.svc.%s" (include "gitea.fullname" .) .Release.Namespace .Values.clusterDomain -}}
 {{- end -}}
@@ -280,34 +254,26 @@ https
   {{- if not (hasKey .Values.gitea.config.metrics "ENABLED") -}}
     {{- $_ := set .Values.gitea.config.metrics "ENABLED" .Values.gitea.metrics.enabled -}}
   {{- end -}}
-  {{- /* valkey queue */ -}}
-  {{- if or ((index .Values "valkey-cluster").enabled) ((index .Values "valkey").enabled) -}}
-    {{- $_ := set .Values.gitea.config.queue "TYPE" "redis" -}}
-    {{- $_ := set .Values.gitea.config.queue "CONN_STR" (include "valkey.dns" .) -}}
-    {{- $_ := set .Values.gitea.config.session "PROVIDER" "redis" -}}
-    {{- $_ := set .Values.gitea.config.session "PROVIDER_CONFIG" (include "valkey.dns" .) -}}
-    {{- $_ := set .Values.gitea.config.cache "ADAPTER" "redis" -}}
-    {{- $_ := set .Values.gitea.config.cache "HOST" (include "valkey.dns" .) -}}
-  {{- else -}}
-    {{- if not (get .Values.gitea.config.session "PROVIDER") -}}
-      {{- $_ := set .Values.gitea.config.session "PROVIDER" "memory" -}}
-    {{- end -}}
-    {{- if not (get .Values.gitea.config.session "PROVIDER_CONFIG") -}}
-      {{- $_ := set .Values.gitea.config.session "PROVIDER_CONFIG" "" -}}
-    {{- end -}}
-    {{- if not (get .Values.gitea.config.queue "TYPE") -}}
-      {{- $_ := set .Values.gitea.config.queue "TYPE" "level" -}}
-    {{- end -}}
-    {{- if not (get .Values.gitea.config.queue "CONN_STR") -}}
-      {{- $_ := set .Values.gitea.config.queue "CONN_STR" "" -}}
-    {{- end -}}
-    {{- if not (get .Values.gitea.config.cache "ADAPTER") -}}
-      {{- $_ := set .Values.gitea.config.cache "ADAPTER" "memory" -}}
-    {{- end -}}
-    {{- if not (get .Values.gitea.config.cache "HOST") -}}
-      {{- $_ := set .Values.gitea.config.cache "HOST" "" -}}
-    {{- end -}}
+  
+  {{- if not (get .Values.gitea.config.session "PROVIDER") -}}
+    {{- $_ := set .Values.gitea.config.session "PROVIDER" "memory" -}}
   {{- end -}}
+  {{- if not (get .Values.gitea.config.session "PROVIDER_CONFIG") -}}
+    {{- $_ := set .Values.gitea.config.session "PROVIDER_CONFIG" "" -}}
+  {{- end -}}
+  {{- if not (get .Values.gitea.config.queue "TYPE") -}}
+    {{- $_ := set .Values.gitea.config.queue "TYPE" "level" -}}
+  {{- end -}}
+  {{- if not (get .Values.gitea.config.queue "CONN_STR") -}}
+    {{- $_ := set .Values.gitea.config.queue "CONN_STR" "" -}}
+  {{- end -}}
+  {{- if not (get .Values.gitea.config.cache "ADAPTER") -}}
+    {{- $_ := set .Values.gitea.config.cache "ADAPTER" "memory" -}}
+  {{- end -}}
+  {{- if not (get .Values.gitea.config.cache "HOST") -}}
+    {{- $_ := set .Values.gitea.config.cache "HOST" "" -}}
+  {{- end -}}
+
   {{- if not .Values.gitea.config.indexer.ISSUE_INDEXER_TYPE -}}
      {{- $_ := set .Values.gitea.config.indexer "ISSUE_INDEXER_TYPE" "db" -}}
   {{- end -}}

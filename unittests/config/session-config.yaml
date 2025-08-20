@@ -3,43 +3,8 @@ release:
   name: gitea-unittests
   namespace: testing
 tests:
-  - it: session is configured correctly for valkey-cluster
+  - it: session is configured correctly for 'memory'
     template: templates/gitea/config.yaml
-    set:
-      valkey-cluster:
-        enabled: true
-      valkey:
-        enabled: false
-    asserts:
-      - documentIndex: 0
-        equal:
-          path: stringData.session
-          value: |-
-            PROVIDER=redis
-            PROVIDER_CONFIG=redis+cluster://:@gitea-unittests-valkey-cluster-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
-
-  - it: 'session is configured correctly for valkey'
-    template: templates/gitea/config.yaml
-    set:
-      valkey-cluster:
-        enabled: false
-      valkey:
-        enabled: true
-    asserts:
-      - documentIndex: 0
-        equal:
-          path: stringData.session
-          value: |-
-            PROVIDER=redis
-            PROVIDER_CONFIG=redis://:changeme@gitea-unittests-valkey-headless.testing.svc.cluster.local:6379/0?pool_size=100&idle_timeout=180s&
-
-  - it: "session is configured correctly for 'memory' when valkey (and valkey-cluster) is disabled"
-    template: templates/gitea/config.yaml
-    set:
-      valkey-cluster:
-        enabled: false
-      valkey:
-        enabled: false
     asserts:
       - documentIndex: 0
         equal:
@@ -48,13 +13,9 @@ tests:
             PROVIDER=memory
             PROVIDER_CONFIG=
 
-  - it: 'session can be customized when valkey (and valkey-cluster) is disabled'
+  - it: session can be customized
     template: templates/gitea/config.yaml
     set:
-      valkey-cluster:
-        enabled: false
-      valkey:
-        enabled: false
       forgejo.config.session.PROVIDER: custom-provider
       forgejo.config.session.PROVIDER_CONFIG: custom-provider-config
     asserts:

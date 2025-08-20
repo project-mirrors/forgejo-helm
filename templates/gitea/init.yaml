@@ -64,28 +64,6 @@ stringData:
       exit 1
     }
 
-    {{- if include "valkey.servicename" . }}
-    function test_valkey_connection() {
-      local RETRY=0
-      local MAX=30
-      
-      echo 'Wait for valkey to become available...'
-      until [ "${RETRY}" -ge "${MAX}" ]; do
-        nc -vz -w2 {{ include "valkey.servicename" . }} {{ include "valkey.port" . }} && break
-        RETRY=$[${RETRY}+1]
-        echo "...not ready yet (${RETRY}/${MAX})"
-      done
-
-      if [ "${RETRY}" -ge "${MAX}" ]; then
-        echo "Valkey not reachable after '${MAX}' attempts!"
-        exit 1
-      fi
-    }
-
-    test_valkey_connection
-    {{- end }}
-
-
     {{- if or .Values.gitea.admin.existingSecret (and .Values.gitea.admin.username .Values.gitea.admin.password) }}
     function configure_admin_user() {
       local full_admin_list=$(gitea admin user list --admin)

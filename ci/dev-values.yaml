@@ -7,9 +7,6 @@ test:
   image:
     name: code.forgejo.org/oci/busybox
 
-valkey-cluster:
-  enabled: false
-
 persistence:
   enabled: false
 

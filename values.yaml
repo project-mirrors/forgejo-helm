@@ -709,59 +709,6 @@ forgejo:
     successThreshold: 1
     failureThreshold: 10
 
-## @section Valkey Cluster
-## @descriptionStart
-## Valkey Cluster is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/valkey-cluster) if enabled in the values.
-## Full configuration options are available on their website.
-## Valkey cluster and [Valkey](#valkey) cannot be enabled at the same time.
-##
-## ⚠️ The valkey charts do not work well with special characters in the password (<https://gitea.com/gitea/helm-chart/issues/690>).
-## Consider omitting such or open an issue in the Bitnami repo and let us know once this got fixed.
-## @descriptionEnd
-## @param valkey-cluster.enabled Enable valkey cluster
-## @param valkey-cluster.usePassword Whether to use password authentication
-## @param valkey-cluster.usePasswordFiles Whether to mount passwords as files instead of environment variables
-## @param valkey-cluster.cluster.nodes Number of valkey cluster primary nodes
-## @param valkey-cluster.cluster.replicas Number of valkey cluster primary node replicas
-## @param valkey-cluster.service.ports.valkey Port of Valkey service
-
-valkey-cluster:
-  enabled: true
-  usePassword: false
-  usePasswordFiles: false
-  cluster:
-    nodes: 3 # default: 6
-    replicas: 0 # default: 1
-  service:
-    ports:
-      valkey: 6379
-
-## @section Valkey
-## @descriptionStart
-## Valkey is loaded as a dependency from [Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/valkey) if enabled in the values.
-## Full configuration options are available on their website.
-## Valkey and [Valkey cluster](#valkey-cluster) cannot be enabled at the same time.
-##
-## ⚠️ The valkey charts do not work well with special characters in the password (<https://gitea.com/gitea/helm-chart/issues/690>).
-## Consider omitting such or open an issue in the Bitnami repo and let us know once this got fixed.
-## @descriptionEnd
-## @param valkey.enabled Enable valkey standalone or replicated
-## @param valkey.architecture Whether to use standalone or replication
-## @param valkey.global.valkey.password Required password
-## @param valkey.primary.replicaCount Number of Valkey primary instances to deploy
-## @param valkey.primary.service.ports.valkey Port of Valkey service
-valkey:
-  enabled: false
-  architecture: standalone
-  global:
-    valkey:
-      password: changeme
-  primary:
-    replicaCount: 1
-    service:
-      ports:
-        valkey: 6379
-
 # By default, removed or moved settings that still remain in a user defined values.yaml will cause Helm to fail running the install/update.
 # Set it to false to skip this basic validation check.
 ## @section Advanced
