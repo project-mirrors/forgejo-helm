@@ -1,3 +1,4 @@
+{{- include "forgejo.mergeConfig" . -}}
 {{- if .Values.checkDeprecation -}}
   {{/* CUSTOM PROBES */}}
   {{- if .Values.gitea.customLivenessProbe -}}

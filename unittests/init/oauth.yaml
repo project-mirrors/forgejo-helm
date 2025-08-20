@@ -7,7 +7,7 @@ templates:
 tests:
   - it: works with oauth
     set:
-      gitea.oauth:
+      forgejo.oauth:
         - name: 'entraid'
           provider: openidConnect
           key: some-key
@@ -29,7 +29,7 @@ tests:
           path: stringData["configure_gitea.sh"]
   - it: works with oauth with kebab-case
     set:
-      gitea.oauth:
+      forgejo.oauth:
         - name: 'entraid'
           provider: openidConnect
           key: some-key

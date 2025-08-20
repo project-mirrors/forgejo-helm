@@ -1,3 +1,5 @@
+{{- include "forgejo.mergeConfig" . -}}
+{{- include "forgejo.checkDeprecation" . -}}
 apiVersion: v1
 kind: Secret
 metadata:

@@ -55,8 +55,8 @@ tests:
         enabled: false
       valkey:
         enabled: false
-      gitea.config.cache.ADAPTER: custom-adapter
-      gitea.config.cache.HOST: custom-host
+      forgejo.config.cache.ADAPTER: custom-adapter
+      forgejo.config.cache.HOST: custom-host
     asserts:
       - documentIndex: 0
         equal:

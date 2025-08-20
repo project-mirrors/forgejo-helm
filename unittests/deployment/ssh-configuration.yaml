@@ -20,7 +20,7 @@ tests:
     template: templates/gitea/deployment.yaml
     set:
       image.rootless: false
-      gitea.ssh.logLevel: 'DEBUG'
+      forgejo.ssh.logLevel: 'DEBUG'
     asserts:
       - contains:
           path: spec.template.spec.containers[0].env
@@ -32,7 +32,7 @@ tests:
     set:
       image.fullOverride: gitea/gitea:1.19.3
       image.rootless: false
-      gitea.ssh.logLevel: 'DEBUG'
+      forgejo.ssh.logLevel: 'DEBUG'
     asserts:
       - contains:
           path: spec.template.spec.containers[0].env
@@ -43,7 +43,7 @@ tests:
     template: templates/gitea/deployment.yaml
     set:
       image.rootless: true
-      gitea.ssh.logLevel: 'DEBUG' # explicitly defining a non-standard level here
+      forgejo.ssh.logLevel: 'DEBUG' # explicitly defining a non-standard level here
     asserts:
       - notContains:
           path: spec.template.spec.containers[0].env
@@ -55,7 +55,7 @@ tests:
     set:
       image.fullOverride: gitea/gitea:1.19.3
       image.rootless: true
-      gitea.ssh.logLevel: 'DEBUG' # explicitly defining a non-standard level here
+      forgejo.ssh.logLevel: 'DEBUG' # explicitly defining a non-standard level here
     asserts:
       - notContains:
           path: spec.template.spec.containers[0].env

@@ -55,8 +55,8 @@ tests:
         enabled: false
       valkey:
         enabled: false
-      gitea.config.session.PROVIDER: custom-provider
-      gitea.config.session.PROVIDER_CONFIG: custom-provider-config
+      forgejo.config.session.PROVIDER: custom-provider
+      forgejo.config.session.PROVIDER_CONFIG: custom-provider-config
     asserts:
       - documentIndex: 0
         equal:

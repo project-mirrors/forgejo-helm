@@ -15,7 +15,7 @@ valkey-cluster:
 persistence:
   enabled: false
 
-gitea:
+forgejo:
   config:
     session:
       PROVIDER: memory

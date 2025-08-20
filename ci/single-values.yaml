@@ -21,7 +21,7 @@ test:
 persistence:
   enabled: true
 
-gitea:
+forgejo:
   config:
     session:
       PROVIDER: db

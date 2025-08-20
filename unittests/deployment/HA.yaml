@@ -13,7 +13,7 @@ tests:
       persistence:
         accessModes:
           - ReadWriteMany
-      gitea:
+      forgejo:
         config:
           cron:
             GIT_GC_REPOS:
@@ -35,7 +35,7 @@ tests:
       persistence:
         accessModes:
           - ReadWriteMany
-      gitea:
+      forgejo:
         config:
           indexer:
             ISSUE_INDEXER_TYPE: bleve
@@ -49,7 +49,7 @@ tests:
       persistence:
         accessModes:
           - ReadWriteMany
-      gitea:
+      forgejo:
         config:
           indexer:
             REPO_INDEXER_TYPE: bleve

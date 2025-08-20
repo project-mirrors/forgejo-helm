@@ -55,8 +55,8 @@ tests:
         enabled: false
       valkey:
         enabled: false
-      gitea.config.queue.TYPE: custom-type
-      gitea.config.queue.CONN_STR: custom-connection-string
+      forgejo.config.queue.TYPE: custom-type
+      forgejo.config.queue.CONN_STR: custom-connection-string
     asserts:
       - documentIndex: 0
         equal:

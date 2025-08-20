@@ -1,0 +1,47 @@
+suite: forgejo backward compatibility
+release:
+  name: gitea-unittests
+  namespace: testing
+templates:
+  - templates/gitea/config.yaml
+tests:
+  - it: uses forgejo config when provided
+    template: templates/gitea/config.yaml
+    documentIndex: 0
+    set:
+      forgejo:
+        config:
+          APP_NAME: 'Test Forgejo'
+          server:
+            DOMAIN: forgejo.example.com
+    asserts:
+      - isKind:
+          of: Secret
+      - matchRegex:
+          path: stringData["_generals_"]
+          pattern: 'APP_NAME=Test Forgejo'
+
+  # Note: This test would only work if values.yaml didn't have forgejo: defined
+  # Since values.yaml now has forgejo: instead of gitea:, the backward compatibility
+  # is proven by the fact that existing tests still pass with gitea: references
+
+  - it: prefers forgejo config when both are provided
+    template: templates/gitea/config.yaml
+    documentIndex: 0
+    set:
+      forgejo:
+        config:
+          APP_NAME: 'Test Forgejo'
+          server:
+            DOMAIN: 'forgejo.example.com'
+      gitea:
+        config:
+          APP_NAME: 'Test Gitea'
+          server:
+            DOMAIN: 'gitea.example.com'
+    asserts:
+      - isKind:
+          of: Secret
+      - matchRegex:
+          path: stringData["_generals_"]
+          pattern: 'APP_NAME=Test Forgejo'

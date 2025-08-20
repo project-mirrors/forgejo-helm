@@ -45,7 +45,7 @@ tests:
   - it: '[provided via values] uses that for DOMAIN|SSH_DOMAIN|ROOT_URL'
     template: templates/gitea/config.yaml
     set:
-      gitea.config.server.DOMAIN: provided.example.com
+      forgejo.config.server.DOMAIN: provided.example.com
       ingress:
         hosts:
           - host: non-used.example.com

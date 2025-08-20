@@ -43,7 +43,7 @@
   - [Persistence](#persistence-1)
   - [Init](#init)
   - [Signing](#signing)
-  - [Gitea](#gitea)
+  - [Forgejo](#forgejo)
   - [`app.ini` overrides](#appini-overrides)
   - [LivenessProbe](#livenessprobe)
   - [ReadinessProbe](#readinessprobe)
@@ -991,24 +991,24 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `signing.privateKey`     | Inline private GPG key for signed internal Git activity           | `""`               |
 | `signing.existingSecret` | Use an existing secret to store the value of `signing.privateKey` | `""`               |
 
-### Gitea
+### Forgejo
 
-| Name                                     | Description                                                                                                                   | Value                |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `gitea.admin.username`                   | Username for the Forgejo admin user                                                                                           | `gitea_admin`        |
-| `gitea.admin.existingSecret`             | Use an existing secret to store admin user credentials                                                                        | `nil`                |
-| `gitea.admin.password`                   | Password for the Forgejo admin user                                                                                           | `r8sA8CPHD9!bt6d`    |
-| `gitea.admin.email`                      | Email for the Forgejo admin user                                                                                              | `gitea@local.domain` |
-| `gitea.admin.passwordMode`               | Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated | `keepUpdated`        |
-| `gitea.metrics.enabled`                  | Enable Forgejo metrics                                                                                                        | `false`              |
-| `gitea.metrics.serviceMonitor.enabled`   | Enable Forgejo metrics service monitor                                                                                        | `false`              |
-| `gitea.metrics.serviceMonitor.namespace` | Namespace in which Prometheus is running                                                                                      | `""`                 |
-| `gitea.ldap`                             | LDAP configuration                                                                                                            | `[]`                 |
-| `gitea.oauth`                            | OAuth configuration                                                                                                           | `[]`                 |
-| `gitea.additionalConfigSources`          | Additional configuration from secret or configmap                                                                             | `[]`                 |
-| `gitea.additionalConfigFromEnvs`         | Additional configuration sources from environment variables                                                                   | `[]`                 |
-| `gitea.podAnnotations`                   | Annotations for the Forgejo pod                                                                                               | `{}`                 |
-| `gitea.ssh.logLevel`                     | Configure OpenSSH's log level. Only available for root-based Forgejo image.                                                   | `INFO`               |
+| Name                                       | Description                                                                                                                   | Value                |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `forgejo.admin.username`                   | Username for the Forgejo admin user                                                                                           | `gitea_admin`        |
+| `forgejo.admin.existingSecret`             | Use an existing secret to store admin user credentials                                                                        | `nil`                |
+| `forgejo.admin.password`                   | Password for the Forgejo admin user                                                                                           | `r8sA8CPHD9!bt6d`    |
+| `forgejo.admin.email`                      | Email for the Forgejo admin user                                                                                              | `gitea@local.domain` |
+| `forgejo.admin.passwordMode`               | Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated | `keepUpdated`        |
+| `forgejo.metrics.enabled`                  | Enable Forgejo metrics                                                                                                        | `false`              |
+| `forgejo.metrics.serviceMonitor.enabled`   | Enable Forgejo metrics service monitor                                                                                        | `false`              |
+| `forgejo.metrics.serviceMonitor.namespace` | Namespace in which Prometheus is running                                                                                      | `""`                 |
+| `forgejo.ldap`                             | LDAP configuration                                                                                                            | `[]`                 |
+| `forgejo.oauth`                            | OAuth configuration                                                                                                           | `[]`                 |
+| `forgejo.additionalConfigSources`          | Additional configuration from secret or configmap                                                                             | `[]`                 |
+| `forgejo.additionalConfigFromEnvs`         | Additional configuration sources from environment variables                                                                   | `[]`                 |
+| `forgejo.podAnnotations`                   | Annotations for the Forgejo pod                                                                                               | `{}`                 |
+| `forgejo.ssh.logLevel`                     | Configure OpenSSH's log level. Only available for root-based Forgejo image.                                                   | `INFO`               |
 
 ### `app.ini` overrides
 
@@ -1017,91 +1017,91 @@ Sheet](https://forgejo.org/docs/latest/admin/config-cheat-sheet/) can be
 set as a Helm value. Configuration sections map to (lowercased) YAML
 blocks, while the keys themselves remain in all caps.
 
-| Name                                 | Description                                                                                                                                    | Value                               |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `gitea.config.APP_NAME`              | Application name, used in the page title                                                                                                       | `Forgejo: Beyond coding. We forge.` |
-| `gitea.config.RUN_MODE`              | Application run mode, affects performance and debugging: `dev` or `prod`                                                                       | `prod`                              |
-| `gitea.config.repository`            | General repository settings                                                                                                                    | `{}`                                |
-| `gitea.config.cors`                  | Cross-origin resource sharing settings                                                                                                         | `{}`                                |
-| `gitea.config.ui`                    | User interface settings                                                                                                                        | `{}`                                |
-| `gitea.config.markdown`              | Markdown parser settings                                                                                                                       | `{}`                                |
-| `gitea.config.server`                | General server settings                                                                                                                        | `{}`                                |
-| `gitea.config.database`              | Database configuration (only necessary with an [externally managed DB](https://code.forgejo.org/forgejo-helm/forgejo-helm#external-database)). | `{}`                                |
-| `gitea.config.indexer`               | Settings for what content is indexed and how                                                                                                   | `{}`                                |
-| `gitea.config.queue`                 | Job queue configuration                                                                                                                        | `{}`                                |
-| `gitea.config.admin`                 | Admin user settings                                                                                                                            | `{}`                                |
-| `gitea.config.security`              | Site security settings                                                                                                                         | `{}`                                |
-| `gitea.config.camo`                  | Settings for the [camo](https://github.com/cactus/go-camo) media proxy server (disabled by default)                                            | `{}`                                |
-| `gitea.config.openid`                | Configuration for authentication with OpenID (disabled by default)                                                                             | `{}`                                |
-| `gitea.config.oauth2_client`         | OAuth2 client settings                                                                                                                         | `{}`                                |
-| `gitea.config.service`               | Configuration for miscellaneous Forgejo services                                                                                               | `{}`                                |
-| `gitea.config.ssh.minimum_key_sizes` | SSH minimum key sizes                                                                                                                          | `{}`                                |
-| `gitea.config.webhook`               | Webhook settings                                                                                                                               | `{}`                                |
-| `gitea.config.mailer`                | Mailer configuration (disabled by default)                                                                                                     | `{}`                                |
-| `gitea.config.email.incoming`        | Configuration for handling incoming mail (disabled by default)                                                                                 | `{}`                                |
-| `gitea.config.cache`                 | Cache configuration                                                                                                                            | `{}`                                |
-| `gitea.config.session`               | Session/cookie handling                                                                                                                        | `{}`                                |
-| `gitea.config.picture`               | User avatar settings                                                                                                                           | `{}`                                |
-| `gitea.config.project`               | Project board defaults                                                                                                                         | `{}`                                |
-| `gitea.config.attachment`            | Issue and PR attachment configuration                                                                                                          | `{}`                                |
-| `gitea.config.log`                   | Logging configuration                                                                                                                          | `{}`                                |
-| `gitea.config.cron`                  | Cron job configuration                                                                                                                         | `{}`                                |
-| `gitea.config.git`                   | Global settings for Git                                                                                                                        | `{}`                                |
-| `gitea.config.metrics`               | Settings for the Prometheus endpoint (disabled by default)                                                                                     | `{}`                                |
-| `gitea.config.api`                   | Settings for the Swagger API documentation endpoints                                                                                           | `{}`                                |
-| `gitea.config.oauth2`                | Settings for the [OAuth2 provider](https://forgejo.org/docs/latest/admin/oauth2-provider/)                                                     | `{}`                                |
-| `gitea.config.i18n`                  | Internationalization settings                                                                                                                  | `{}`                                |
-| `gitea.config.markup`                | Configuration for advanced markup processors                                                                                                   | `{}`                                |
-| `gitea.config.highlight.mapping`     | File extension to language mapping overrides for syntax highlighting                                                                           | `{}`                                |
-| `gitea.config.time`                  | Locale settings                                                                                                                                | `{}`                                |
-| `gitea.config.migrations`            | Settings for Git repository migrations                                                                                                         | `{}`                                |
-| `gitea.config.federation`            | Federation configuration                                                                                                                       | `{}`                                |
-| `gitea.config.packages`              | Package registry settings                                                                                                                      | `{}`                                |
-| `gitea.config.mirror`                | Configuration for repository mirroring                                                                                                         | `{}`                                |
-| `gitea.config.lfs`                   | Large File Storage configuration                                                                                                               | `{}`                                |
-| `gitea.config.repo-avatar`           | Repository avatar storage configuration                                                                                                        | `{}`                                |
-| `gitea.config.avatar`                | User/org avatar storage configuration                                                                                                          | `{}`                                |
-| `gitea.config.storage`               | General storage settings                                                                                                                       | `{}`                                |
-| `gitea.config.proxy`                 | Proxy configuration (disabled by default)                                                                                                      | `{}`                                |
-| `gitea.config.actions`               | Configuration for [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/)                                                             | `{}`                                |
-| `gitea.config.other`                 | Uncategorized configuration options                                                                                                            | `{}`                                |
+| Name                                   | Description                                                                                                                                    | Value                               |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `forgejo.config.APP_NAME`              | Application name, used in the page title                                                                                                       | `Forgejo: Beyond coding. We forge.` |
+| `forgejo.config.RUN_MODE`              | Application run mode, affects performance and debugging: `dev` or `prod`                                                                       | `prod`                              |
+| `forgejo.config.repository`            | General repository settings                                                                                                                    | `{}`                                |
+| `forgejo.config.cors`                  | Cross-origin resource sharing settings                                                                                                         | `{}`                                |
+| `forgejo.config.ui`                    | User interface settings                                                                                                                        | `{}`                                |
+| `forgejo.config.markdown`              | Markdown parser settings                                                                                                                       | `{}`                                |
+| `forgejo.config.server`                | General server settings                                                                                                                        | `{}`                                |
+| `forgejo.config.database`              | Database configuration (only necessary with an [externally managed DB](https://code.forgejo.org/forgejo-helm/forgejo-helm#external-database)). | `{}`                                |
+| `forgejo.config.indexer`               | Settings for what content is indexed and how                                                                                                   | `{}`                                |
+| `forgejo.config.queue`                 | Job queue configuration                                                                                                                        | `{}`                                |
+| `forgejo.config.admin`                 | Admin user settings                                                                                                                            | `{}`                                |
+| `forgejo.config.security`              | Site security settings                                                                                                                         | `{}`                                |
+| `forgejo.config.camo`                  | Settings for the [camo](https://github.com/cactus/go-camo) media proxy server (disabled by default)                                            | `{}`                                |
+| `forgejo.config.openid`                | Configuration for authentication with OpenID (disabled by default)                                                                             | `{}`                                |
+| `forgejo.config.oauth2_client`         | OAuth2 client settings                                                                                                                         | `{}`                                |
+| `forgejo.config.service`               | Configuration for miscellaneous Forgejo services                                                                                               | `{}`                                |
+| `forgejo.config.ssh.minimum_key_sizes` | SSH minimum key sizes                                                                                                                          | `{}`                                |
+| `forgejo.config.webhook`               | Webhook settings                                                                                                                               | `{}`                                |
+| `forgejo.config.mailer`                | Mailer configuration (disabled by default)                                                                                                     | `{}`                                |
+| `forgejo.config.email.incoming`        | Configuration for handling incoming mail (disabled by default)                                                                                 | `{}`                                |
+| `forgejo.config.cache`                 | Cache configuration                                                                                                                            | `{}`                                |
+| `forgejo.config.session`               | Session/cookie handling                                                                                                                        | `{}`                                |
+| `forgejo.config.picture`               | User avatar settings                                                                                                                           | `{}`                                |
+| `forgejo.config.project`               | Project board defaults                                                                                                                         | `{}`                                |
+| `forgejo.config.attachment`            | Issue and PR attachment configuration                                                                                                          | `{}`                                |
+| `forgejo.config.log`                   | Logging configuration                                                                                                                          | `{}`                                |
+| `forgejo.config.cron`                  | Cron job configuration                                                                                                                         | `{}`                                |
+| `forgejo.config.git`                   | Global settings for Git                                                                                                                        | `{}`                                |
+| `forgejo.config.metrics`               | Settings for the Prometheus endpoint (disabled by default)                                                                                     | `{}`                                |
+| `forgejo.config.api`                   | Settings for the Swagger API documentation endpoints                                                                                           | `{}`                                |
+| `forgejo.config.oauth2`                | Settings for the [OAuth2 provider](https://forgejo.org/docs/latest/admin/oauth2-provider/)                                                     | `{}`                                |
+| `forgejo.config.i18n`                  | Internationalization settings                                                                                                                  | `{}`                                |
+| `forgejo.config.markup`                | Configuration for advanced markup processors                                                                                                   | `{}`                                |
+| `forgejo.config.highlight.mapping`     | File extension to language mapping overrides for syntax highlighting                                                                           | `{}`                                |
+| `forgejo.config.time`                  | Locale settings                                                                                                                                | `{}`                                |
+| `forgejo.config.migrations`            | Settings for Git repository migrations                                                                                                         | `{}`                                |
+| `forgejo.config.federation`            | Federation configuration                                                                                                                       | `{}`                                |
+| `forgejo.config.packages`              | Package registry settings                                                                                                                      | `{}`                                |
+| `forgejo.config.mirror`                | Configuration for repository mirroring                                                                                                         | `{}`                                |
+| `forgejo.config.lfs`                   | Large File Storage configuration                                                                                                               | `{}`                                |
+| `forgejo.config.repo-avatar`           | Repository avatar storage configuration                                                                                                        | `{}`                                |
+| `forgejo.config.avatar`                | User/org avatar storage configuration                                                                                                          | `{}`                                |
+| `forgejo.config.storage`               | General storage settings                                                                                                                       | `{}`                                |
+| `forgejo.config.proxy`                 | Proxy configuration (disabled by default)                                                                                                      | `{}`                                |
+| `forgejo.config.actions`               | Configuration for [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/)                                                             | `{}`                                |
+| `forgejo.config.other`                 | Uncategorized configuration options                                                                                                            | `{}`                                |
 
 ### LivenessProbe
 
-| Name                                      | Description                                      | Value  |
-| ----------------------------------------- | ------------------------------------------------ | ------ |
-| `gitea.livenessProbe.enabled`             | Enable liveness probe                            | `true` |
-| `gitea.livenessProbe.tcpSocket.port`      | Port to probe for liveness                       | `http` |
-| `gitea.livenessProbe.initialDelaySeconds` | Initial delay before liveness probe is initiated | `200`  |
-| `gitea.livenessProbe.timeoutSeconds`      | Timeout for liveness probe                       | `1`    |
-| `gitea.livenessProbe.periodSeconds`       | Period for liveness probe                        | `10`   |
-| `gitea.livenessProbe.successThreshold`    | Success threshold for liveness probe             | `1`    |
-| `gitea.livenessProbe.failureThreshold`    | Failure threshold for liveness probe             | `10`   |
+| Name                                        | Description                                      | Value  |
+| ------------------------------------------- | ------------------------------------------------ | ------ |
+| `forgejo.livenessProbe.enabled`             | Enable liveness probe                            | `true` |
+| `forgejo.livenessProbe.tcpSocket.port`      | Port to probe for liveness                       | `http` |
+| `forgejo.livenessProbe.initialDelaySeconds` | Initial delay before liveness probe is initiated | `200`  |
+| `forgejo.livenessProbe.timeoutSeconds`      | Timeout for liveness probe                       | `1`    |
+| `forgejo.livenessProbe.periodSeconds`       | Period for liveness probe                        | `10`   |
+| `forgejo.livenessProbe.successThreshold`    | Success threshold for liveness probe             | `1`    |
+| `forgejo.livenessProbe.failureThreshold`    | Failure threshold for liveness probe             | `10`   |
 
 ### ReadinessProbe
 
-| Name                                       | Description                                       | Value          |
-| ------------------------------------------ | ------------------------------------------------- | -------------- |
-| `gitea.readinessProbe.enabled`             | Enable readiness probe                            | `true`         |
-| `gitea.readinessProbe.httpGet.path`        | Path to probe for readiness                       | `/api/healthz` |
-| `gitea.readinessProbe.httpGet.port`        | Port to probe for readiness                       | `http`         |
-| `gitea.readinessProbe.initialDelaySeconds` | Initial delay before readiness probe is initiated | `5`            |
-| `gitea.readinessProbe.timeoutSeconds`      | Timeout for readiness probe                       | `1`            |
-| `gitea.readinessProbe.periodSeconds`       | Period for readiness probe                        | `10`           |
-| `gitea.readinessProbe.successThreshold`    | Success threshold for readiness probe             | `1`            |
-| `gitea.readinessProbe.failureThreshold`    | Failure threshold for readiness probe             | `3`            |
+| Name                                         | Description                                       | Value          |
+| -------------------------------------------- | ------------------------------------------------- | -------------- |
+| `forgejo.readinessProbe.enabled`             | Enable readiness probe                            | `true`         |
+| `forgejo.readinessProbe.httpGet.path`        | Path to probe for readiness                       | `/api/healthz` |
+| `forgejo.readinessProbe.httpGet.port`        | Port to probe for readiness                       | `http`         |
+| `forgejo.readinessProbe.initialDelaySeconds` | Initial delay before readiness probe is initiated | `5`            |
+| `forgejo.readinessProbe.timeoutSeconds`      | Timeout for readiness probe                       | `1`            |
+| `forgejo.readinessProbe.periodSeconds`       | Period for readiness probe                        | `10`           |
+| `forgejo.readinessProbe.successThreshold`    | Success threshold for readiness probe             | `1`            |
+| `forgejo.readinessProbe.failureThreshold`    | Failure threshold for readiness probe             | `3`            |
 
 ### StartupProbe
 
-| Name                                     | Description                                     | Value   |
-| ---------------------------------------- | ----------------------------------------------- | ------- |
-| `gitea.startupProbe.enabled`             | Enable startup probe                            | `false` |
-| `gitea.startupProbe.tcpSocket.port`      | Port to probe for startup                       | `http`  |
-| `gitea.startupProbe.initialDelaySeconds` | Initial delay before startup probe is initiated | `60`    |
-| `gitea.startupProbe.timeoutSeconds`      | Timeout for startup probe                       | `1`     |
-| `gitea.startupProbe.periodSeconds`       | Period for startup probe                        | `10`    |
-| `gitea.startupProbe.successThreshold`    | Success threshold for startup probe             | `1`     |
-| `gitea.startupProbe.failureThreshold`    | Failure threshold for startup probe             | `10`    |
+| Name                                       | Description                                     | Value   |
+| ------------------------------------------ | ----------------------------------------------- | ------- |
+| `forgejo.startupProbe.enabled`             | Enable startup probe                            | `false` |
+| `forgejo.startupProbe.tcpSocket.port`      | Port to probe for startup                       | `http`  |
+| `forgejo.startupProbe.initialDelaySeconds` | Initial delay before startup probe is initiated | `60`    |
+| `forgejo.startupProbe.timeoutSeconds`      | Timeout for startup probe                       | `1`     |
+| `forgejo.startupProbe.periodSeconds`       | Period for startup probe                        | `10`    |
+| `forgejo.startupProbe.successThreshold`    | Success threshold for startup probe             | `1`     |
+| `forgejo.startupProbe.failureThreshold`    | Failure threshold for startup probe             | `10`    |
 
 ### Valkey Cluster
 

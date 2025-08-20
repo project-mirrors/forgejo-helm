@@ -420,14 +420,14 @@ signing:
   #   -----END PGP PRIVATE KEY BLOCK-----
   existingSecret: ''
 
-## @section Gitea
+## @section Forgejo
 #
-gitea:
-  ## @param gitea.admin.username Username for the Forgejo admin user
-  ## @param gitea.admin.existingSecret Use an existing secret to store admin user credentials
-  ## @param gitea.admin.password Password for the Forgejo admin user
-  ## @param gitea.admin.email Email for the Forgejo admin user
-  ## @param gitea.admin.passwordMode Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated
+forgejo:
+  ## @param forgejo.admin.username Username for the Forgejo admin user
+  ## @param forgejo.admin.existingSecret Use an existing secret to store admin user credentials
+  ## @param forgejo.admin.password Password for the Forgejo admin user
+  ## @param forgejo.admin.email Email for the Forgejo admin user
+  ## @param forgejo.admin.passwordMode Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated
   admin:
     # existingSecret: gitea-admin-secret
     existingSecret:
@@ -436,9 +436,9 @@ gitea:
     email: 'gitea@local.domain'
     passwordMode: keepUpdated
 
-  ## @param gitea.metrics.enabled Enable Forgejo metrics
-  ## @param gitea.metrics.serviceMonitor.enabled Enable Forgejo metrics service monitor
-  ## @param gitea.metrics.serviceMonitor.namespace Namespace in which Prometheus is running
+  ## @param forgejo.metrics.enabled Enable Forgejo metrics
+  ## @param forgejo.metrics.serviceMonitor.enabled Enable Forgejo metrics service monitor
+  ## @param forgejo.metrics.serviceMonitor.namespace Namespace in which Prometheus is running
   metrics:
     enabled: false
     serviceMonitor:
@@ -447,7 +447,7 @@ gitea:
       #  additionalLabels:
       #    prometheus-release: prom1
 
-  ## @param gitea.ldap LDAP configuration
+  ## @param forgejo.ldap LDAP configuration
   ldap: []
     # - name: "LDAP 1"
     #  existingSecret:
@@ -464,7 +464,7 @@ gitea:
     #  publicSSHKeyAttribute:
 
   # Either specify inline `key` and `secret` or refer to them via `existingSecret`
-  ## @param gitea.oauth OAuth configuration
+  ## @param forgejo.oauth OAuth configuration
   oauth: []
     # - name: 'OAuth 1'
     #   provider:
@@ -478,20 +478,20 @@ gitea:
     #   customProfileUrl:
     #   customEmailUrl:
 
-  ## @param gitea.additionalConfigSources Additional configuration from secret or configmap
+  ## @param forgejo.additionalConfigSources Additional configuration from secret or configmap
   additionalConfigSources: []
   #   - secret:
   #       secretName: gitea-app-ini-oauth
   #   - configMap:
   #       name: gitea-app-ini-plaintext
 
-  ## @param gitea.additionalConfigFromEnvs Additional configuration sources from environment variables
+  ## @param forgejo.additionalConfigFromEnvs Additional configuration sources from environment variables
   additionalConfigFromEnvs: []
 
-  ## @param gitea.podAnnotations Annotations for the Forgejo pod
+  ## @param forgejo.podAnnotations Annotations for the Forgejo pod
   podAnnotations: {}
 
-  ## @param gitea.ssh.logLevel Configure OpenSSH's log level. Only available for root-based Forgejo image.
+  ## @param forgejo.ssh.logLevel Configure OpenSSH's log level. Only available for root-based Forgejo image.
   ssh:
     logLevel: 'INFO'
 
@@ -507,155 +507,155 @@ gitea:
     # (https://forgejo.org/docs/latest/admin/config-cheat-sheet/#overall-default)
     # are un-namespaced
 
-    ## @param gitea.config.APP_NAME Application name, used in the page title
+    ## @param forgejo.config.APP_NAME Application name, used in the page title
     APP_NAME: 'Forgejo: Beyond coding. We forge.'
 
-    ## @param gitea.config.RUN_MODE Application run mode, affects performance and debugging: `dev` or `prod`
+    ## @param forgejo.config.RUN_MODE Application run mode, affects performance and debugging: `dev` or `prod`
     RUN_MODE: prod
 
-    ## @param gitea.config.repository General repository settings
+    ## @param forgejo.config.repository General repository settings
     repository: {}
 
-    ## @param gitea.config.cors Cross-origin resource sharing settings
+    ## @param forgejo.config.cors Cross-origin resource sharing settings
     cors: {}
 
-    ## @param gitea.config.ui User interface settings
+    ## @param forgejo.config.ui User interface settings
     ui: {}
 
-    ## @param gitea.config.markdown Markdown parser settings
+    ## @param forgejo.config.markdown Markdown parser settings
     markdown: {}
 
-    ## @param gitea.config.server [object] General server settings
+    ## @param forgejo.config.server [object] General server settings
     server:
       SSH_PORT: 22 # rootful image
       SSH_LISTEN_PORT: 2222 # rootless image
 
-    ## @param gitea.config.database Database configuration (only necessary with an [externally managed DB](https://code.forgejo.org/forgejo-helm/forgejo-helm#external-database)).
+    ## @param forgejo.config.database Database configuration (only necessary with an [externally managed DB](https://code.forgejo.org/forgejo-helm/forgejo-helm#external-database)).
     database: {}
 
-    ## @param gitea.config.indexer Settings for what content is indexed and how
+    ## @param forgejo.config.indexer Settings for what content is indexed and how
     indexer: {}
 
-    ## @param gitea.config.queue Job queue configuration
+    ## @param forgejo.config.queue Job queue configuration
     queue: {}
 
-    ## @param gitea.config.admin Admin user settings
+    ## @param forgejo.config.admin Admin user settings
     admin: {}
 
-    ## @param gitea.config.security Site security settings
+    ## @param forgejo.config.security Site security settings
     security: {}
 
-    ## @param gitea.config.camo Settings for the [camo](https://github.com/cactus/go-camo) media proxy server (disabled by default)
+    ## @param forgejo.config.camo Settings for the [camo](https://github.com/cactus/go-camo) media proxy server (disabled by default)
     camo: {}
 
-    ## @param gitea.config.openid Configuration for authentication with OpenID (disabled by default)
+    ## @param forgejo.config.openid Configuration for authentication with OpenID (disabled by default)
     openid: {}
 
-    ## @param gitea.config.oauth2_client OAuth2 client settings
+    ## @param forgejo.config.oauth2_client OAuth2 client settings
     oauth2_client: {}
 
-    ## @param gitea.config.service Configuration for miscellaneous Forgejo services
+    ## @param forgejo.config.service Configuration for miscellaneous Forgejo services
     service: {}
 
-    ## @param gitea.config.ssh.minimum_key_sizes SSH minimum key sizes
+    ## @param forgejo.config.ssh.minimum_key_sizes SSH minimum key sizes
     ssh.minimum_key_sizes: {}
 
-    ## @param gitea.config.webhook Webhook settings
+    ## @param forgejo.config.webhook Webhook settings
     webhook: {}
 
-    ## @param gitea.config.mailer Mailer configuration (disabled by default)
+    ## @param forgejo.config.mailer Mailer configuration (disabled by default)
     mailer: {}
 
-    ## @param gitea.config.email.incoming Configuration for handling incoming mail (disabled by default)
+    ## @param forgejo.config.email.incoming Configuration for handling incoming mail (disabled by default)
     email.incoming: {}
 
-    ## @param gitea.config.cache Cache configuration
+    ## @param forgejo.config.cache Cache configuration
     cache: {}
 
-    ## @param gitea.config.session Session/cookie handling
+    ## @param forgejo.config.session Session/cookie handling
     session: {}
 
-    ## @param gitea.config.picture User avatar settings
+    ## @param forgejo.config.picture User avatar settings
     picture: {}
 
-    ## @param gitea.config.project Project board defaults
+    ## @param forgejo.config.project Project board defaults
     project: {}
 
-    ## @param gitea.config.attachment Issue and PR attachment configuration
+    ## @param forgejo.config.attachment Issue and PR attachment configuration
     attachment: {}
 
-    ## @param gitea.config.log Logging configuration
+    ## @param forgejo.config.log Logging configuration
     log: {}
 
-    ## @param gitea.config.cron Cron job configuration
+    ## @param forgejo.config.cron Cron job configuration
     cron: {}
 
-    ## @param gitea.config.git Global settings for Git
+    ## @param forgejo.config.git Global settings for Git
     git: {}
 
-    ## @param gitea.config.metrics Settings for the Prometheus endpoint (disabled by default)
+    ## @param forgejo.config.metrics Settings for the Prometheus endpoint (disabled by default)
     metrics: {}
 
-    ## @param gitea.config.api Settings for the Swagger API documentation endpoints
+    ## @param forgejo.config.api Settings for the Swagger API documentation endpoints
     api: {}
 
-    ## @param gitea.config.oauth2 Settings for the [OAuth2 provider](https://forgejo.org/docs/latest/admin/oauth2-provider/)
+    ## @param forgejo.config.oauth2 Settings for the [OAuth2 provider](https://forgejo.org/docs/latest/admin/oauth2-provider/)
     oauth2: {}
 
-    ## @param gitea.config.i18n Internationalization settings
+    ## @param forgejo.config.i18n Internationalization settings
     i18n: {}
 
-    ## @param gitea.config.markup Configuration for advanced markup processors
+    ## @param forgejo.config.markup Configuration for advanced markup processors
     markup: {}
 
-    ## @param gitea.config.highlight.mapping File extension to language mapping overrides for syntax highlighting
+    ## @param forgejo.config.highlight.mapping File extension to language mapping overrides for syntax highlighting
     highlight.mapping: {}
 
-    ## @param gitea.config.time Locale settings
+    ## @param forgejo.config.time Locale settings
     time: {}
 
-    ## @param gitea.config.migrations Settings for Git repository migrations
+    ## @param forgejo.config.migrations Settings for Git repository migrations
     migrations: {}
 
-    ## @param gitea.config.federation Federation configuration
+    ## @param forgejo.config.federation Federation configuration
     federation: {}
 
-    ## @param gitea.config.packages Package registry settings
+    ## @param forgejo.config.packages Package registry settings
     packages: {}
 
-    ## @param gitea.config.mirror Configuration for repository mirroring
+    ## @param forgejo.config.mirror Configuration for repository mirroring
     mirror: {}
 
-    ## @param gitea.config.lfs Large File Storage configuration
+    ## @param forgejo.config.lfs Large File Storage configuration
     lfs: {}
 
-    ## @param gitea.config.repo-avatar Repository avatar storage configuration
+    ## @param forgejo.config.repo-avatar Repository avatar storage configuration
     repo-avatar: {}
 
-    ## @param gitea.config.avatar User/org avatar storage configuration
+    ## @param forgejo.config.avatar User/org avatar storage configuration
     avatar: {}
 
-    ## @param gitea.config.storage General storage settings
+    ## @param forgejo.config.storage General storage settings
     storage: {}
 
-    ## @param gitea.config.proxy Proxy configuration (disabled by default)
+    ## @param forgejo.config.proxy Proxy configuration (disabled by default)
     proxy: {}
 
-    ## @param gitea.config.actions Configuration for [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/)
+    ## @param forgejo.config.actions Configuration for [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/)
     actions: {}
 
-    ## @param gitea.config.other Uncategorized configuration options
+    ## @param forgejo.config.other Uncategorized configuration options
     other: {}
 
   ## @section LivenessProbe
   #
-  ## @param gitea.livenessProbe.enabled Enable liveness probe
-  ## @param gitea.livenessProbe.tcpSocket.port Port to probe for liveness
-  ## @param gitea.livenessProbe.initialDelaySeconds Initial delay before liveness probe is initiated
-  ## @param gitea.livenessProbe.timeoutSeconds Timeout for liveness probe
-  ## @param gitea.livenessProbe.periodSeconds Period for liveness probe
-  ## @param gitea.livenessProbe.successThreshold Success threshold for liveness probe
-  ## @param gitea.livenessProbe.failureThreshold Failure threshold for liveness probe
+  ## @param forgejo.livenessProbe.enabled Enable liveness probe
+  ## @param forgejo.livenessProbe.tcpSocket.port Port to probe for liveness
+  ## @param forgejo.livenessProbe.initialDelaySeconds Initial delay before liveness probe is initiated
+  ## @param forgejo.livenessProbe.timeoutSeconds Timeout for liveness probe
+  ## @param forgejo.livenessProbe.periodSeconds Period for liveness probe
+  ## @param forgejo.livenessProbe.successThreshold Success threshold for liveness probe
+  ## @param forgejo.livenessProbe.failureThreshold Failure threshold for liveness probe
   # Modify the liveness probe for your needs or completely disable it by commenting out.
   livenessProbe:
     enabled: true
@@ -669,14 +669,14 @@ gitea:
 
   ## @section ReadinessProbe
   #
-  ## @param gitea.readinessProbe.enabled Enable readiness probe
-  ## @param gitea.readinessProbe.httpGet.path Path to probe for readiness
-  ## @param gitea.readinessProbe.httpGet.port Port to probe for readiness
-  ## @param gitea.readinessProbe.initialDelaySeconds Initial delay before readiness probe is initiated
-  ## @param gitea.readinessProbe.timeoutSeconds Timeout for readiness probe
-  ## @param gitea.readinessProbe.periodSeconds Period for readiness probe
-  ## @param gitea.readinessProbe.successThreshold Success threshold for readiness probe
-  ## @param gitea.readinessProbe.failureThreshold Failure threshold for readiness probe
+  ## @param forgejo.readinessProbe.enabled Enable readiness probe
+  ## @param forgejo.readinessProbe.httpGet.path Path to probe for readiness
+  ## @param forgejo.readinessProbe.httpGet.port Port to probe for readiness
+  ## @param forgejo.readinessProbe.initialDelaySeconds Initial delay before readiness probe is initiated
+  ## @param forgejo.readinessProbe.timeoutSeconds Timeout for readiness probe
+  ## @param forgejo.readinessProbe.periodSeconds Period for readiness probe
+  ## @param forgejo.readinessProbe.successThreshold Success threshold for readiness probe
+  ## @param forgejo.readinessProbe.failureThreshold Failure threshold for readiness probe
   # Modify the readiness probe for your needs or completely disable it by commenting out.
   readinessProbe:
     enabled: true
@@ -692,13 +692,13 @@ gitea:
   # # Uncomment the startup probe to enable and modify it for your needs.
   ## @section StartupProbe
   #
-  ## @param gitea.startupProbe.enabled Enable startup probe
-  ## @param gitea.startupProbe.tcpSocket.port Port to probe for startup
-  ## @param gitea.startupProbe.initialDelaySeconds Initial delay before startup probe is initiated
-  ## @param gitea.startupProbe.timeoutSeconds Timeout for startup probe
-  ## @param gitea.startupProbe.periodSeconds Period for startup probe
-  ## @param gitea.startupProbe.successThreshold Success threshold for startup probe
-  ## @param gitea.startupProbe.failureThreshold Failure threshold for startup probe
+  ## @param forgejo.startupProbe.enabled Enable startup probe
+  ## @param forgejo.startupProbe.tcpSocket.port Port to probe for startup
+  ## @param forgejo.startupProbe.initialDelaySeconds Initial delay before startup probe is initiated
+  ## @param forgejo.startupProbe.timeoutSeconds Timeout for startup probe
+  ## @param forgejo.startupProbe.periodSeconds Period for startup probe
+  ## @param forgejo.startupProbe.successThreshold Success threshold for startup probe
+  ## @param forgejo.startupProbe.failureThreshold Failure threshold for startup probe
   startupProbe:
     enabled: false
     tcpSocket:
