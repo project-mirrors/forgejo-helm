@@ -27,7 +27,7 @@ tests:
       replicaCount: 2
     asserts:
       - failedTemplate:
-          errorMessage: 'When using multiple replicas, a RWX file system is required and gitea.persistence.accessModes[0] must be set to ReadWriteMany.'
+          errorMessage: 'When using multiple replicas, a RWX file system is required and forgejo.persistence.accessModes[0] must be set to ReadWriteMany.'
   - it: fails with multiple replicas and bleve issue indexer
     template: templates/gitea/deployment.yaml
     set:
@@ -41,7 +41,7 @@ tests:
             ISSUE_INDEXER_TYPE: bleve
     asserts:
       - failedTemplate:
-          errorMessage: "When using multiple replicas, the issue indexer (gitea.config.indexer.ISSUE_INDEXER_TYPE) must be set to a HA-ready provider such as 'meilisearch', 'elasticsearch' or 'db' (if the DB is HA-ready)."
+          errorMessage: "When using multiple replicas, the issue indexer (forgejo.config.indexer.ISSUE_INDEXER_TYPE) must be set to a HA-ready provider such as 'meilisearch', 'elasticsearch' or 'db' (if the DB is HA-ready)."
   - it: fails with multiple replicas and bleve repo indexer
     template: templates/gitea/deployment.yaml
     set:
@@ -56,4 +56,4 @@ tests:
             REPO_INDEXER_ENABLED: true
     asserts:
       - failedTemplate:
-          errorMessage: "When using multiple replicas, the repo indexer (gitea.config.indexer.REPO_INDEXER_TYPE) must be set to 'meilisearch' or 'elasticsearch' or disabled."
+          errorMessage: "When using multiple replicas, the repo indexer (forgejo.config.indexer.REPO_INDEXER_TYPE) must be set to 'meilisearch' or 'elasticsearch' or disabled."

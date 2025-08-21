@@ -1,13 +1,14 @@
-{{- if .Values.gitea.metrics.serviceMonitor.enabled -}}
+{{- if .Values.forgejo.metrics.serviceMonitor.enabled -}}
+{{- include "forgejo.compat" . -}}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "gitea.fullname" . }}
-  namespace: {{ default (include "common.names.namespace" .) .Values.gitea.metrics.serviceMonitor.namespace | quote }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.forgejo.metrics.serviceMonitor.namespace | quote }}
   labels:
     {{- include "gitea.labels" . | nindent 4 }}
-    {{- if .Values.gitea.metrics.serviceMonitor.additionalLabels }}
-    {{- toYaml .Values.gitea.metrics.serviceMonitor.additionalLabels | nindent 4 }}
+    {{- if .Values.forgejo.metrics.serviceMonitor.additionalLabels }}
+    {{- toYaml .Values.forgejo.metrics.serviceMonitor.additionalLabels | nindent 4 }}
     {{- end }}
 spec:
   selector:

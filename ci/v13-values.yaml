@@ -12,7 +12,7 @@ test:
 persistence:
   enabled: false
 
-gitea:
+forgejo:
   config:
     session:
       PROVIDER: memory

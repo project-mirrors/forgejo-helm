@@ -1,3 +1,4 @@
+{{- include "forgejo.compat" . -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -46,7 +47,7 @@ spec:
   ports:
   - name: ssh
     port: {{ .Values.service.ssh.port }}
-    {{- if .Values.gitea.config.server.SSH_LISTEN_PORT }}
+    {{- if .Values.forgejo.config.server.SSH_LISTEN_PORT }}
     targetPort: ssh
     {{- end }}
     protocol: TCP

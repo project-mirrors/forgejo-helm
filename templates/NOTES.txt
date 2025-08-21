@@ -1,3 +1,4 @@
+{{- include "forgejo.compat" . -}}
 1. Get the application URL by running these commands:
 {{- if .Values.ingress.enabled }}
 {{- range $host := .Values.ingress.hosts }}
@@ -19,13 +20,16 @@
   kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ .Release.Name }}-http {{ .Values.service.http.port }}:{{ .Values.service.http.port }}
 {{- end }}
 {{- $warnings := list -}}
-{{- if eq (get .Values.gitea.config.cache "ADAPTER") "memory" -}}
+{{- if .Values.gitea -}}
+  {{- $warnings = append $warnings "`gitea` key was renamed to `forgejo`" -}}
+{{- end }}
+{{- if eq (get .Values.forgejo.config.cache "ADAPTER") "memory" -}}
   {{- $warnings = append $warnings "Forgejo uses 'memory' for caching which is not recommended for production use. See https://forgejo.org/docs/latest/admin/config-cheat-sheet/#cache-cache for available options." -}}
 {{- end }}
-{{- if eq (get .Values.gitea.config.queue "TYPE") "level" -}}
+{{- if eq (get .Values.forgejo.config.queue "TYPE") "level" -}}
   {{- $warnings = append $warnings "Forgejo uses 'leveldb' for queue actions which is not recommended for production use. See https://forgejo.org/docs/latest/admin/config-cheat-sheet/#queue-queue-and-queue for available options." -}}
 {{- end }}
-{{- if eq (get .Values.gitea.config.session "PROVIDER") "memory" -}}
+{{- if eq (get .Values.forgejo.config.session "PROVIDER") "memory" -}}
   {{- $warnings = append $warnings "Forgejo uses 'memory' for sessions which is not recommended for production use. See https://forgejo.org/docs/latest/admin/config-cheat-sheet/#session-session for available options." -}}
 {{- end }}
 {{- if gt (len $warnings) 0 }}

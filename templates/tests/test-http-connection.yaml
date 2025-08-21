@@ -1,4 +1,5 @@
 {{- if .Values.test.enabled }}
+{{- include "forgejo.compat" . -}}
 apiVersion: v1
 kind: Pod
 metadata:

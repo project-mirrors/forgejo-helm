@@ -1,4 +1,5 @@
 {{- if .Values.httpRoute.enabled -}}
+{{- include "forgejo.compat" . -}}
 {{- $fullName := include "gitea.fullname" . -}}
 {{- $httpRoute := .Values.httpRoute }}
 apiVersion: gateway.networking.k8s.io/v1

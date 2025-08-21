@@ -1,3 +1,4 @@
+{{- include "forgejo.compat" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,13 +32,13 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/gitea/config.yaml") . | sha256sum }}
-        {{- range $idx, $value := .Values.gitea.ldap }}
+        {{- range $idx, $value := .Values.forgejo.ldap }}
         checksum/ldap_{{ $idx }}: {{ include "gitea.ldap_settings" (list $idx $value) | sha256sum }}
         {{- end }}
-        {{- range $idx, $value := .Values.gitea.oauth }}
+        {{- range $idx, $value := .Values.forgejo.oauth }}
         checksum/oauth_{{ $idx }}: {{ include "gitea.oauth_settings" (list $idx $value) | sha256sum }}
         {{- end }}
-        {{- with .Values.gitea.podAnnotations }}
+        {{- with .Values.forgejo.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
@@ -110,8 +111,8 @@ spec:
             {{- if .Values.deployment.env }}
             {{- toYaml .Values.deployment.env | nindent 12 }}
             {{- end }}
-            {{- if .Values.gitea.additionalConfigFromEnvs }}
-            {{- toYaml .Values.gitea.additionalConfigFromEnvs | nindent 12 }}
+            {{- if .Values.forgejo.additionalConfigFromEnvs }}
+            {{- toYaml .Values.forgejo.additionalConfigFromEnvs | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: config
@@ -125,7 +126,7 @@ spec:
               {{- end }}
             - name: inline-config-sources
               mountPath: /env-to-ini-mounts/inlines/
-            {{- range $idx, $value := .Values.gitea.additionalConfigSources }}
+            {{- range $idx, $value := .Values.forgejo.additionalConfigSources }}
             - name: additional-config-sources-{{ $idx }}
               mountPath: "/env-to-ini-mounts/additionals/{{ $idx }}/"
             {{- end }}
@@ -190,8 +191,8 @@ spec:
             - name: HOME
               value: /data/gitea/git
             {{- end }}
-            {{- if .Values.gitea.ldap }}
-            {{- range $idx, $value := .Values.gitea.ldap }}
+            {{- if .Values.forgejo.ldap }}
+            {{- range $idx, $value := .Values.forgejo.ldap }}
             {{- if $value.existingSecret }}
             - name: GITEA_LDAP_BIND_DN_{{ $idx }}
               valueFrom:
@@ -211,8 +212,8 @@ spec:
             {{- end }}
             {{- end }}
             {{- end }}
-            {{- if .Values.gitea.oauth }}
-            {{- range $idx, $value := .Values.gitea.oauth }}
+            {{- if .Values.forgejo.oauth }}
+            {{- range $idx, $value := .Values.forgejo.oauth }}
             {{- if $value.existingSecret }}
             - name: GITEA_OAUTH_KEY_{{ $idx }}
               valueFrom:
@@ -227,22 +228,22 @@ spec:
             {{- end }}
             {{- end }}
             {{- end }}
-            {{- if .Values.gitea.admin.existingSecret }}
+            {{- if .Values.forgejo.admin.existingSecret }}
             - name: GITEA_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
                   key:  username
-                  name: {{ .Values.gitea.admin.existingSecret }}
+                  name: {{ .Values.forgejo.admin.existingSecret }}
             - name: GITEA_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key:  password
-                  name: {{ .Values.gitea.admin.existingSecret }}
+                  name: {{ .Values.forgejo.admin.existingSecret }}
             {{- else }}
             - name: GITEA_ADMIN_USERNAME
-              value: {{ .Values.gitea.admin.username | quote }}
+              value: {{ .Values.forgejo.admin.username | quote }}
             - name: GITEA_ADMIN_PASSWORD
-              value: {{ .Values.gitea.admin.password | quote }}
+              value: {{ .Values.forgejo.admin.password | quote }}
             {{- end }}
             - name: GITEA_ADMIN_PASSWORD_MODE
               value: {{ include "gitea.admin.passwordMode" $ }}
@@ -270,12 +271,12 @@ spec:
           env:
             # SSH Port values have to be set here as well for openssh configuration
             - name: SSH_LISTEN_PORT
-              value: {{ .Values.gitea.config.server.SSH_LISTEN_PORT | quote }}
+              value: {{ .Values.forgejo.config.server.SSH_LISTEN_PORT | quote }}
             - name: SSH_PORT
-              value: {{ .Values.gitea.config.server.SSH_PORT | quote }}
+              value: {{ .Values.forgejo.config.server.SSH_PORT | quote }}
             {{- if not .Values.image.rootless }}
             - name: SSH_LOG_LEVEL
-              value: {{ .Values.gitea.ssh.logLevel | quote }}
+              value: {{ .Values.forgejo.ssh.logLevel | quote }}
             {{- end }}
             - name: GITEA_APP_INI
               value: /data/gitea/conf/app.ini
@@ -300,27 +301,27 @@ spec:
             {{- end }}
           ports:
             - name: ssh
-              containerPort: {{ .Values.gitea.config.server.SSH_LISTEN_PORT }}
+              containerPort: {{ .Values.forgejo.config.server.SSH_LISTEN_PORT }}
             {{- if .Values.service.ssh.hostPort }}
               hostPort: {{ .Values.service.ssh.hostPort }}
             {{- end }}
             - name: http
-              containerPort: {{ .Values.gitea.config.server.HTTP_PORT }}
-            {{- if .Values.gitea.config.server.ENABLE_PPROF }}
+              containerPort: {{ .Values.forgejo.config.server.HTTP_PORT }}
+            {{- if .Values.forgejo.config.server.ENABLE_PPROF }}
             - name: profiler
               containerPort: 6060
             {{- end }}
-          {{- if .Values.gitea.livenessProbe.enabled }}
+          {{- if .Values.forgejo.livenessProbe.enabled }}
           livenessProbe:
-            {{- toYaml (omit .Values.gitea.livenessProbe "enabled") | nindent 12 }}
+            {{- toYaml (omit .Values.forgejo.livenessProbe "enabled") | nindent 12 }}
           {{- end }}
-          {{- if .Values.gitea.readinessProbe.enabled }}
+          {{- if .Values.forgejo.readinessProbe.enabled }}
           readinessProbe:
-            {{- toYaml (omit .Values.gitea.readinessProbe "enabled") | nindent 12 }}
+            {{- toYaml (omit .Values.forgejo.readinessProbe "enabled") | nindent 12 }}
           {{- end }}
-          {{- if .Values.gitea.startupProbe.enabled }}
+          {{- if .Values.forgejo.startupProbe.enabled }}
           startupProbe:
-            {{- toYaml (omit .Values.gitea.startupProbe "enabled") | nindent 12 }}
+            {{- toYaml (omit .Values.forgejo.startupProbe "enabled") | nindent 12 }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -382,7 +383,7 @@ spec:
         - name: inline-config-sources
           secret:
             secretName: {{ include "gitea.fullname" . }}-inline-config
-        {{- range $idx, $value := .Values.gitea.additionalConfigSources }}
+        {{- range $idx, $value := .Values.forgejo.additionalConfigSources }}
         - name: additional-config-sources-{{ $idx }}
           {{- toYaml $value | nindent 10 }}
         {{- end }}

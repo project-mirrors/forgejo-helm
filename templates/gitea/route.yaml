@@ -1,4 +1,5 @@
 {{- if .Values.route.enabled -}}
+{{- include "forgejo.compat" . -}}
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:

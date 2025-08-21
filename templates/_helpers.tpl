@@ -1,8 +1,8 @@
 {{/* vim: set filetype=mustache: */}}
+
 {{/*
 Expand the name of the chart.
 */}}
-
 {{- define "gitea.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -168,7 +168,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if and .Values.ingress.enabled (gt (len .Values.ingress.tls) 0) -}}
 https
 {{- else -}}
-{{ .Values.gitea.config.server.PROTOCOL }}
+{{ .Values.forgejo.config.server.PROTOCOL }}
 {{- end -}}
 {{- end -}}
 
@@ -179,7 +179,7 @@ https
   {{- $generals := list -}}
   {{- $inlines := dict -}}
 
-  {{- range $key, $value := .Values.gitea.config  }}
+  {{- range $key, $value := .Values.forgejo.config  }}
     {{- if kindIs "map" $value }}
       {{- if gt (len $value) 0 }}
         {{- $section := default list (get $inlines $key) -}}
@@ -203,122 +203,122 @@ https
 {{- end -}}
 
 {{- define "gitea.inline_configuration.init" -}}
-  {{- if not (hasKey .Values.gitea.config "cache") -}}
-    {{- $_ := set .Values.gitea.config "cache" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "cache") -}}
+    {{- $_ := set .Values.forgejo.config "cache" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "server") -}}
-    {{- $_ := set .Values.gitea.config "server" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "server") -}}
+    {{- $_ := set .Values.forgejo.config "server" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "metrics") -}}
-    {{- $_ := set .Values.gitea.config "metrics" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "metrics") -}}
+    {{- $_ := set .Values.forgejo.config "metrics" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "database") -}}
-    {{- $_ := set .Values.gitea.config "database" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "database") -}}
+    {{- $_ := set .Values.forgejo.config "database" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "security") -}}
-    {{- $_ := set .Values.gitea.config "security" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "security") -}}
+    {{- $_ := set .Values.forgejo.config "security" dict -}}
   {{- end -}}
-  {{- if not .Values.gitea.config.repository -}}
-    {{- $_ := set .Values.gitea.config "repository" dict -}}
+  {{- if not .Values.forgejo.config.repository -}}
+    {{- $_ := set .Values.forgejo.config "repository" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "oauth2") -}}
-    {{- $_ := set .Values.gitea.config "oauth2" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "oauth2") -}}
+    {{- $_ := set .Values.forgejo.config "oauth2" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "session") -}}
-    {{- $_ := set .Values.gitea.config "session" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "session") -}}
+    {{- $_ := set .Values.forgejo.config "session" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "queue") -}}
-    {{- $_ := set .Values.gitea.config "queue" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "queue") -}}
+    {{- $_ := set .Values.forgejo.config "queue" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "queue.issue_indexer") -}}
-    {{- $_ := set .Values.gitea.config "queue.issue_indexer" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "queue.issue_indexer") -}}
+    {{- $_ := set .Values.forgejo.config "queue.issue_indexer" dict -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config "indexer") -}}
-    {{- $_ := set .Values.gitea.config "indexer" dict -}}
+  {{- if not (hasKey .Values.forgejo.config "indexer") -}}
+    {{- $_ := set .Values.forgejo.config "indexer" dict -}}
   {{- end -}}
 {{- end -}}
 
 {{- define "gitea.inline_configuration.defaults" -}}
   {{- include "gitea.inline_configuration.defaults.server" . -}}
 
-  {{- if not .Values.gitea.config.database.DB_TYPE -}}
-    {{- $_ := set .Values.gitea.config.database "DB_TYPE" "sqlite3" -}}
+  {{- if not .Values.forgejo.config.database.DB_TYPE -}}
+    {{- $_ := set .Values.forgejo.config.database "DB_TYPE" "sqlite3" -}}
   {{- end -}}  
 
-  {{- if not .Values.gitea.config.repository.ROOT -}}
-    {{- $_ := set .Values.gitea.config.repository "ROOT" "/data/git/gitea-repositories" -}}
+  {{- if not .Values.forgejo.config.repository.ROOT -}}
+    {{- $_ := set .Values.forgejo.config.repository "ROOT" "/data/git/gitea-repositories" -}}
   {{- end -}}
-  {{- if not .Values.gitea.config.security.INSTALL_LOCK -}}
-    {{- $_ := set .Values.gitea.config.security "INSTALL_LOCK" "true" -}}
+  {{- if not .Values.forgejo.config.security.INSTALL_LOCK -}}
+    {{- $_ := set .Values.forgejo.config.security "INSTALL_LOCK" "true" -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config.metrics "ENABLED") -}}
-    {{- $_ := set .Values.gitea.config.metrics "ENABLED" .Values.gitea.metrics.enabled -}}
+  {{- if not (hasKey .Values.forgejo.config.metrics "ENABLED") -}}
+    {{- $_ := set .Values.forgejo.config.metrics "ENABLED" .Values.forgejo.metrics.enabled -}}
   {{- end -}}
   
-  {{- if not (get .Values.gitea.config.session "PROVIDER") -}}
-    {{- $_ := set .Values.gitea.config.session "PROVIDER" "memory" -}}
+  {{- if not (get .Values.forgejo.config.session "PROVIDER") -}}
+    {{- $_ := set .Values.forgejo.config.session "PROVIDER" "memory" -}}
   {{- end -}}
-  {{- if not (get .Values.gitea.config.session "PROVIDER_CONFIG") -}}
-    {{- $_ := set .Values.gitea.config.session "PROVIDER_CONFIG" "" -}}
+  {{- if not (get .Values.forgejo.config.session "PROVIDER_CONFIG") -}}
+    {{- $_ := set .Values.forgejo.config.session "PROVIDER_CONFIG" "" -}}
   {{- end -}}
-  {{- if not (get .Values.gitea.config.queue "TYPE") -}}
-    {{- $_ := set .Values.gitea.config.queue "TYPE" "level" -}}
+  {{- if not (get .Values.forgejo.config.queue "TYPE") -}}
+    {{- $_ := set .Values.forgejo.config.queue "TYPE" "level" -}}
   {{- end -}}
-  {{- if not (get .Values.gitea.config.queue "CONN_STR") -}}
-    {{- $_ := set .Values.gitea.config.queue "CONN_STR" "" -}}
+  {{- if not (get .Values.forgejo.config.queue "CONN_STR") -}}
+    {{- $_ := set .Values.forgejo.config.queue "CONN_STR" "" -}}
   {{- end -}}
-  {{- if not (get .Values.gitea.config.cache "ADAPTER") -}}
-    {{- $_ := set .Values.gitea.config.cache "ADAPTER" "memory" -}}
+  {{- if not (get .Values.forgejo.config.cache "ADAPTER") -}}
+    {{- $_ := set .Values.forgejo.config.cache "ADAPTER" "memory" -}}
   {{- end -}}
-  {{- if not (get .Values.gitea.config.cache "HOST") -}}
-    {{- $_ := set .Values.gitea.config.cache "HOST" "" -}}
+  {{- if not (get .Values.forgejo.config.cache "HOST") -}}
+    {{- $_ := set .Values.forgejo.config.cache "HOST" "" -}}
   {{- end -}}
 
-  {{- if not .Values.gitea.config.indexer.ISSUE_INDEXER_TYPE -}}
-     {{- $_ := set .Values.gitea.config.indexer "ISSUE_INDEXER_TYPE" "db" -}}
+  {{- if not .Values.forgejo.config.indexer.ISSUE_INDEXER_TYPE -}}
+     {{- $_ := set .Values.forgejo.config.indexer "ISSUE_INDEXER_TYPE" "db" -}}
   {{- end -}}
 {{- end -}}
 
 {{- define "gitea.inline_configuration.defaults.server" -}}
-  {{- if not (hasKey .Values.gitea.config.server "HTTP_PORT") -}}
-    {{- $_ := set .Values.gitea.config.server "HTTP_PORT" .Values.service.http.port -}}
+  {{- if not (hasKey .Values.forgejo.config.server "HTTP_PORT") -}}
+    {{- $_ := set .Values.forgejo.config.server "HTTP_PORT" .Values.service.http.port -}}
   {{- end -}}
-  {{- if not .Values.gitea.config.server.PROTOCOL -}}
-    {{- $_ := set .Values.gitea.config.server "PROTOCOL" "http" -}}
+  {{- if not .Values.forgejo.config.server.PROTOCOL -}}
+    {{- $_ := set .Values.forgejo.config.server "PROTOCOL" "http" -}}
   {{- end -}}
-  {{- if not (.Values.gitea.config.server.DOMAIN) -}}
+  {{- if not (.Values.forgejo.config.server.DOMAIN) -}}
     {{- if gt (len .Values.ingress.hosts) 0 -}}
-      {{- $_ := set .Values.gitea.config.server "DOMAIN" ( tpl (index .Values.ingress.hosts 0).host $) -}}
+      {{- $_ := set .Values.forgejo.config.server "DOMAIN" ( tpl (index .Values.ingress.hosts 0).host $) -}}
     {{- else -}}
-      {{- $_ := set .Values.gitea.config.server "DOMAIN" (include "gitea.default_domain" .) -}}
+      {{- $_ := set .Values.forgejo.config.server "DOMAIN" (include "gitea.default_domain" .) -}}
     {{- end -}}
   {{- end -}}
-  {{- if not .Values.gitea.config.server.ROOT_URL -}}
-    {{- $_ := set .Values.gitea.config.server "ROOT_URL" (printf "%s://%s" (include "gitea.public_protocol" .) .Values.gitea.config.server.DOMAIN) -}}
+  {{- if not .Values.forgejo.config.server.ROOT_URL -}}
+    {{- $_ := set .Values.forgejo.config.server "ROOT_URL" (printf "%s://%s" (include "gitea.public_protocol" .) .Values.forgejo.config.server.DOMAIN) -}}
   {{- end -}}
-  {{- if not .Values.gitea.config.server.SSH_DOMAIN -}}
-    {{- $_ := set .Values.gitea.config.server "SSH_DOMAIN" .Values.gitea.config.server.DOMAIN -}}
+  {{- if not .Values.forgejo.config.server.SSH_DOMAIN -}}
+    {{- $_ := set .Values.forgejo.config.server "SSH_DOMAIN" .Values.forgejo.config.server.DOMAIN -}}
   {{- end -}}
-  {{- if not .Values.gitea.config.server.SSH_PORT -}}
-    {{- $_ := set .Values.gitea.config.server "SSH_PORT" .Values.service.ssh.port -}}
+  {{- if not .Values.forgejo.config.server.SSH_PORT -}}
+    {{- $_ := set .Values.forgejo.config.server "SSH_PORT" .Values.service.ssh.port -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config.server "SSH_LISTEN_PORT") -}}
+  {{- if not (hasKey .Values.forgejo.config.server "SSH_LISTEN_PORT") -}}
     {{- if not .Values.image.rootless -}}
-      {{- $_ := set .Values.gitea.config.server "SSH_LISTEN_PORT" .Values.gitea.config.server.SSH_PORT -}}
+      {{- $_ := set .Values.forgejo.config.server "SSH_LISTEN_PORT" .Values.forgejo.config.server.SSH_PORT -}}
     {{- else -}}
-      {{- $_ := set .Values.gitea.config.server "SSH_LISTEN_PORT" "2222" -}}
+      {{- $_ := set .Values.forgejo.config.server "SSH_LISTEN_PORT" "2222" -}}
     {{- end -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config.server "START_SSH_SERVER") -}}
+  {{- if not (hasKey .Values.forgejo.config.server "START_SSH_SERVER") -}}
     {{- if .Values.image.rootless -}}
-      {{- $_ := set .Values.gitea.config.server "START_SSH_SERVER" "true" -}}
+      {{- $_ := set .Values.forgejo.config.server "START_SSH_SERVER" "true" -}}
     {{- end -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config.server "APP_DATA_PATH") -}}
-    {{- $_ := set .Values.gitea.config.server "APP_DATA_PATH" "/data" -}}
+  {{- if not (hasKey .Values.forgejo.config.server "APP_DATA_PATH") -}}
+    {{- $_ := set .Values.forgejo.config.server "APP_DATA_PATH" "/data" -}}
   {{- end -}}
-  {{- if not (hasKey .Values.gitea.config.server "ENABLE_PPROF") -}}
-    {{- $_ := set .Values.gitea.config.server "ENABLE_PPROF" false -}}
+  {{- if not (hasKey .Values.forgejo.config.server "ENABLE_PPROF") -}}
+    {{- $_ := set .Values.forgejo.config.server "ENABLE_PPROF" false -}}
   {{- end -}}
 {{- end -}}
 
@@ -349,9 +349,16 @@ https
 {{- end -}}
 
 {{- define "gitea.admin.passwordMode" -}}
-{{- if has .Values.gitea.admin.passwordMode (tuple "keepUpdated" "initialOnlyNoReset" "initialOnlyRequireReset") -}}
-{{ .Values.gitea.admin.passwordMode }}
+{{- if has .Values.forgejo.admin.passwordMode (tuple "keepUpdated" "initialOnlyNoReset" "initialOnlyRequireReset") -}}
+{{ .Values.forgejo.admin.passwordMode }}
 {{- else -}}
-{{ printf "gitea.admin.passwordMode must be set to one of 'keepUpdated', 'initialOnlyNoReset', or 'initialOnlyRequireReset'. Received: '%s'" .Values.gitea.admin.passwordMode | fail }}
+{{ printf "gitea.admin.passwordMode must be set to one of 'keepUpdated', 'initialOnlyNoReset', or 'initialOnlyRequireReset'. Received: '%s'" .Values.forgejo.admin.passwordMode | fail }}
+{{- end -}}
+{{- end -}}
+
+{{- define "forgejo.compat" -}}
+{{- if .Values.gitea -}}
+{{- $_ := mustMergeOverwrite .Values.forgejo .Values.gitea -}}
+{{- $_ := unset .Values "gitea" -}}
 {{- end -}}
 {{- end -}}

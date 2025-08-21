@@ -10,7 +10,7 @@ test:
 persistence:
   enabled: false
 
-gitea:
+forgejo:
   config:
     database:
       DB_TYPE: sqlite3

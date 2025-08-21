@@ -1,3 +1,4 @@
+{{- include "forgejo.compat" . -}}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -63,7 +64,7 @@ stringData:
       exit 1
     }
 
-    {{- if or .Values.gitea.admin.existingSecret (and .Values.gitea.admin.username .Values.gitea.admin.password) }}
+    {{- if or .Values.forgejo.admin.existingSecret (and .Values.forgejo.admin.username .Values.forgejo.admin.password) }}
     function configure_admin_user() {
       local full_admin_list=$(gitea admin user list --admin)
       local actual_user_table=''
@@ -78,7 +79,7 @@ stringData:
 
         echo "ERROR: 'configure_admin_user' was not able to determine the current list of admin users."
         echo "       Please review the output of 'gitea admin user list --admin' shown below."
-        echo "       If you think it is an issue with the Helm Chart provisioning, file an issue at https://gitea.com/gitea/helm-chart/issues."
+        echo "       If you think it is an issue with the Helm Chart provisioning, file an issue at https://code.forgejo.org/forgejo-helm/forgejo-helm/issues."
         echo "DEBUG: Output of 'gitea admin user list --admin'"
         echo "--"
         echo "${full_admin_list}"
@@ -89,7 +90,7 @@ stringData:
       local ACCOUNT_ID=$(echo "${actual_user_table}" | grep -E "\s+${GITEA_ADMIN_USERNAME}\s+" | awk -F " " "{printf \$1}")
       if [[ -z "${ACCOUNT_ID}" ]]; then
         local -a create_args
-        create_args=(--admin --username "${GITEA_ADMIN_USERNAME}" --password "${GITEA_ADMIN_PASSWORD}" --email {{ .Values.gitea.admin.email | quote }})
+        create_args=(--admin --username "${GITEA_ADMIN_USERNAME}" --password "${GITEA_ADMIN_PASSWORD}" --email {{ .Values.forgejo.admin.email | quote }})
         if [[ "${GITEA_ADMIN_PASSWORD_MODE}" = initialOnlyRequireReset ]]; then
           create_args+=(--must-change-password=true)
         else
@@ -115,8 +116,8 @@ stringData:
     {{- end }}
 
     function configure_ldap() {
-      {{- if .Values.gitea.ldap }}
-      {{- range $idx, $value := .Values.gitea.ldap }}
+      {{- if .Values.forgejo.ldap }}
+      {{- range $idx, $value := .Values.forgejo.ldap }}
       local LDAP_NAME={{ (printf "%s" $value.name) | squote }}
       local full_auth_list=$(gitea admin auth list --vertical-bars)
       local actual_auth_table=''
@@ -131,7 +132,7 @@ stringData:
 
         echo "ERROR: 'configure_ldap' was not able to determine the current list of authentication sources."
         echo "       Please review the output of 'gitea admin auth list --vertical-bars' shown below."
-        echo "       If you think it is an issue with the Helm Chart provisioning, file an issue at https://gitea.com/gitea/helm-chart/issues."
+        echo "       If you think it is an issue with the Helm Chart provisioning, file an issue at https://code.forgejo.org/forgejo-helm/forgejo-helm/issues."
         echo "DEBUG: Output of 'gitea admin auth list --vertical-bars'"
         echo "--"
         echo "${full_auth_list}"
@@ -159,8 +160,8 @@ stringData:
     configure_ldap
 
     function configure_oauth() {
-      {{- if .Values.gitea.oauth }}
-      {{- range $idx, $value := .Values.gitea.oauth }}
+      {{- if .Values.forgejo.oauth }}
+      {{- range $idx, $value := .Values.forgejo.oauth }}
       local OAUTH_NAME={{ (printf "%s" $value.name) | squote }}
       local full_auth_list=$(gitea admin auth list --vertical-bars)
       local actual_auth_table=''
@@ -175,7 +176,7 @@ stringData:
 
         echo "ERROR: 'configure_oauth' was not able to determine the current list of authentication sources."
         echo "       Please review the output of 'gitea admin auth list --vertical-bars' shown below."
-        echo "       If you think it is an issue with the Helm Chart provisioning, file an issue at https://gitea.com/gitea/helm-chart/issues."
+        echo "       If you think it is an issue with the Helm Chart provisioning, file an issue at https://code.forgejo.org/forgejo-helm/forgejo-helm/issues."
         echo "DEBUG: Output of 'gitea admin auth list --vertical-bars'"
         echo "--"
         echo "${full_auth_list}"
