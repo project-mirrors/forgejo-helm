@@ -41,7 +41,7 @@ Unless you have an existing `elasticsearch` cluster, we recommend using `meilise
 To configure `meilisearch` within Forgejo, do the following:
 
 ```yml
-gitea:
+forgejo:
   config:
     indexer:
       ISSUE_INDEXER_CONN_STR: <http://meilisearch.<namespace>.svc.cluster.local:7700>
@@ -61,15 +61,15 @@ A `valkey-cluster` instance is required for the in-memory cache.
 You can also configure an external `valkey` instance.
 To do so, you need to set the following configuration values yourself:
 
-- `gitea.config.queue.TYPE`: valkey`
-- `gitea.config.queue.CONN_STR`: `<your valkey connection string>`
+- `forgejo.config.queue.TYPE`: valkey`
+- `forgejo.config.queue.CONN_STR`: `<your valkey connection string>`
 
-- `gitea.config.session.PROVIDER`: `valkey`
-- `gitea.config.session.PROVIDER_CONFIG`: `<your valkey connection string>`
+- `forgejo.config.session.PROVIDER`: `valkey`
+- `forgejo.config.session.PROVIDER_CONFIG`: `<your valkey connection string>`
 
-- `gitea.config.cache.ENABLED`: `true`
-- `gitea.config.cache.ADAPTER`: `valkey`
-- `gitea.config.cache.HOST`: `<your valkey connection string>`
+- `forgejo.config.cache.ENABLED`: `true`
+- `forgejo.config.cache.ADAPTER`: `valkey`
+- `forgejo.config.cache.HOST`: `<your valkey connection string>`
 
 ## Object and asset storage
 
@@ -90,7 +90,7 @@ Note that `MINIO_BUCKET` here is just a name and does not refer to a S3 bucket.
 It's the root access point for all objects belonging to the respective application, i.e., to Forgejo in this case.
 
 ```yaml
-gitea:
+forgejo:
   config:
     attachment:
       STORAGE_TYPE: minio
@@ -115,7 +115,7 @@ gitea:
 To connect an external DB, the following settings must be set:
 
 ```yml
-gitea:
+forgejo:
   config:
     database:
       DB_TYPE: postgres

@@ -107,7 +107,7 @@ Every value described in the [Cheat Sheet](https://forgejo.org/docs/latest/admin
 Configuration sections map to (lowercased) YAML blocks, while the keys themselves remain in all caps.
 
 ```yaml
-gitea:
+forgejo:
   config:
     # values in the DEFAULT section
     # (https://forgejo.org/docs/latest/admin/config-cheat-sheet/#overall-default)
