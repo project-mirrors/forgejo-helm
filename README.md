@@ -77,14 +77,10 @@ The chart aims to follow Forgejo's releases closely.
 There might be times when the chart is behind the latest Forgejo release.
 This might be caused by different reasons, most often due to time constraints of the maintainers (remember, all work here is done voluntarily in the spare time of people).
 If you're eager to use the latest Forgejo version earlier than this chart catches up, then change the tag in `values.yaml` to the latest Forgejo version.
-This is due to Forgejo not strictly following [semantic versioning](https://semver.org/#summary) as breaking changes do not increase the major version.
-I.e., "minor" version bumps are considered "major".
-Yet most often no issues will be encountered and the chart maintainers aim to communicate early/upfront if this would be the case.
 
 ## Dependencies
 
 Forgejo can be run with an external database and cache.
-This chart provides those dependencies, which can be enabled, or disabled via configuration.
 
 ## Installing
 
@@ -121,7 +117,7 @@ gitea:
     #
     # https://forgejo.org/docs/latest/admin/config-cheat-sheet/#repository-repository
     repository:
-      ROOT: '~/gitea-repositories'
+      ROOT: '~/forgejo-repositories'
     #
     # https://forgejo.org/docs/latest/admin/config-cheat-sheet/#repository---pull-request-repositorypull-request
     repository.pull-request:
@@ -191,7 +187,7 @@ If `.Values.image.rootless: true`, then the following will occur. In case you us
 
 #### Session, Cache and Queue
 
-The chart will fall back to the Gitea defaults which use "memory" for `session` and `cache` and "level" for `queue`.
+The chart will fall back to the Forgejo defaults which use "memory" for `session` and `cache` and "level" for `queue`.
 
 While these will work and even not cause immediate issues after startup, **they are not recommended for production use**.
 Reasons being that a single pod will take on all the work for `session` and `cache` tasks in its available memory.
@@ -202,49 +198,24 @@ External tools such as `valkey-cluster` or `memcached` handle these workloads mu
 
 If HA is not needed/desired, the following configurations can be used to deploy a single-pod Forgejo instance.
 
-1. For a production-ready single-pod Forgejo instance without external dependencies (using the built-in SQLite):
+For a production-ready single-pod Forgejo instance without external dependencies (using the built-in SQLite):
 
-   <details>
+<details>
 
-   <summary>values.yml</summary>
+<summary>values.yml</summary>
 
-   ```yaml
-   persistence:
-     enabled: true
+```yaml
+persistence:
+  enabled: true
 
-   gitea:
-     config:
-       indexer:
-         ISSUE_INDEXER_TYPE: bleve
-         REPO_INDEXER_ENABLED: true
-   ```
+gitea:
+  config:
+    indexer:
+      ISSUE_INDEXER_TYPE: bleve
+      REPO_INDEXER_ENABLED: true
+```
 
-   </details>
-
-2. For a minimal DEV installation (using the built-in SQLite instead of Postgres):
-
-   This will result in a single-pod Forgejo instance _without any dependencies and persistence_.
-   **Do not use this configuration for production use**.
-
-   <details>
-
-   <summary>values.yml</summary>
-
-   ```yaml
-   persistence:
-     enabled: false
-
-   gitea:
-     config:
-       session:
-         PROVIDER: memory
-       cache:
-         ADAPTER: memory
-       queue:
-         TYPE: level
-   ```
-
-   </details>
+</details>
 
 ### Additional _app.ini_ settings
 
@@ -261,9 +232,9 @@ Kubernetes Secrets to be loaded as environment variables during _app.ini_ creati
 gitea:
   additionalConfigSources:
     - secret:
-        secretName: gitea-app-ini-oauth
+        secretName: forgejo-app-ini-oauth
     - configMap:
-        name: gitea-app-ini-plaintext
+        name: forgejo-app-ini-plaintext
 ```
 
 This would mount the two additional volumes (`oauth` and `some-additionals`) from different sources to the init container where the _app.ini_ gets updated.
@@ -272,13 +243,13 @@ All files mounted that way will be read and converted to environment variables a
 The key of such additional source represents the section inside the _app.ini_.
 The value for each key can be multiline ini-like definitions.
 
-In example, the referenced `gitea-app-ini-plaintext` could look like this.
+In example, the referenced `forgejo-app-ini-plaintext` could look like this.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: gitea-app-ini-plaintext
+  name: forgejo-app-ini-plaintext
 data:
   session: |
     PROVIDER=memory
@@ -293,7 +264,7 @@ Or when using a Kubernetes secret, having the same data structure:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: gitea-security-related-configuration
+  name: forgejo-security-related-configuration
 type: Opaque
 stringData:
   security: |
@@ -308,7 +279,7 @@ Users are able to define their own environment variables, which are loaded into 
 We also support interacting directly with the generated _app.ini_.
 
 To inject self defined variables into the _app.ini_ a certain format needs to be honored.
-This is described in detail on the [env-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini) page.
+This is described in detail on the [env-to-ini](https://codeberg.org/forgejo/forgejo/src/branch/forgejo/contrib/environment-to-ini) page.
 
 Environment variables need to be prefixed with `FORGEJO`.
 
@@ -345,10 +316,10 @@ gitea:
     database:
       DB_TYPE: mysql # supported values are mysql, postgres, mssql, sqlite3
       HOST: <mysql HOST>
-      NAME: gitea
+      NAME: forgejo
       USER: root
-      PASSWD: gitea
-      SCHEMA: gitea
+      PASSWD: forgejo
+      SCHEMA: forgejo
 ```
 
 ### Ports and external url
@@ -400,7 +371,7 @@ More about this issue can be found at [`gitea/helm-chart#161`](https://gitea.com
 
 ### Cache
 
-The chart will fall back to the Gitea defaults which use "memory" for `session` and `cache` and "level" for `queue`.
+The chart will fall back to the Forgejo defaults which use "memory" for `session` and `cache` and "level" for `queue`.
 
 ### Persistence
 
@@ -423,7 +394,7 @@ If you want to manage your own PVC you can simply pass the PVC name to the chart
 ```yaml
 persistence:
   enabled: true
-  claimName: MyAwesomeGiteaClaim
+  claimName: MyAwesomeForgejoClaim
 ```
 
 In case that persistence has been disabled it will simply use an empty dir volume.
@@ -448,17 +419,17 @@ You can also use an existing Secret to configure the admin user:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: gitea-admin-secret
+  name: forgejo-admin-secret
 type: Opaque
 stringData:
-  username: MyAwesomeGiteaAdmin
-  password: AReallyAwesomeGiteaPassword
+  username: MyAwesomeForgejoAdmin
+  password: AReallyAwesomeForgejoPassword
 ```
 
 ```yaml
 gitea:
   admin:
-    existingSecret: gitea-admin-secret
+    existingSecret: forgejo-admin-secret
 ```
 
 To delete the admin user, set `username` or `password` to an empty value and delete the user in the UI.
@@ -487,7 +458,7 @@ Multiple LDAP sources can be configured with additional LDAP list items.
 ```yaml
 gitea:
   ldap:
-    - name: MyAwesomeGiteaLdap
+    - name: MyAwesomeForgejoLdap
       securityProtocol: unencrypted
       host: '127.0.0.1'
       port: '389'
@@ -507,7 +478,7 @@ You can also use an existing secret to set the `bindDn` and `bindPassword`:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: gitea-ldap-secret
+  name: forgejo-ldap-secret
 type: Opaque
 stringData:
   bindDn: CN=ldap read,OU=Spezial,DC=example,DC=com
@@ -517,7 +488,7 @@ stringData:
 ```yaml
 gitea:
   ldap:
-    - existingSecret: gitea-ldap-secret
+    - existingSecret: forgejo-ldap-secret
 ```
 
 ⚠️ Some options are just flags and therefore don't have any values.
@@ -541,11 +512,11 @@ Multiple OAuth2 sources can be configured with additional OAuth list items.
 ```yaml
 gitea:
   oauth:
-    - name: 'MyAwesomeGiteaOAuth'
+    - name: 'MyAwesomeForgejoOAuth'
       provider: 'openidConnect'
       key: 'hello'
       secret: 'world'
-      autoDiscoverUrl: 'https://gitea.example.com/.well-known/openid-configuration'
+      autoDiscoverUrl: 'https://forgejo.example.com/.well-known/openid-configuration'
       #useCustomUrls:
       #customAuthUrl:
       #customTokenUrl:
@@ -559,7 +530,7 @@ You can also use an existing secret to set the `key` and `secret`:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: gitea-oauth-secret
+  name: forgejo-oauth-secret
 type: Opaque
 stringData:
   key: hello
@@ -569,8 +540,8 @@ stringData:
 ```yaml
 gitea:
   oauth:
-    - name: 'MyAwesomeGiteaOAuth'
-      existingSecret: gitea-oauth-secret
+    - name: 'MyAwesomeForgejoOAuth'
+      existingSecret: forgejo-oauth-secret
 ```
 
 ### Compatibility with OCP (OKD or OpenShift)
@@ -612,7 +583,7 @@ Either using the `signing.privateKey` to define the key inline, or referring to 
 apiVersion: v1
 kind: Secret
 metadata:
-  name: custom-gitea-gpg-key
+  name: custom-forgejo-gpg-key
 type: Opaque
 stringData:
   privateKey: |-
@@ -623,7 +594,7 @@ stringData:
 
 ```yaml
 signing:
-  existingSecret: custom-gitea-gpg-key
+  existingSecret: custom-forgejo-gpg-key
 ```
 
 To use the GPG key, Forgejo needs to be configured accordingly.
@@ -665,12 +636,12 @@ The [http provider](https://registry.terraform.io/providers/hashicorp/http/lates
 
 ```yaml
 extraVolumes:
-  - name: gitea-themes
+  - name: forgejo-themes
     secret:
-      secretName: gitea-themes
+      secretName: forgejo-themes
 
 extraVolumeMounts:
-  - name: gitea-themes
+  - name: forgejo-themes
     readOnly: true
     mountPath: '/data/gitea/public/assets/css'
 ```
@@ -678,23 +649,23 @@ extraVolumeMounts:
 The secret can be created via `terraform`:
 
 ```hcl
-resource "kubernetes_secret" "gitea-themes" {
+resource "kubernetes_secret" "forgejo-themes" {
   metadata {
-    name      = "gitea-themes"
-    namespace = "gitea"
+    name      = "forgejo-themes"
+    namespace = "forgejo"
   }
 
   data = {
-    "my-theme.css"      = data.http.gitea-theme-light.body
-    "my-theme-dark.css" = data.http.gitea-theme-dark.body
-    "my-theme-auto.css" = data.http.gitea-theme-auto.body
+    "my-theme.css"      = data.http.forgejo-theme-light.body
+    "my-theme-dark.css" = data.http.forgejo-theme-dark.body
+    "my-theme-auto.css" = data.http.forgejo-theme-auto.body
   }
 
   type = "Opaque"
 }
 
 
-data "http" "gitea-theme-light" {
+data "http" "forgejo-theme-light" {
   url = "<raw theme url>"
 
   request_headers = {
@@ -702,7 +673,7 @@ data "http" "gitea-theme-light" {
   }
 }
 
-data "http" "gitea-theme-dark" {
+data "http" "forgejo-theme-dark" {
   url = "<raw theme url>"
 
   request_headers = {
@@ -710,7 +681,7 @@ data "http" "gitea-theme-dark" {
   }
 }
 
-data "http" "gitea-theme-auto" {
+data "http" "forgejo-theme-auto" {
   url = "<raw theme url>"
 
   request_headers = {
@@ -722,7 +693,7 @@ data "http" "gitea-theme-auto" {
 or natively via `kubectl`:
 
 ```bash
-kubectl create secret generic gitea-themes --from-file={{FULL-PATH-TO-CSS}} --namespace gitea
+kubectl create secret generic forgejo-themes --from-file={{FULL-PATH-TO-CSS}} --namespace forgejo
 ```
 
 ## Renovate
@@ -745,7 +716,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 "customManagers": [
   {
     "customType": "regex",
-    "description": "Apply an explicit gitea digest field match",
+    "description": "Apply an explicit forgejo digest field match",
     "fileMatch": ["values\\.ya?ml"],
     "matchStrings": ["(?<depName>forgejo\\/forgejo)\\n(?<indentation>\\s+)tag: (?<currentValue>[^@].*?)\\n\\s+digest: (?<currentDigest>sha256:[a-f0-9]+)"],
     "datasourceTemplate": "docker",
@@ -967,54 +938,54 @@ Sheet](https://forgejo.org/docs/latest/admin/config-cheat-sheet/) can be
 set as a Helm value. Configuration sections map to (lowercased) YAML
 blocks, while the keys themselves remain in all caps.
 
-| Name                                 | Description                                                                                                                                    | Value                               |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `gitea.config.APP_NAME`              | Application name, used in the page title                                                                                                       | `Forgejo: Beyond coding. We forge.` |
-| `gitea.config.RUN_MODE`              | Application run mode, affects performance and debugging: `dev` or `prod`                                                                       | `prod`                              |
-| `gitea.config.repository`            | General repository settings                                                                                                                    | `{}`                                |
-| `gitea.config.cors`                  | Cross-origin resource sharing settings                                                                                                         | `{}`                                |
-| `gitea.config.ui`                    | User interface settings                                                                                                                        | `{}`                                |
-| `gitea.config.markdown`              | Markdown parser settings                                                                                                                       | `{}`                                |
-| `gitea.config.server`                | General server settings                                                                                                                        | `{}`                                |
-| `gitea.config.database`              | Database configuration (only necessary with an [externally managed DB](https://code.forgejo.org/forgejo-helm/forgejo-helm#external-database)). | `{}`                                |
-| `gitea.config.indexer`               | Settings for what content is indexed and how                                                                                                   | `{}`                                |
-| `gitea.config.queue`                 | Job queue configuration                                                                                                                        | `{}`                                |
-| `gitea.config.admin`                 | Admin user settings                                                                                                                            | `{}`                                |
-| `gitea.config.security`              | Site security settings                                                                                                                         | `{}`                                |
-| `gitea.config.camo`                  | Settings for the [camo](https://github.com/cactus/go-camo) media proxy server (disabled by default)                                            | `{}`                                |
-| `gitea.config.openid`                | Configuration for authentication with OpenID (disabled by default)                                                                             | `{}`                                |
-| `gitea.config.oauth2_client`         | OAuth2 client settings                                                                                                                         | `{}`                                |
-| `gitea.config.service`               | Configuration for miscellaneous Forgejo services                                                                                               | `{}`                                |
-| `gitea.config.ssh.minimum_key_sizes` | SSH minimum key sizes                                                                                                                          | `{}`                                |
-| `gitea.config.webhook`               | Webhook settings                                                                                                                               | `{}`                                |
-| `gitea.config.mailer`                | Mailer configuration (disabled by default)                                                                                                     | `{}`                                |
-| `gitea.config.email.incoming`        | Configuration for handling incoming mail (disabled by default)                                                                                 | `{}`                                |
-| `gitea.config.cache`                 | Cache configuration                                                                                                                            | `{}`                                |
-| `gitea.config.session`               | Session/cookie handling                                                                                                                        | `{}`                                |
-| `gitea.config.picture`               | User avatar settings                                                                                                                           | `{}`                                |
-| `gitea.config.project`               | Project board defaults                                                                                                                         | `{}`                                |
-| `gitea.config.attachment`            | Issue and PR attachment configuration                                                                                                          | `{}`                                |
-| `gitea.config.log`                   | Logging configuration                                                                                                                          | `{}`                                |
-| `gitea.config.cron`                  | Cron job configuration                                                                                                                         | `{}`                                |
-| `gitea.config.git`                   | Global settings for Git                                                                                                                        | `{}`                                |
-| `gitea.config.metrics`               | Settings for the Prometheus endpoint (disabled by default)                                                                                     | `{}`                                |
-| `gitea.config.api`                   | Settings for the Swagger API documentation endpoints                                                                                           | `{}`                                |
-| `gitea.config.oauth2`                | Settings for the [OAuth2 provider](https://forgejo.org/docs/latest/admin/oauth2-provider/)                                                     | `{}`                                |
-| `gitea.config.i18n`                  | Internationalization settings                                                                                                                  | `{}`                                |
-| `gitea.config.markup`                | Configuration for advanced markup processors                                                                                                   | `{}`                                |
-| `gitea.config.highlight.mapping`     | File extension to language mapping overrides for syntax highlighting                                                                           | `{}`                                |
-| `gitea.config.time`                  | Locale settings                                                                                                                                | `{}`                                |
-| `gitea.config.migrations`            | Settings for Git repository migrations                                                                                                         | `{}`                                |
-| `gitea.config.federation`            | Federation configuration                                                                                                                       | `{}`                                |
-| `gitea.config.packages`              | Package registry settings                                                                                                                      | `{}`                                |
-| `gitea.config.mirror`                | Configuration for repository mirroring                                                                                                         | `{}`                                |
-| `gitea.config.lfs`                   | Large File Storage configuration                                                                                                               | `{}`                                |
-| `gitea.config.repo-avatar`           | Repository avatar storage configuration                                                                                                        | `{}`                                |
-| `gitea.config.avatar`                | User/org avatar storage configuration                                                                                                          | `{}`                                |
-| `gitea.config.storage`               | General storage settings                                                                                                                       | `{}`                                |
-| `gitea.config.proxy`                 | Proxy configuration (disabled by default)                                                                                                      | `{}`                                |
-| `gitea.config.actions`               | Configuration for [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/)                                                             | `{}`                                |
-| `gitea.config.other`                 | Uncategorized configuration options                                                                                                            | `{}`                                |
+| Name                                 | Description                                                                                         | Value                               |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `gitea.config.APP_NAME`              | Application name, used in the page title                                                            | `Forgejo: Beyond coding. We forge.` |
+| `gitea.config.RUN_MODE`              | Application run mode, affects performance and debugging: `dev` or `prod`                            | `prod`                              |
+| `gitea.config.repository`            | General repository settings                                                                         | `{}`                                |
+| `gitea.config.cors`                  | Cross-origin resource sharing settings                                                              | `{}`                                |
+| `gitea.config.ui`                    | User interface settings                                                                             | `{}`                                |
+| `gitea.config.markdown`              | Markdown parser settings                                                                            | `{}`                                |
+| `gitea.config.server`                | General server settings                                                                             | `{}`                                |
+| `gitea.config.database`              | Database configuration (only necessary with an [externally managed DB](#external-database)).        | `{}`                                |
+| `gitea.config.indexer`               | Settings for what content is indexed and how                                                        | `{}`                                |
+| `gitea.config.queue`                 | Job queue configuration                                                                             | `{}`                                |
+| `gitea.config.admin`                 | Admin user settings                                                                                 | `{}`                                |
+| `gitea.config.security`              | Site security settings                                                                              | `{}`                                |
+| `gitea.config.camo`                  | Settings for the [camo](https://github.com/cactus/go-camo) media proxy server (disabled by default) | `{}`                                |
+| `gitea.config.openid`                | Configuration for authentication with OpenID (disabled by default)                                  | `{}`                                |
+| `gitea.config.oauth2_client`         | OAuth2 client settings                                                                              | `{}`                                |
+| `gitea.config.service`               | Configuration for miscellaneous Forgejo services                                                    | `{}`                                |
+| `gitea.config.ssh.minimum_key_sizes` | SSH minimum key sizes                                                                               | `{}`                                |
+| `gitea.config.webhook`               | Webhook settings                                                                                    | `{}`                                |
+| `gitea.config.mailer`                | Mailer configuration (disabled by default)                                                          | `{}`                                |
+| `gitea.config.email.incoming`        | Configuration for handling incoming mail (disabled by default)                                      | `{}`                                |
+| `gitea.config.cache`                 | Cache configuration                                                                                 | `{}`                                |
+| `gitea.config.session`               | Session/cookie handling                                                                             | `{}`                                |
+| `gitea.config.picture`               | User avatar settings                                                                                | `{}`                                |
+| `gitea.config.project`               | Project board defaults                                                                              | `{}`                                |
+| `gitea.config.attachment`            | Issue and PR attachment configuration                                                               | `{}`                                |
+| `gitea.config.log`                   | Logging configuration                                                                               | `{}`                                |
+| `gitea.config.cron`                  | Cron job configuration                                                                              | `{}`                                |
+| `gitea.config.git`                   | Global settings for Git                                                                             | `{}`                                |
+| `gitea.config.metrics`               | Settings for the Prometheus endpoint (disabled by default)                                          | `{}`                                |
+| `gitea.config.api`                   | Settings for the Swagger API documentation endpoints                                                | `{}`                                |
+| `gitea.config.oauth2`                | Settings for the [OAuth2 provider](https://forgejo.org/docs/latest/admin/oauth2-provider/)          | `{}`                                |
+| `gitea.config.i18n`                  | Internationalization settings                                                                       | `{}`                                |
+| `gitea.config.markup`                | Configuration for advanced markup processors                                                        | `{}`                                |
+| `gitea.config.highlight.mapping`     | File extension to language mapping overrides for syntax highlighting                                | `{}`                                |
+| `gitea.config.time`                  | Locale settings                                                                                     | `{}`                                |
+| `gitea.config.migrations`            | Settings for Git repository migrations                                                              | `{}`                                |
+| `gitea.config.federation`            | Federation configuration                                                                            | `{}`                                |
+| `gitea.config.packages`              | Package registry settings                                                                           | `{}`                                |
+| `gitea.config.mirror`                | Configuration for repository mirroring                                                              | `{}`                                |
+| `gitea.config.lfs`                   | Large File Storage configuration                                                                    | `{}`                                |
+| `gitea.config.repo-avatar`           | Repository avatar storage configuration                                                             | `{}`                                |
+| `gitea.config.avatar`                | User/org avatar storage configuration                                                               | `{}`                                |
+| `gitea.config.storage`               | General storage settings                                                                            | `{}`                                |
+| `gitea.config.proxy`                 | Proxy configuration (disabled by default)                                                           | `{}`                                |
+| `gitea.config.actions`               | Configuration for [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/)                  | `{}`                                |
+| `gitea.config.other`                 | Uncategorized configuration options                                                                 | `{}`                                |
 
 ### LivenessProbe
 
@@ -1083,7 +1054,7 @@ PostgreSQL and PostgreSQL HA subcharts have been removed.
 You need to manually migrate to an external PostgreSQL instance.
 
 Valkey and Valkey Cluster charts have been removed.
-You need to provide your own instances.
+You need to provide your own instances if you like to continue to use Valkey.
 
 <https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1333>
 
