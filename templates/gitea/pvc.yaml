@@ -18,7 +18,7 @@ spec:
     {{- .Values.persistence.accessModes | toYaml | nindent 4 }}
   {{- end }}
   volumeMode: Filesystem
-  {{- include "gitea.persistence.storageClass" . | nindent 2 }}
+  {{- include "forgejo.persistence.storageClass" . | nindent 2 }}
   {{- with .Values.persistence.volumeName }}
   volumeName: {{ . }}
   {{- end }}

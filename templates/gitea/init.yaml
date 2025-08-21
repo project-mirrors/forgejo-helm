@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "gitea.fullname" . }}-init
+  name: {{ include "forgejo.fullname" . }}-init
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
 type: Opaque
 stringData:
   configure_gpg_environment.sh: |-
@@ -143,11 +143,11 @@ stringData:
 
       if [[ -z "${GITEA_AUTH_ID}" ]]; then
         echo "No ldap configuration found with name '${LDAP_NAME}'. Installing it now..."
-        gitea admin auth add-ldap {{- include "gitea.ldap_settings" (list $idx $value) | indent 1 }}
+        gitea admin auth add-ldap {{- include "forgejo.ldap_settings" (list $idx $value) | indent 1 }}
         echo '...installed.'
       else
         echo "Existing ldap configuration with name '${LDAP_NAME}': '${GITEA_AUTH_ID}'. Running update to sync settings..."
-        gitea admin auth update-ldap --id "${GITEA_AUTH_ID}" {{- include "gitea.ldap_settings" (list $idx $value) | indent 1 }}
+        gitea admin auth update-ldap --id "${GITEA_AUTH_ID}" {{- include "forgejo.ldap_settings" (list $idx $value) | indent 1 }}
         echo '...sync settings done.'
       fi
       {{- end }}
@@ -187,11 +187,11 @@ stringData:
 
       if [[ -z "${AUTH_ID}" ]]; then
         echo "No oauth configuration found with name '${OAUTH_NAME}'. Installing it now..."
-        gitea admin auth add-oauth {{- include "gitea.oauth_settings" (list $idx $value) | indent 1 }}
+        gitea admin auth add-oauth {{- include "forgejo.oauth_settings" (list $idx $value) | indent 1 }}
         echo '...installed.'
       else
         echo "Existing oauth configuration with name '${OAUTH_NAME}': '${AUTH_ID}'. Running update to sync settings..."
-        gitea admin auth update-oauth --id "${AUTH_ID}" {{- include "gitea.oauth_settings" (list $idx $value) | indent 1 }}
+        gitea admin auth update-oauth --id "${AUTH_ID}" {{- include "forgejo.oauth_settings" (list $idx $value) | indent 1 }}
         echo '...sync settings done.'
       fi
       {{- end }}

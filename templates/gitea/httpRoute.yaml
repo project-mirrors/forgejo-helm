@@ -1,5 +1,5 @@
 {{- if .Values.httpRoute.enabled -}}
-{{- $fullName := include "gitea.fullname" . -}}
+{{- $fullName := include "forgejo.fullname" . -}}
 {{- $httpRoute := .Values.httpRoute }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -7,7 +7,7 @@ metadata:
   name: {{ $fullName }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
   {{- with $httpRoute.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

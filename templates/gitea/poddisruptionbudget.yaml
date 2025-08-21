@@ -2,13 +2,13 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "gitea.fullname" . }}
+  name: {{ include "forgejo.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "gitea.selectorLabels" . | nindent 6 }}
+      {{- include "forgejo.selectorLabels" . | nindent 6 }}
   {{- toYaml .Values.podDisruptionBudget | nindent 2 }}
 {{- end -}}

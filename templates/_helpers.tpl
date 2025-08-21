@@ -3,7 +3,7 @@
 Expand the name of the chart.
 */}}
 
-{{- define "gitea.name" -}}
+{{- define "forgejo.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -12,7 +12,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "gitea.fullname" -}}
+{{- define "forgejo.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -28,7 +28,7 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "gitea.chart" -}}
+{{- define "forgejo.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -36,14 +36,14 @@ Create chart name and version as used by the chart label.
 Get version from .Values.image.tag or Chart.AppVersion.
 Trim optional docker digest.
 */}}
-{{- define "gitea.version" -}}
+{{- define "forgejo.version" -}}
 {{- regexReplaceAll "@.+" (.Values.image.tag | default .Chart.AppVersion | toString) "" -}}
 {{- end -}}
 
 {{/*
 Create image name and tag used by the deployment.
 */}}
-{{- define "gitea.image" -}}
+{{- define "forgejo.image" -}}
 {{- $fullOverride := .Values.image.fullOverride | default "" -}}
 {{- $registry := .Values.global.imageRegistry | default .Values.image.registry -}}
 {{- $repository := .Values.image.repository -}}
@@ -66,7 +66,7 @@ Create image name and tag used by the deployment.
 {{/*
 Docker Image Registry Secret Names evaluating values as templates
 */}}
-{{- define "gitea.images.pullSecrets" -}}
+{{- define "forgejo.images.pullSecrets" -}}
 {{- $pullSecrets := .Values.imagePullSecrets -}}
 {{- range .Values.global.imagePullSecrets -}}
     {{- $pullSecrets = append $pullSecrets (dict "name" .) -}}
@@ -81,7 +81,7 @@ imagePullSecrets:
 {{/*
 Storage Class
 */}}
-{{- define "gitea.persistence.storageClass" -}}
+{{- define "forgejo.persistence.storageClass" -}}
 {{- $storageClass :=  (tpl ( default "" .Values.persistence.storageClass) .) | default (tpl ( default "" .Values.global.storageClass) .) }}
 {{- if $storageClass }}
 storageClassName: {{ $storageClass | quote }}
@@ -91,28 +91,28 @@ storageClassName: {{ $storageClass | quote }}
 {{/*
 Common labels
 */}}
-{{- define "gitea.labels" -}}
-helm.sh/chart: {{ include "gitea.chart" . }}
-app: {{ include "gitea.name" . }}
-{{ include "gitea.selectorLabels" . }}
-app.kubernetes.io/version: {{ include "gitea.version" . | quote }}
-version: {{ include "gitea.version" . | quote }}
+{{- define "forgejo.labels" -}}
+helm.sh/chart: {{ include "forgejo.chart" . }}
+app: {{ include "forgejo.name" . }}
+{{ include "forgejo.selectorLabels" . }}
+app.kubernetes.io/version: {{ include "forgejo.version" . | quote }}
+version: {{ include "forgejo.version" . | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
 Selector labels
 */}}
-{{- define "gitea.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "gitea.name" . }}
+{{- define "forgejo.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "forgejo.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
-{{- define "gitea.default_domain" -}}
-{{- printf "%s-http.%s.svc.%s" (include "gitea.fullname" .) .Release.Namespace .Values.clusterDomain -}}
+{{- define "forgejo.default_domain" -}}
+{{- printf "%s-http.%s.svc.%s" (include "forgejo.fullname" .) .Release.Namespace .Values.clusterDomain -}}
 {{- end -}}
 
-{{- define "gitea.ldap_settings" -}}
+{{- define "forgejo.ldap_settings" -}}
 {{- $idx := index . 0 }}
 {{- $values := index . 1 }}
 
@@ -142,7 +142,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
 
-{{- define "gitea.oauth_settings" -}}
+{{- define "forgejo.oauth_settings" -}}
 {{- $idx := index . 0 }}
 {{- $values := index . 1 }}
 
@@ -164,7 +164,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
 
-{{- define "gitea.public_protocol" -}}
+{{- define "forgejo.public_protocol" -}}
 {{- if and .Values.ingress.enabled (gt (len .Values.ingress.tls) 0) -}}
 https
 {{- else -}}
@@ -172,9 +172,9 @@ https
 {{- end -}}
 {{- end -}}
 
-{{- define "gitea.inline_configuration" -}}
-  {{- include "gitea.inline_configuration.init" . -}}
-  {{- include "gitea.inline_configuration.defaults" . -}}
+{{- define "forgejo.inline_configuration" -}}
+  {{- include "forgejo.inline_configuration.init" . -}}
+  {{- include "forgejo.inline_configuration.defaults" . -}}
 
   {{- $generals := list -}}
   {{- $inlines := dict -}}
@@ -202,7 +202,7 @@ https
   {{- toYaml $inlines -}}
 {{- end -}}
 
-{{- define "gitea.inline_configuration.init" -}}
+{{- define "forgejo.inline_configuration.init" -}}
   {{- if not (hasKey .Values.gitea.config "cache") -}}
     {{- $_ := set .Values.gitea.config "cache" dict -}}
   {{- end -}}
@@ -238,8 +238,8 @@ https
   {{- end -}}
 {{- end -}}
 
-{{- define "gitea.inline_configuration.defaults" -}}
-  {{- include "gitea.inline_configuration.defaults.server" . -}}
+{{- define "forgejo.inline_configuration.defaults" -}}
+  {{- include "forgejo.inline_configuration.defaults.server" . -}}
 
   {{- if not .Values.gitea.config.database.DB_TYPE -}}
     {{- $_ := set .Values.gitea.config.database "DB_TYPE" "sqlite3" -}}
@@ -279,7 +279,7 @@ https
   {{- end -}}
 {{- end -}}
 
-{{- define "gitea.inline_configuration.defaults.server" -}}
+{{- define "forgejo.inline_configuration.defaults.server" -}}
   {{- if not (hasKey .Values.gitea.config.server "HTTP_PORT") -}}
     {{- $_ := set .Values.gitea.config.server "HTTP_PORT" .Values.service.http.port -}}
   {{- end -}}
@@ -290,11 +290,11 @@ https
     {{- if gt (len .Values.ingress.hosts) 0 -}}
       {{- $_ := set .Values.gitea.config.server "DOMAIN" ( tpl (index .Values.ingress.hosts 0).host $) -}}
     {{- else -}}
-      {{- $_ := set .Values.gitea.config.server "DOMAIN" (include "gitea.default_domain" .) -}}
+      {{- $_ := set .Values.gitea.config.server "DOMAIN" (include "forgejo.default_domain" .) -}}
     {{- end -}}
   {{- end -}}
   {{- if not .Values.gitea.config.server.ROOT_URL -}}
-    {{- $_ := set .Values.gitea.config.server "ROOT_URL" (printf "%s://%s" (include "gitea.public_protocol" .) .Values.gitea.config.server.DOMAIN) -}}
+    {{- $_ := set .Values.gitea.config.server "ROOT_URL" (printf "%s://%s" (include "forgejo.public_protocol" .) .Values.gitea.config.server.DOMAIN) -}}
   {{- end -}}
   {{- if not .Values.gitea.config.server.SSH_DOMAIN -}}
     {{- $_ := set .Values.gitea.config.server "SSH_DOMAIN" .Values.gitea.config.server.DOMAIN -}}
@@ -322,7 +322,7 @@ https
   {{- end -}}
 {{- end -}}
 
-{{- define "gitea.init-additional-mounts" -}}
+{{- define "forgejo.init-additional-mounts" -}}
   {{- /* Honor the deprecated extraVolumeMounts variable when defined */ -}}
   {{- if gt (len .Values.extraInitVolumeMounts) 0 -}}
     {{- toYaml .Values.extraInitVolumeMounts -}}
@@ -331,7 +331,7 @@ https
   {{- end -}}
 {{- end -}}
 
-{{- define "gitea.container-additional-mounts" -}}
+{{- define "forgejo.container-additional-mounts" -}}
   {{- /* Honor the deprecated extraVolumeMounts variable when defined */ -}}
   {{- if gt (len .Values.extraContainerVolumeMounts) 0 -}}
     {{- toYaml .Values.extraContainerVolumeMounts -}}
@@ -340,15 +340,15 @@ https
   {{- end -}}
 {{- end -}}
 
-{{- define "gitea.gpg-key-secret-name" -}}
-{{ default (printf "%s-gpg-key" (include "gitea.fullname" .)) .Values.signing.existingSecret }}
+{{- define "forgejo.gpg-key-secret-name" -}}
+{{ default (printf "%s-gpg-key" (include "forgejo.fullname" .)) .Values.signing.existingSecret }}
 {{- end -}}
 
-{{- define "gitea.serviceAccountName" -}}
-{{ .Values.serviceAccount.name | default (include "gitea.fullname" .) }}
+{{- define "forgejo.serviceAccountName" -}}
+{{ .Values.serviceAccount.name | default (include "forgejo.fullname" .) }}
 {{- end -}}
 
-{{- define "gitea.admin.passwordMode" -}}
+{{- define "forgejo.admin.passwordMode" -}}
 {{- if has .Values.gitea.admin.passwordMode (tuple "keepUpdated" "initialOnlyNoReset" "initialOnlyRequireReset") -}}
 {{ .Values.gitea.admin.passwordMode }}
 {{- else -}}

@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "gitea.fullname" . }}
+  name: {{ include "forgejo.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
   annotations:
     {{- if .Values.deployment.annotations }}
     {{- toYaml .Values.deployment.annotations | nindent 4 }}
     {{- end }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
     {{- if .Values.deployment.labels }}
     {{- toYaml .Values.deployment.labels | nindent 4 }}
     {{- end }}
@@ -23,7 +23,7 @@ spec:
     {{- end }}
   selector:
     matchLabels:
-      {{- include "gitea.selectorLabels" . | nindent 6 }}
+      {{- include "forgejo.selectorLabels" . | nindent 6 }}
       {{- if .Values.deployment.labels }}
       {{- toYaml .Values.deployment.labels | nindent 6 }}
       {{- end }}
@@ -32,16 +32,16 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/gitea/config.yaml") . | sha256sum }}
         {{- range $idx, $value := .Values.gitea.ldap }}
-        checksum/ldap_{{ $idx }}: {{ include "gitea.ldap_settings" (list $idx $value) | sha256sum }}
+        checksum/ldap_{{ $idx }}: {{ include "forgejo.ldap_settings" (list $idx $value) | sha256sum }}
         {{- end }}
         {{- range $idx, $value := .Values.gitea.oauth }}
-        checksum/oauth_{{ $idx }}: {{ include "gitea.oauth_settings" (list $idx $value) | sha256sum }}
+        checksum/oauth_{{ $idx }}: {{ include "forgejo.oauth_settings" (list $idx $value) | sha256sum }}
         {{- end }}
         {{- with .Values.gitea.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "gitea.labels" . | nindent 8 }}
+        {{- include "forgejo.labels" . | nindent 8 }}
         {{- if .Values.deployment.labels }}
         {{- toYaml .Values.deployment.labels | nindent 8 }}
         {{- end }}
@@ -50,17 +50,17 @@ spec:
       schedulerName: "{{ .Values.schedulerName }}"
       {{- end }}
       {{- if (or .Values.serviceAccount.create .Values.serviceAccount.name) }}
-      serviceAccountName: {{ include "gitea.serviceAccountName" . }}
+      serviceAccountName: {{ include "forgejo.serviceAccountName" . }}
       {{- end }}
       {{- if .Values.priorityClassName }}
       priorityClassName: "{{ .Values.priorityClassName }}"
       {{- end }}
-      {{- include "gitea.images.pullSecrets" . | nindent 6 }}
+      {{- include "forgejo.images.pullSecrets" . | nindent 6 }}
       securityContext:
         {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.podSecurityContext "context" $) | nindent 8 }}
       initContainers:
         - name: init-directories
-          image: "{{ include "gitea.image" . }}"
+          image: "{{ include "forgejo.image" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/usr/sbin/init_directory_structure.sh"]
           env:
@@ -89,13 +89,13 @@ spec:
               {{- if .Values.persistence.subPath }}
               subPath: {{ .Values.persistence.subPath }}
               {{- end }}
-            {{- include "gitea.init-additional-mounts" . | nindent 12 }}
+            {{- include "forgejo.init-additional-mounts" . | nindent 12 }}
           securityContext:
             {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.containerSecurityContext "context" $) | nindent 12 }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         - name: init-app-ini
-          image: "{{ include "gitea.image" . }}"
+          image: "{{ include "forgejo.image" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/usr/sbin/config_environment.sh"]
           env:
@@ -129,14 +129,14 @@ spec:
             - name: additional-config-sources-{{ $idx }}
               mountPath: "/env-to-ini-mounts/additionals/{{ $idx }}/"
             {{- end }}
-            {{- include "gitea.init-additional-mounts" . | nindent 12 }}
+            {{- include "forgejo.init-additional-mounts" . | nindent 12 }}
           securityContext:
             {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.containerSecurityContext "context" $) | nindent 12 }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         {{- if .Values.signing.enabled }}
         - name: configure-gpg
-          image: "{{ include "gitea.image" . }}"
+          image: "{{ include "forgejo.image" . }}"
           command: ["/usr/sbin/configure_gpg_environment.sh"]
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
@@ -167,7 +167,7 @@ spec:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         {{- end }}
         - name: configure-gitea
-          image: "{{ include "gitea.image" . }}"
+          image: "{{ include "forgejo.image" . }}"
           command: ["/usr/sbin/configure_gitea.sh"]
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
@@ -245,7 +245,7 @@ spec:
               value: {{ .Values.gitea.admin.password | quote }}
             {{- end }}
             - name: GITEA_ADMIN_PASSWORD_MODE
-              value: {{ include "gitea.admin.passwordMode" $ }}
+              value: {{ include "forgejo.admin.passwordMode" $ }}
             {{- if .Values.deployment.env }}
             {{- toYaml .Values.deployment.env | nindent 12 }}
             {{- end }}
@@ -259,13 +259,13 @@ spec:
               {{- if .Values.persistence.subPath }}
               subPath: {{ .Values.persistence.subPath }}
               {{- end }}
-            {{- include "gitea.init-additional-mounts" . | nindent 12 }}
+            {{- include "forgejo.init-additional-mounts" . | nindent 12 }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
       terminationGracePeriodSeconds: {{ .Values.deployment.terminationGracePeriodSeconds }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ include "gitea.image" . }}"
+          image: "{{ include "forgejo.image" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             # SSH Port values have to be set here as well for openssh configuration
@@ -339,7 +339,7 @@ spec:
               {{- if .Values.persistence.subPath }}
               subPath: {{ .Values.persistence.subPath }}
               {{- end }}
-            {{- include "gitea.container-additional-mounts" . | nindent 12 }}
+            {{- include "forgejo.container-additional-mounts" . | nindent 12 }}
         {{- if .Values.extraContainers }}
         {{- toYaml .Values.extraContainers | nindent 8 }}
         {{- end }}
@@ -370,18 +370,18 @@ spec:
       volumes:
         - name: init
           secret:
-            secretName: {{ include "gitea.fullname" . }}-init
+            secretName: {{ include "forgejo.fullname" . }}-init
             defaultMode: 110
         - name: config
           secret:
-            secretName: {{ include "gitea.fullname" . }}
+            secretName: {{ include "forgejo.fullname" . }}
             defaultMode: 110
         {{- if gt (len .Values.extraVolumes) 0 }}
         {{- toYaml .Values.extraVolumes | nindent 8 }}
         {{- end }}
         - name: inline-config-sources
           secret:
-            secretName: {{ include "gitea.fullname" . }}-inline-config
+            secretName: {{ include "forgejo.fullname" . }}-inline-config
         {{- range $idx, $value := .Values.gitea.additionalConfigSources }}
         - name: additional-config-sources-{{ $idx }}
           {{- toYaml $value | nindent 10 }}
@@ -391,7 +391,7 @@ spec:
         {{- if .Values.signing.enabled }}
         - name: gpg-private-key
           secret:
-            secretName: {{ include "gitea.gpg-key-secret-name" . }}
+            secretName: {{ include "forgejo.gpg-key-secret-name" . }}
             items:
               - key: privateKey
                 path: private.asc

@@ -1,12 +1,12 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "gitea.fullname" . -}}
+{{- $fullName := include "forgejo.fullname" . -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
   annotations:
     {{- range $key, $value := .Values.ingress.annotations }}
       {{ $key }}: {{ $value | quote }}

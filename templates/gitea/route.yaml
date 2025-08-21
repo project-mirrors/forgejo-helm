@@ -2,10 +2,10 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ include "gitea.fullname" . }}-http
+  name: {{ include "forgejo.fullname" . }}-http
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.route.annotations | nindent 4 }}
 spec:
@@ -17,7 +17,7 @@ spec:
   {{- end }}
   to:
     kind: Service
-    name: {{ include "gitea.fullname" . }}-http
+    name: {{ include "forgejo.fullname" . }}-http
     weight: 100
   port:
     targetPort: http

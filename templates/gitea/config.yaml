@@ -1,21 +1,21 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "gitea.fullname" . }}-inline-config
+  name: {{ include "forgejo.fullname" . }}-inline-config
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
 type: Opaque
 stringData:
-  {{- include "gitea.inline_configuration" . | nindent 2 }}
+  {{- include "forgejo.inline_configuration" . | nindent 2 }}
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "gitea.fullname" . }}
+  name: {{ include "forgejo.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
 type: Opaque
 stringData:
   assertions: |

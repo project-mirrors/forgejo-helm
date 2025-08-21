@@ -2,17 +2,17 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "gitea.fullname" . }}
+  name: {{ include "forgejo.fullname" . }}
   namespace: {{ default (include "common.names.namespace" .) .Values.gitea.metrics.serviceMonitor.namespace | quote }}
   labels:
-    {{- include "gitea.labels" . | nindent 4 }}
+    {{- include "forgejo.labels" . | nindent 4 }}
     {{- if .Values.gitea.metrics.serviceMonitor.additionalLabels }}
     {{- toYaml .Values.gitea.metrics.serviceMonitor.additionalLabels | nindent 4 }}
     {{- end }}
 spec:
   selector:
     matchLabels:
-      {{- include "gitea.selectorLabels" . | nindent 6 }}
+      {{- include "forgejo.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: http
 {{- end -}}
