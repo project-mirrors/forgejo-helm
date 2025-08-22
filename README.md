@@ -308,18 +308,106 @@ Priority (highest to lowest) for defining app.ini variables:
 ### External Database
 
 A [supported external database](https://forgejo.org/docs/latest/admin/config-cheat-sheet/#database-database/) can be used instead of the built-in SQLite.
-In fact, it is **highly recommended** to use an external database to ensure a stable Forgejo installation longterm.
+We recommend to use a PostgreSQL or MySQL database if you are planning a longterm use with 5+ active users and more than a few dozen repos.
+
+Best practice is to use an Operator for database deployments, as this approach has many advantages for DB management in k8s compared to a standalone static one.
+
+For Postgres, we can recommend the following ones:
+
+- [CloudNative PG](https://github.com/cloudnative-pg/cloudnative-pg)
+- [Crunchy Postgres Operator](https://github.com/CrunchyData/postgres-operator)
+
+For MySQL:
+
+- [MySQL k8s Operator](https://dev.mysql.com/doc/mysql-operator/en/)
+- [Vitess](https://github.com/vitessio/vitess)
+
+The following values settings must be used to reference an external DB:
 
 ```yaml
 gitea:
   config:
     database:
-      DB_TYPE: mysql # supported values are mysql, postgres, mssql, sqlite3
-      HOST: <mysql HOST>
-      NAME: forgejo
-      USER: root
-      PASSWD: forgejo
-      SCHEMA: forgejo
+      DB_TYPE: <dbtype> # supported values are mysql, postgres, mssql, sqlite3
+      HOST: <host>
+      NAME: <name>
+      USER: <user>
+      PASSWD: <passwd>
+      SCHEMA: <schema> # optional
+```
+
+Usually you do not want to pass the credentials directly in the values file.
+Instead, these can be referenced from a secret via
+
+```yaml
+gitea:
+  additionalConfigSources:
+    - secret:
+        secretName: database
+```
+
+Note that when using this option, all DB options must be set in the secret.
+
+### External Redis/Valkey
+
+> [!TIP]
+> For most use cases, the included adapters are fine.
+> We only recommend this for medium-large instances.
+> You can also start with the default ones and migrate at some point via a simple switchover - no data migration is necessary.
+
+Instead of relying on the default adapters for cache & session, external Redis/Valkey instances can be used.
+
+> [!NOTE]
+> The name adapter 'redis' is hardcoded from within Forgejo and works just fine with a Valkey instance.
+
+```yaml
+gitea:
+  queue:
+    TYPE: redis
+    CONN_STR: redis://<url>:<port>/0?
+
+  cache:
+    ADAPTER: redis
+    HOST: redis://<url>:<port>/1
+
+  session:
+    PROVIDER: redis
+    PROVIDER_CONFIG: redis://<url>:<port>/2
+```
+
+Examples for the sentiel and cluster variants:
+
+```yaml
+gitea:
+  queue:
+    TYPE: redis
+    CONN_STR: redis+sentinel://<url>:<port>/0?mastername=<mastername>
+
+  cache:
+    ADAPTER: redis
+    HOST: redis+sentinel://<url>:<port>/1?mastername=<mastername>
+
+  session:
+    PROVIDER: redis
+    PROVIDER_CONFIG: redis+sentinel://<url>:<port>/2?mastername=<mastername>
+```
+
+> [!NOTE]
+> The cluster variant can only use DB '0'
+
+```yaml
+gitea:
+  queue:
+    TYPE: redis
+    CONN_STR: redis+cluster://<url>:<port>/0
+
+  cache:
+    ADAPTER: redis
+    HOST: redis+cluster://<url>:<port>/0
+
+  session:
+    PROVIDER: redis
+    PROVIDER_CONFIG: redis+cluster://<url>:<port>/0
 ```
 
 ### Ports and external url
@@ -1056,7 +1144,28 @@ You need to manually migrate to an external PostgreSQL instance.
 Valkey and Valkey Cluster charts have been removed.
 You need to provide your own instances if you like to continue to use Valkey.
 
-<https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1333>
+The rationale behind this change is [Bitnami's decision to discontinue free images](https://github.com/bitnami/containers/issues/83267) which are the core element of all referenced charts of theirs.
+Besides, this change also does not align with the open philosophy of Forgejo.
+In addition, removing included sub-charts reduces maintaince overhead for this chart in general and forces users to think about the desired architecture in more detail rather than just switching a toggle.
+
+If you are using one of the included subcharts, our recommendations are as follows:
+
+- For the Valkey charts: either deploy your own standalone instances (NB: right now, no good alternatives exists yet) or switch to the built-in defaults.
+  You should likely be just fine and not face any usage issues.
+- For the DB charts: Migration efforts are needed as the DB is a core compenent of the overall deployment.
+  Regardless of the type, we recommend to follow these steps:
+  1. (optional) Plan for a downtime.
+  1. Stop the deployment, i.e. scale down the instances to 0 to avoid writes during the migration.
+  1. Export a full DB dump.
+     One option to extract the dump out of the cluster is to use `kubectl cp`.
+     Many operators allow restoring/bootstrapping from a dump in S3, so storing the dump there is advisable.
+  1. Decide for an operator.
+  1. Check the operator docs how to bootstrap/restore from a dump.
+
+More detailed migrations instructions are out-of-scope for this document as they would differ between operators and DB type.
+Feel free to open an issue if you need assistance of certain steps are unclear.
+
+We again apologize for the inconvenience this causes but there is no real alternative path for us to take, regardless of whether we would keep sub-charts in general or not.
 
 ### To v13
 
