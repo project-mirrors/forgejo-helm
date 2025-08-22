@@ -368,7 +368,7 @@ gitea:
 
   cache:
     ADAPTER: redis
-    HOST: redis://<url>:<port>/1?mastername=myprimary
+    HOST: redis://<url>:<port>/1
 
   session:
     PROVIDER: redis
