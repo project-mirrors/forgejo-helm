@@ -211,7 +211,6 @@ persistence:
 gitea:
   config:
     indexer:
-      ISSUE_INDEXER_TYPE: bleve
       REPO_INDEXER_ENABLED: true
 ```
 
@@ -1143,6 +1142,7 @@ You need to manually migrate to an external PostgreSQL instance.
 
 Valkey and Valkey Cluster charts have been removed.
 You need to provide your own instances if you like to continue to use Valkey.
+This also changes the default issue indexer type back to `bleve`.
 
 The rationale behind this change is [Bitnami's decision to discontinue free images](https://github.com/bitnami/containers/issues/83267) which are the core element of all referenced charts of theirs.
 Besides, this change also does not align with the open philosophy of Forgejo.

@@ -273,10 +273,6 @@ https
   {{- if not (get .Values.gitea.config.cache "HOST") -}}
     {{- $_ := set .Values.gitea.config.cache "HOST" "" -}}
   {{- end -}}
-
-  {{- if not .Values.gitea.config.indexer.ISSUE_INDEXER_TYPE -}}
-     {{- $_ := set .Values.gitea.config.indexer "ISSUE_INDEXER_TYPE" "db" -}}
-  {{- end -}}
 {{- end -}}
 
 {{- define "gitea.inline_configuration.defaults.server" -}}
