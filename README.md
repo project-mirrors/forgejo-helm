@@ -381,15 +381,15 @@ Examples for the sentiel and cluster variants:
 gitea:
   queue:
     TYPE: redis
-    CONN_STR: redis+sentinel://<url>:<port>/0
+    CONN_STR: redis+sentinel://<url>:<port>/0?mastername=<mastername>
 
   cache:
     ADAPTER: redis
-    HOST: redis+sentinel://<url>:<port>/1
+    HOST: redis+sentinel://<url>:<port>/1?mastername=<mastername>
 
   session:
     PROVIDER: redis
-    PROVIDER_CONFIG: redis+sentinel://<url>:<port>/2
+    PROVIDER_CONFIG: redis+sentinel://<url>:<port>/2?mastername=<mastername>
 ```
 
 > [!NOTE]
