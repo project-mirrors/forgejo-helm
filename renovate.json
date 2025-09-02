@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "forgejo-contrib/forgejo-renovate//base.json",
+    "renovate/renovate//base.json",
     "forgejo-helm/forgejo-helm//.forgejo/renovate/k3s.json"
   ],
   "assignees": ["viceice"],
