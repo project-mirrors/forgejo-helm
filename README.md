@@ -28,7 +28,7 @@
 - [Metrics and profiling](#metrics-and-profiling)
 - [Pod annotations](#pod-annotations)
 - [Themes](#themes)
-- [Renovate](#renovate)
+- [Using Renovate](#using-renovate)
 - [Parameters](#parameters)
   - [Global](#global)
   - [strategy](#strategy)
@@ -783,20 +783,26 @@ or natively via `kubectl`:
 kubectl create secret generic forgejo-themes --from-file={{FULL-PATH-TO-CSS}} --namespace forgejo
 ```
 
-## Renovate
+## Using Renovate
 
-To be able to use a digest value which is automatically updated by `Renovate` a [customManager](https://docs.renovatebot.com/modules/manager/regex/) is required.
+Care must be taken when using [`renovate`](https://github.com/renovatebot/renovate) in combination with the `image.digest` field.
+A [custom "regex" Manager](https://docs.renovatebot.com/modules/manager/regex/) is required to reference the correct underlying image reference.
+By default, the tag of the rootful image is fetched. This does not play well with `image.rootless: true` (the default), i.e. renovate fetches the tag of a different images than the one actually in use!
+This will result in the rooless image being pulled behind the scences, even though `image.rootless: true` is set.
+
 Here's an examplary `values.yml` definition which makes use of a digest:
 
 ```yaml
 image:
   registry: code.forgejo.org
   repository: forgejo/forgejo
-  tag: 1.20.2-0
+  tag: <tag>
   digest: sha256:f597c14a403c2fdee9a62dae8bae29d6442f7b2cc85872cc9bb535a24cb1630e
 ```
 
-By default Renovate adds digest after the `tag`.
+To account for this circumstance, `.Values.image.tag` should be expliclity suffixed with `-rootless`, e.g., `tag: <tag>-rootless`.
+
+By default Renovate adds digest after `<tag>`.
 To comply with the Forgejo helm chart definition of the digest parameter, a "customManagers" definition is required:
 
 ```json

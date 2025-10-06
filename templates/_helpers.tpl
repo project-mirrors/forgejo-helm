@@ -49,7 +49,7 @@ Create image name and tag used by the deployment.
 {{- $repository := .Values.image.repository -}}
 {{- $separator := ":" -}}
 {{- $tag := .Values.image.tag | default .Chart.AppVersion | toString -}}
-{{- $rootless := ternary "-rootless" "" (.Values.image.rootless) -}}
+{{- $rootless := ternary "-rootless" "" (and .Values.image.rootless (not (hasSuffix "-rootless" (.Values.image.tag | toString)))) -}}
 {{- $digest := "" -}}
 {{- if .Values.image.digest }}
     {{- $digest = (printf "@%s" (.Values.image.digest | toString)) -}}
