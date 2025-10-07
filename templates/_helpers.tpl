@@ -109,7 +109,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{- define "gitea.default_domain" -}}
-{{- printf "%s-http.%s.svc.%s" (include "gitea.fullname" .) .Release.Namespace .Values.clusterDomain -}}
+{{- printf "%s-http.%s.svc.%s" (include "gitea.fullname" .) (include "common.names.namespace" .) .Values.clusterDomain -}}
 {{- end -}}
 
 {{- define "gitea.ldap_settings" -}}
