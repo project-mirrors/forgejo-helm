@@ -63,7 +63,7 @@ stringData:
       exit 1
     }
 
-    {{- if or .Values.gitea.admin.existingSecret (and .Values.gitea.admin.username .Values.gitea.admin.password) }}
+    {{- if or .Values.gitea.admin.existingSecret .Values.gitea.admin.username }}
     function configure_admin_user() {
       local full_admin_list=$(gitea admin user list --admin)
       local actual_user_table=''

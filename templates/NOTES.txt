@@ -18,6 +18,12 @@
   echo "Visit http://127.0.0.1:{{ .Values.service.http.port }} to use your application"
   kubectl --namespace {{ include "common.names.namespace" .}} port-forward svc/{{ .Release.Name }}-http {{ .Values.service.http.port }}:{{ .Values.service.http.port }}
 {{- end }}
+{{- if and (not .Values.gitea.admin.existingSecret) (and (.Values.gitea.admin.username) (not .Values.gitea.admin.password)) }}
+2. Retrieve the admin user password:
+  A admin user with username {{ .Values.gitea.admin.username }} and a random password has been created.
+  To retrieve it's password execute the following command:
+    kubectl get secret -n {{ include "common.names.namespace" .}} {{ include "forgejo.admin.secretName" .}} -ojsonpath='{.data.password}' | base64 -d
+{{- end }}
 {{- $warnings := list -}}
 {{- if eq (get .Values.gitea.config.cache "ADAPTER") "memory" -}}
   {{- $warnings = append $warnings "Forgejo uses 'memory' for caching which is not recommended for production use. See https://forgejo.org/docs/latest/admin/config-cheat-sheet/#cache-cache for available options." -}}

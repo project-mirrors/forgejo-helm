@@ -227,25 +227,20 @@ spec:
             {{- end }}
             {{- end }}
             {{- end }}
-            {{- if .Values.gitea.admin.existingSecret }}
+            {{- if or .Values.gitea.admin.existingSecret (.Values.gitea.admin.username) }}
             - name: GITEA_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
                   key:  username
-                  name: {{ .Values.gitea.admin.existingSecret }}
+                  name: {{ include "forgejo.admin.secretName" . }}
             - name: GITEA_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key:  password
-                  name: {{ .Values.gitea.admin.existingSecret }}
-            {{- else }}
-            - name: GITEA_ADMIN_USERNAME
-              value: {{ .Values.gitea.admin.username | quote }}
-            - name: GITEA_ADMIN_PASSWORD
-              value: {{ .Values.gitea.admin.password | quote }}
-            {{- end }}
+                  name: {{ include "forgejo.admin.secretName" . }}
             - name: GITEA_ADMIN_PASSWORD_MODE
               value: {{ include "gitea.admin.passwordMode" $ }}
+            {{- end }}
             {{- if .Values.deployment.env }}
             {{- toYaml .Values.deployment.env | nindent 12 }}
             {{- end }}

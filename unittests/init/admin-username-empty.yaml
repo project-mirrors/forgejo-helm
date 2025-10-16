@@ -1,0 +1,14 @@
+suite: Init template (admin username empty)
+release:
+  name: forgejo-unittests
+  namespace: testing
+templates:
+  - templates/gitea/init.yaml
+tests:
+  - it: does not contains configure_admin_user section
+    set:
+      gitea.admin.username: ''
+    asserts:
+      - notMatchRegex:
+          path: stringData["configure_gitea.sh"]
+          pattern: configure_admin_user

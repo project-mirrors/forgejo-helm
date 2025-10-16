@@ -488,7 +488,7 @@ In case that persistence has been disabled it will simply use an empty dir volum
 
 ### Admin User
 
-This chart enables you to create a default admin user.
+This chart creates a default admin user (`gitea_admin`) with a random password.
 It is also possible to update the password for this user by upgrading or redeploying the chart.
 You cannot use `admin` as username.
 
@@ -519,7 +519,7 @@ gitea:
     existingSecret: forgejo-admin-secret
 ```
 
-To delete the admin user, set `username` or `password` to an empty value and delete the user in the UI.
+To delete the admin user, set `gitea.admin.username` to an empty value and delete the user in the UI. `gitea.admin.existingSecret` must also be unset.
 
 Whether you use the existing Secret or specify a username and password directly, there are three modes for how the admin user password is created or set.
 
@@ -1011,7 +1011,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
 | `gitea.admin.username`                   | Username for the Forgejo admin user                                                                                           | `gitea_admin`        |
 | `gitea.admin.existingSecret`             | Use an existing secret to store admin user credentials                                                                        | `nil`                |
-| `gitea.admin.password`                   | Password for the Forgejo admin user                                                                                           | `r8sA8CPHD9!bt6d`    |
+| `gitea.admin.password`                   | Password for the Forgejo admin user                                                                                           | `""`                 |
 | `gitea.admin.email`                      | Email for the Forgejo admin user                                                                                              | `gitea@local.domain` |
 | `gitea.admin.passwordMode`               | Mode for how to set/update the admin user password. Options are: initialOnlyNoReset, initialOnlyRequireReset, and keepUpdated | `keepUpdated`        |
 | `gitea.metrics.enabled`                  | Enable Forgejo metrics                                                                                                        | `false`              |

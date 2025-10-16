@@ -351,3 +351,17 @@ https
 {{ printf "gitea.admin.passwordMode must be set to one of 'keepUpdated', 'initialOnlyNoReset', or 'initialOnlyRequireReset'. Received: '%s'" .Values.gitea.admin.passwordMode | fail }}
 {{- end -}}
 {{- end -}}
+
+{{- define "forgejo.admin.password" -}}
+    {{- $password_tmp := include "common.secrets.passwords.manage" (dict "secret" (include "forgejo.admin.secretName" .) "key" "password" "providedValues" (list "gitea.admin.password") "length" 30 "skipB64enc" true "skipQuote" true "honorProvidedValues" true "context" $) -}}
+    {{- $_ := set .Values.gitea.admin "password" $password_tmp -}}
+    {{- .Values.gitea.admin.password -}}
+{{- end -}}
+
+{{- define "forgejo.admin.secretName" -}}
+    {{- if .Values.gitea.admin.existingSecret -}}
+      {{ .Values.gitea.admin.existingSecret }}
+    {{- else -}}
+      {{- printf "%s-admin" (include "gitea.fullname" .) -}}
+    {{- end -}}
+{{- end -}}

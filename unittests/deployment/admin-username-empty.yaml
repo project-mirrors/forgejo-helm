@@ -1,0 +1,17 @@
+suite: deployment template (admin username empty)
+release:
+  name: forgejo-unittests
+  namespace: testing
+templates:
+  - templates/gitea/deployment.yaml
+  - templates/gitea/config.yaml
+tests:
+  - it: env vars are not present
+    set:
+      gitea.admin.username: ''
+    template: templates/gitea/deployment.yaml
+    asserts:
+      - isNull:
+          path: spec.template.spec.initContainers[?(@.name == 'configure-gitea')].env[?(@.name == 'GITEA_ADMIN_USERNAME')]
+      - isNull:
+          path: spec.template.spec.initContainers[?(@.name == 'configure-gitea')].env[?(@.name == 'GITEA_ADMIN_PASSWORD')]
