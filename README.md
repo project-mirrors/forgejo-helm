@@ -1141,6 +1141,10 @@ This section lists major and breaking changes of each Helm Chart version.
 Please read them carefully to upgrade successfully, especially the change of the **default database backend**!
 If you miss this, blindly upgrading may delete your Postgres instance and you may lose your data!
 
+### To v15
+
+This chart now uses Forgejo v13 by default.
+
 ### To v14
 
 PostgreSQL and PostgreSQL HA subcharts have been removed.
