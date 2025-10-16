@@ -1145,6 +1145,10 @@ If you miss this, blindly upgrading may delete your Postgres instance and you ma
 
 This chart now uses Forgejo v13 by default.
 
+The admin password is now randomly generated if not set explicitly.
+Because `gitea.admin.passwordMode` is set to `keepUpdated` by default the upgrade will set a new random admin password if you haven't set one explicitly.
+If you like to disable the admin user you now need to set `gitea.admin.username` to an empty value.
+
 ### To v14
 
 PostgreSQL and PostgreSQL HA subcharts have been removed.
