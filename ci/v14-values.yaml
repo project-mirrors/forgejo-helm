@@ -1,0 +1,22 @@
+image:
+  registry: codeberg.org
+  repository: forgejo-experimental/forgejo
+  tag: 14 # don't pin, manifests can be missing
+
+# Use mirror
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/issues/1045
+test:
+  image:
+    name: code.forgejo.org/oci/busybox
+
+persistence:
+  enabled: false
+
+gitea:
+  config:
+    session:
+      PROVIDER: memory
+    cache:
+      ADAPTER: memory
+    queue:
+      TYPE: level
