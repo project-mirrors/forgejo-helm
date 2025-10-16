@@ -49,6 +49,7 @@
   - [Advanced](#advanced)
 - [Contributing](#contributing)
 - [Upgrading](#upgrading)
+  - [To v15](#to-v15)
   - [To v14](#to-v14)
   - [To v13](#to-v13)
   - [To v12](#to-v12)
