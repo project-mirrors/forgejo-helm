@@ -24,21 +24,21 @@ global:
 ##
 namespaceOverride: ''
 
-## @param replicaCount number of replicas for the deployment
-replicaCount: 1
+## @param clusterDomain cluster domain
+clusterDomain: cluster.local
 
 ## @section strategy
+## @descriptionStart
+## Do not use `RollingUpdate` for `strategy.type`, it will cause issues with the deployment.
+## @descriptionEnd
 ## @param strategy.type strategy type
 ## @param strategy.rollingUpdate.maxSurge maxSurge
 ## @param strategy.rollingUpdate.maxUnavailable maxUnavailable
 strategy:
-  type: 'RollingUpdate'
+  type: Recreate
   rollingUpdate:
     maxSurge: '100%'
     maxUnavailable: 0
-
-## @param clusterDomain cluster domain
-clusterDomain: cluster.local
 
 ## @section Image
 ## @param image.registry image registry, e.g. gcr.io,docker.io
@@ -62,7 +62,9 @@ image:
 imagePullSecrets: []
 
 ## @section Security
-# Security context is only usable with rootless image due to image design
+## @descriptionStart
+## Security context is only usable with rootless image due to image design.
+## @descriptionEnd
 ## @param podSecurityContext.fsGroup Set the shared file system group for all containers in the pod.
 podSecurityContext:
   fsGroup: 1000
@@ -261,6 +263,10 @@ route:
 
 ## @section deployment
 #
+## @descriptionStart
+## Do not set `replicaCount` greater than `1`, Forgejo is not HA ready and this will cause issues with the deployment.
+## @descriptionEnd
+#
 ## @param resources Kubernetes resources
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -309,6 +315,9 @@ deployment:
   terminationGracePeriodSeconds: 60
   labels: {}
   annotations: {}
+
+## @param replicaCount number of replicas for the deployment
+replicaCount: 1
 
 ## @section ServiceAccount
 

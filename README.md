@@ -824,23 +824,24 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### Global
 
-| Name                      | Description                                                               | Value |
-| ------------------------- | ------------------------------------------------------------------------- | ----- |
-| `global.imageRegistry`    | global image registry override                                            | `""`  |
-| `global.imagePullSecrets` | global image pull secrets override; can be extended by `imagePullSecrets` | `[]`  |
-| `global.storageClass`     | global storage class override                                             | `""`  |
-| `global.hostAliases`      | global hostAliases which will be added to the pod's hosts files           | `[]`  |
-| `namespaceOverride`       | String to fully override common.names.namespace                           | `""`  |
-| `replicaCount`            | number of replicas for the deployment                                     | `1`   |
+| Name                      | Description                                                               | Value           |
+| ------------------------- | ------------------------------------------------------------------------- | --------------- |
+| `global.imageRegistry`    | global image registry override                                            | `""`            |
+| `global.imagePullSecrets` | global image pull secrets override; can be extended by `imagePullSecrets` | `[]`            |
+| `global.storageClass`     | global storage class override                                             | `""`            |
+| `global.hostAliases`      | global hostAliases which will be added to the pod's hosts files           | `[]`            |
+| `namespaceOverride`       | String to fully override common.names.namespace                           | `""`            |
+| `clusterDomain`           | cluster domain                                                            | `cluster.local` |
 
 ### strategy
 
-| Name                                    | Description    | Value           |
-| --------------------------------------- | -------------- | --------------- |
-| `strategy.type`                         | strategy type  | `RollingUpdate` |
-| `strategy.rollingUpdate.maxSurge`       | maxSurge       | `100%`          |
-| `strategy.rollingUpdate.maxUnavailable` | maxUnavailable | `0`             |
-| `clusterDomain`                         | cluster domain | `cluster.local` |
+Do not use `RollingUpdate` for `strategy.type`, it will cause issues with the deployment.
+
+| Name                                    | Description    | Value      |
+| --------------------------------------- | -------------- | ---------- |
+| `strategy.type`                         | strategy type  | `Recreate` |
+| `strategy.rollingUpdate.maxSurge`       | maxSurge       | `100%`     |
+| `strategy.rollingUpdate.maxUnavailable` | maxUnavailable | `0`        |
 
 ### Image
 
@@ -856,6 +857,8 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `imagePullSecrets`   | Secret to use for pulling the image                                                                                                                              | `[]`               |
 
 ### Security
+
+Security context is only usable with rootless image due to image design.
 
 | Name                         | Description                                                     | Value  |
 | ---------------------------- | --------------------------------------------------------------- | ------ |
@@ -941,6 +944,8 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 
 ### deployment
 
+Do not set `replicaCount` greater than `1`, Forgejo is not HA ready and this will cause issues with the deployment.
+
 | Name                                       | Description                                            | Value |
 | ------------------------------------------ | ------------------------------------------------------ | ----- |
 | `resources`                                | Kubernetes resources                                   | `{}`  |
@@ -955,6 +960,7 @@ To comply with the Forgejo helm chart definition of the digest parameter, a "cus
 | `deployment.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod         | `60`  |
 | `deployment.labels`                        | Labels for the deployment                              | `{}`  |
 | `deployment.annotations`                   | Annotations for the Forgejo deployment to be created   | `{}`  |
+| `replicaCount`                             | number of replicas for the deployment                  | `1`   |
 
 ### ServiceAccount
 
