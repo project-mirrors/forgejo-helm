@@ -954,6 +954,7 @@ Do not set `replicaCount` greater than `1`, Forgejo is not HA ready and this wil
 | `tolerations`                              | Tolerations for the deployment                         | `[]`  |
 | `affinity`                                 | Affinity for the deployment                            | `{}`  |
 | `topologySpreadConstraints`                | TopologySpreadConstraints for the deployment           | `[]`  |
+| `dnsPolicy`                                | dnsPolicy for the deployment                           | `""`  |
 | `dnsConfig`                                | dnsConfig for the deployment                           | `{}`  |
 | `priorityClassName`                        | priorityClassName for the deployment                   | `""`  |
 | `deployment.env`                           | Additional environment variables to pass to containers | `[]`  |

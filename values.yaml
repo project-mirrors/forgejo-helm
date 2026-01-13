@@ -298,6 +298,9 @@ affinity: {}
 ## @param topologySpreadConstraints TopologySpreadConstraints for the deployment
 topologySpreadConstraints: []
 
+## @param dnsPolicy dnsPolicy for the deployment
+dnsPolicy: ''
+
 ## @param dnsConfig dnsConfig for the deployment
 dnsConfig: {}
 

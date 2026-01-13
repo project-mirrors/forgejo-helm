@@ -1,0 +1,55 @@
+suite: deployment template (dns configuration)
+release:
+  name: forgejo-unittests
+  namespace: testing
+templates:
+  - templates/gitea/deployment.yaml
+  - templates/gitea/config.yaml
+tests:
+  - it: does not render dnsPolicy by default
+    template: templates/gitea/deployment.yaml
+    asserts:
+      - isNull:
+          path: spec.template.spec.dnsPolicy
+  - it: renders dnsPolicy when set
+    template: templates/gitea/deployment.yaml
+    set:
+      dnsPolicy: None
+    asserts:
+      - equal:
+          path: spec.template.spec.dnsPolicy
+          value: None
+  - it: does not render dnsConfig by default
+    template: templates/gitea/deployment.yaml
+    asserts:
+      - isNull:
+          path: spec.template.spec.dnsConfig
+  - it: renders dnsConfig when set
+    template: templates/gitea/deployment.yaml
+    set:
+      dnsConfig:
+        nameservers:
+          - 1.2.3.4
+        searches:
+          - svc.cluster.local
+    asserts:
+      - equal:
+          path: spec.template.spec.dnsConfig.nameservers[0]
+          value: 1.2.3.4
+      - equal:
+          path: spec.template.spec.dnsConfig.searches[0]
+          value: svc.cluster.local
+  - it: renders both dnsPolicy and dnsConfig together
+    template: templates/gitea/deployment.yaml
+    set:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 1.2.3.4
+    asserts:
+      - equal:
+          path: spec.template.spec.dnsPolicy
+          value: None
+      - equal:
+          path: spec.template.spec.dnsConfig.nameservers[0]
+          value: 1.2.3.4
