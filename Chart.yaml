@@ -35,4 +35,4 @@ dependencies:
     repository: oci://ghcr.io/visualon/bitnamicharts
     tags:
       - bitnami-common
-    version: 2.31.4
+    version: 2.34.0
