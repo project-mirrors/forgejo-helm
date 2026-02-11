@@ -916,16 +916,18 @@ Security context is only usable with rootless image due to image design.
 
 ### Gateway-API HTTPRoute
 
-| Name                           | Description                                                                              | Value        |
-| ------------------------------ | ---------------------------------------------------------------------------------------- | ------------ |
-| `httpRoute.enabled`            | Enables Gateway API HTTPRoute as a replacement for traditional Ingress resources         | `false`      |
-| `httpRoute.annotations`        | Annotations to add to the HTTPRoute resource                                             | `{}`         |
-| `httpRoute.parentRefs`         | List of parentRefs for the HTTPRoute, typically referencing the Gateway(name, namespace) | `[]`         |
-| `httpRoute.hostnames`          | Hostnames this HTTPRoute applies to                                                      | `[]`         |
-| `httpRoute.matches.path.type`  | Type of path match (e.g., PathPrefix or Exact or RegularExpression)                      | `PathPrefix` |
-| `httpRoute.matches.path.value` | Path value for matching incoming requests                                                | `/`          |
-| `httpRoute.matches.timeouts`   | Object containing timeouts.                                                              | `{}`         |
-| `httpRoute.filters`            | Filters to apply on HTTP requests, such as header rewrites or request redirects          | `[]`         |
+| Name                           | Description                                                                                                        | Value        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------ |
+| `httpRoute.enabled`            | Enables Gateway API HTTPRoute as a replacement for traditional Ingress resources                                   | `false`      |
+| `httpRoute.annotations`        | Annotations to add to the HTTPRoute resource                                                                       | `{}`         |
+| `httpRoute.parentRefs`         | List of parentRefs for the HTTPRoute, typically referencing the Gateway(name, namespace)                           | `[]`         |
+| `httpRoute.hostnames`          | Hostnames this HTTPRoute applies to                                                                                | `[]`         |
+| `httpRoute.matches.path.type`  | Type of path match (e.g., PathPrefix or Exact or RegularExpression)                                                | `PathPrefix` |
+| `httpRoute.matches.path.value` | Path value for matching incoming requests                                                                          | `/`          |
+| `httpRoute.matches.timeouts`   | Object containing timeouts.                                                                                        | `{}`         |
+| `httpRoute.filters`            | Filters to apply on HTTP requests, such as header rewrites or request redirects                                    | `[]`         |
+| `httpRoute.port`               | Target port for HTTPRoute. Must be a port number.                                                                  | `nil`        |
+| `httpRoute.terminate`          | wether the Gateway listener terminates the TLS connection. This just affects the Forgejo `ROOT_URL` configuration. | `true`       |
 
 ### Route
 

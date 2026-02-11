@@ -21,7 +21,7 @@ tests:
 
   ################################################
 
-  - it: '[no ingress hosts] uses gitea http service for DOMAIN|SSH_DOMAIN|ROOT_URL'
+  - it: '[ingress] [no hosts] uses gitea http service for DOMAIN|SSH_DOMAIN|ROOT_URL'
     template: templates/gitea/config.yaml
     set:
       ingress:
@@ -42,7 +42,7 @@ tests:
 
   ################################################
 
-  - it: '[provided via values] uses that for DOMAIN|SSH_DOMAIN|ROOT_URL'
+  - it: '[ingress] [provided via values] uses that for DOMAIN|SSH_DOMAIN|ROOT_URL'
     template: templates/gitea/config.yaml
     set:
       gitea.config.server.DOMAIN: provided.example.com
@@ -61,6 +61,49 @@ tests:
         matchRegex:
           path: stringData.server
           pattern: \nSSH_DOMAIN=provided.example.com
+      - documentIndex: 0
+        matchRegex:
+          path: stringData.server
+          pattern: \nROOT_URL=http://provided.example.com
+
+  ################################################
+
+  - it: '[httpRoute] [provided via values] uses that for DOMAIN|SSH_DOMAIN|ROOT_URL'
+    template: templates/gitea/config.yaml
+    set:
+      httpRoute:
+        enabled: true
+        hostnames:
+          - provided.example.com
+    asserts:
+      - documentIndex: 0
+        matchRegex:
+          path: stringData.server
+          pattern: \nDOMAIN=provided.example.com
+      - documentIndex: 0
+        matchRegex:
+          path: stringData.server
+          pattern: \nSSH_DOMAIN=provided.example.com
+      - documentIndex: 0
+        matchRegex:
+          path: stringData.server
+          pattern: \nROOT_URL=https://provided.example.com
+      - documentIndex: 0
+        matchRegex:
+          path: stringData.server
+          pattern: \nPROTOCOL=http\n
+
+  ################################################
+
+  - it: '[httpRoute] [provided via values] terminate false'
+    template: templates/gitea/config.yaml
+    set:
+      httpRoute:
+        enabled: true
+        hostnames:
+          - provided.example.com
+        terminate: false
+    asserts:
       - documentIndex: 0
         matchRegex:
           path: stringData.server

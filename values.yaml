@@ -197,6 +197,8 @@ ingress:
 ## @param httpRoute.matches.path.value Path value for matching incoming requests
 ## @param httpRoute.matches.timeouts Object containing timeouts.
 ## @param httpRoute.filters Filters to apply on HTTP requests, such as header rewrites or request redirects
+## @param httpRoute.port Target port for HTTPRoute. Must be a port number.
+## @param httpRoute.terminate wether the Gateway listener terminates the TLS connection. This just affects the forgejo `ROOT_URL` configuration.
 httpRoute:
   enabled: false
   annotations: {}
@@ -218,6 +220,8 @@ httpRoute:
   #     set:
   #       - name: X-Forwarded-Proto
   #         value: https
+  port:
+  terminate: true
 
 ## @section Route
 ## @param route.enabled Enable route

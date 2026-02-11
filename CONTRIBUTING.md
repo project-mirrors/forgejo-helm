@@ -49,8 +49,11 @@ default port-forward svc/gitea-http 3000:3000`.
 ### Unit tests
 
 ```bash
+helm dependency build
+
 # install the unittest plugin
-$ helm plugin install https://github.com/helm-unittest/helm-unittest
+# for helm v4 add `--verify=false` (see https://github.com/helm-unittest/helm-unittest/issues/777)
+helm plugin install https://github.com/helm-unittest/helm-unittest
 
 # run the unittests
 make unittests

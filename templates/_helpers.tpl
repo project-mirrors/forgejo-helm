@@ -165,7 +165,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{- define "gitea.public_protocol" -}}
-{{- if and .Values.ingress.enabled (gt (len .Values.ingress.tls) 0) -}}
+{{- if or (and .Values.ingress.enabled (gt (len .Values.ingress.tls) 0)) (and .Values.httpRoute.enabled .Values.httpRoute.terminate) -}}
 https
 {{- else -}}
 {{ .Values.gitea.config.server.PROTOCOL }}
@@ -283,7 +283,9 @@ https
     {{- $_ := set .Values.gitea.config.server "PROTOCOL" "http" -}}
   {{- end -}}
   {{- if not (.Values.gitea.config.server.DOMAIN) -}}
-    {{- if gt (len .Values.ingress.hosts) 0 -}}
+    {{- if and (.Values.httpRoute.enabled) (gt (len .Values.httpRoute.hostnames) 0) -}}
+      {{- $_ := set .Values.gitea.config.server "DOMAIN" ( tpl (index .Values.httpRoute.hostnames 0) $) -}}
+    {{- else if gt (len .Values.ingress.hosts) 0 -}}
       {{- $_ := set .Values.gitea.config.server "DOMAIN" ( tpl (index .Values.ingress.hosts 0).host $) -}}
     {{- else -}}
       {{- $_ := set .Values.gitea.config.server "DOMAIN" (include "gitea.default_domain" .) -}}

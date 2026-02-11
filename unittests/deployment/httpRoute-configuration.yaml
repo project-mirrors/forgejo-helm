@@ -86,3 +86,14 @@ tests:
       - equal:
           path: spec.rules[0].timeouts.backendRequest
           value: 30s
+
+  - it: with port configuration
+    set:
+      httpRoute.enabled: true
+      httpRoute.port: 8080
+    asserts:
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: spec.rules[0].backendRefs[0].port
+          value: 8080
