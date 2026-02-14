@@ -223,6 +223,21 @@ httpRoute:
   port:
   terminate: true
 
+# Enables Gateway API TCPRoute for SSH traffic
+## @section Gateway-API TCPRoute
+## @param tcpRoute.enabled Enables Gateway API TCPRoute for SSH traffic
+## @param tcpRoute.annotations Annotations to add to the TCPRoute resource
+## @param tcpRoute.parentRefs List of parentRefs for the TCPRoute, typically referencing the Gateway (name, namespace, sectionName)
+## @param tcpRoute.port Target port for TCPRoute. Must be a port number. Defaults to service.ssh.port.
+tcpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs: []
+    # - name: my-gateway
+    #   namespace: gateway-ns
+    #   sectionName: ssh  # name of the Gateway listener for SSH
+  port:
+
 ## @section Route
 ## @param route.enabled Enable route
 ## @param route.annotations Route annotations

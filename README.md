@@ -929,6 +929,15 @@ Security context is only usable with rootless image due to image design.
 | `httpRoute.port`               | Target port for HTTPRoute. Must be a port number.                                                                  | `nil`        |
 | `httpRoute.terminate`          | wether the Gateway listener terminates the TLS connection. This just affects the Forgejo `ROOT_URL` configuration. | `true`       |
 
+### Gateway-API TCPRoute
+
+| Name                   | Description                                                                                           | Value   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------- | ------- |
+| `tcpRoute.enabled`     | Enables Gateway API TCPRoute for SSH traffic                                                          | `false` |
+| `tcpRoute.annotations` | Annotations to add to the TCPRoute resource                                                           | `{}`    |
+| `tcpRoute.parentRefs`  | List of parentRefs for the TCPRoute, typically referencing the Gateway (name, namespace, sectionName) | `[]`    |
+| `tcpRoute.port`        | Target port for TCPRoute. Must be a port number. Defaults to service.ssh.port.                        | `nil`   |
+
 ### Route
 
 | Name                                      | Description                                                                                                                                                                                       | Value      |
