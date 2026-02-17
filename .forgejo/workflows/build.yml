@@ -40,9 +40,24 @@ jobs:
       - run: make readme
       - run: git diff --exit-code --name-only README.md
 
-      - name: changelog
+      - name: validate PR title
+        if: ${{ forgejo.event_name == 'pull_request' }}
+        shell: bash
+        env:
+          PR_TITLE: ${{ forgejo.event.pull_request.title }}
         run: |
-          pnpm changelog ${{ github.ref_type == 'tag' && 'true' || '' }}
+          pattern='^(feat|fix|perf|revert|docs|style|refactor|test|build|ci|chore)(\([^)]+\))?(!)?: .+'
+          if [[ ! "$PR_TITLE" =~ $pattern ]]; then
+            echo "Invalid PR title: '$PR_TITLE'"
+            echo "Expected Conventional Commits format: type(scope)!: subject"
+            echo "Allowed types: feat, fix, perf, revert, docs, style, refactor, test, build, ci, chore"
+            exit 1
+          fi
+
+      - name: changelog
+        if: ${{ forgejo.event_name != 'pull_request' }}
+        run: |
+          pnpm changelog ${{ forgejo.ref_type == 'tag' && 'true' || '' }}
 
   lint-helm:
     runs-on: docker
