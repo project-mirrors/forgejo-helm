@@ -1,0 +1,24 @@
+suite: deployment template (SSH signing disabled)
+release:
+  name: forgejo-unittests
+  namespace: testing
+templates:
+  - templates/gitea/deployment.yaml
+  - templates/gitea/config.yaml
+tests:
+  - it: skips ssh signing init container
+    template: templates/gitea/deployment.yaml
+    asserts:
+      - notContains:
+          path: spec.template.spec.initContainers
+          any: true
+          content:
+            name: configure-ssh-signing
+  - it: skips ssh signing volume spec
+    template: templates/gitea/deployment.yaml
+    asserts:
+      - notContains:
+          path: spec.template.spec.volumes
+          any: true
+          content:
+            name: ssh-signing-key

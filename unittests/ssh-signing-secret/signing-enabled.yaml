@@ -1,0 +1,35 @@
+suite: SSH signing secret template (signing enabled)
+release:
+  name: forgejo-unittests
+  namespace: testing
+templates:
+  - templates/gitea/ssh-signing-secret.yaml
+tests:
+  - it: skips rendering using external secret reference
+    set:
+      signing:
+        enabled: true
+        ssh:
+          existingSecret: 'external-secret-reference'
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: renders secret specification using inline ssh key
+    set:
+      signing:
+        enabled: true
+        ssh:
+          privateKey: 'ssh-key-placeholder'
+    asserts:
+      - hasDocuments:
+          count: 1
+      - documentIndex: 0
+        containsDocument:
+          kind: Secret
+          apiVersion: v1
+          name: forgejo-unittests-ssh-signing-key
+      - isNotNullOrEmpty:
+          path: metadata.labels
+      - equal:
+          path: data.privateKey
+          value: 'c3NoLWtleS1wbGFjZWhvbGRlcg=='

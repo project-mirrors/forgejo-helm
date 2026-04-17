@@ -1018,12 +1018,14 @@ Do not set `replicaCount` greater than `1`, Forgejo is not HA ready and this wil
 
 ### Signing
 
-| Name                     | Description                                                       | Value              |
-| ------------------------ | ----------------------------------------------------------------- | ------------------ |
-| `signing.enabled`        | Enable commit/action signing                                      | `false`            |
-| `signing.gpgHome`        | GPG home directory                                                | `/data/git/.gnupg` |
-| `signing.privateKey`     | Inline private GPG key for signed internal Git activity           | `""`               |
-| `signing.existingSecret` | Use an existing secret to store the value of `signing.privateKey` | `""`               |
+| Name                         | Description                                                           | Value              |
+| ---------------------------- | --------------------------------------------------------------------- | ------------------ |
+| `signing.enabled`            | Enable commit/action signing                                          | `false`            |
+| `signing.gpgHome`            | GPG home directory                                                    | `/data/git/.gnupg` |
+| `signing.privateKey`         | Inline private GPG key for signed internal Git activity               | `""`               |
+| `signing.existingSecret`     | Use an existing secret to store the value of `signing.privateKey`     | `""`               |
+| `signing.ssh.privateKey`     | Inline private SSH key for signed internal Git activity               | `""`               |
+| `signing.ssh.existingSecret` | Use an existing secret to store the value of `signing.ssh.privateKey` | `""`               |
 
 ### Gitea
 

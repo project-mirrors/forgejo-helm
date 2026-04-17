@@ -1,0 +1,109 @@
+suite: deployment template (SSH signing enabled)
+release:
+  name: forgejo-unittests
+  namespace: testing
+templates:
+  - templates/gitea/deployment.yaml
+  - templates/gitea/config.yaml
+tests:
+  - it: adds ssh signing init container
+    template: templates/gitea/deployment.yaml
+    set:
+      signing:
+        enabled: true
+        ssh:
+          existingSecret: 'custom-ssh-secret'
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[2].name
+          value: configure-ssh-signing
+      - equal:
+          path: spec.template.spec.initContainers[2].command
+          value: ['/usr/sbin/configure_ssh_signing.sh']
+      - equal:
+          path: spec.template.spec.initContainers[2].securityContext
+          value:
+            runAsUser: 1000
+      - equal:
+          path: spec.template.spec.initContainers[2].volumeMounts
+          value:
+            - name: init
+              mountPath: /usr/sbin
+            - name: data
+              mountPath: /data
+            - name: ssh-signing-key
+              mountPath: /raw
+              readOnly: true
+  - it: skips gpg env in `init-directories` init container
+    template: templates/gitea/deployment.yaml
+    set:
+      signing:
+        enabled: true
+        ssh:
+          existingSecret: 'custom-ssh-secret'
+    asserts:
+      - notContains:
+          path: spec.template.spec.initContainers[0].env
+          content:
+            name: GNUPGHOME
+  - it: skips gpg env in runtime container
+    template: templates/gitea/deployment.yaml
+    set:
+      signing:
+        enabled: true
+        ssh:
+          existingSecret: 'custom-ssh-secret'
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: GNUPGHOME
+  - it: adds ssh signing volume spec
+    template: templates/gitea/deployment.yaml
+    set:
+      signing:
+        enabled: true
+        ssh:
+          existingSecret: 'forgejo-unittests-ssh-signing-key'
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: ssh-signing-key
+            secret:
+              secretName: forgejo-unittests-ssh-signing-key
+              items:
+                - key: privateKey
+                  path: ssh-signing-key
+              defaultMode: 0100
+  - it: supports ssh signing volume spec with external reference
+    template: templates/gitea/deployment.yaml
+    set:
+      signing:
+        enabled: true
+        ssh:
+          existingSecret: custom-ssh-secret
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: ssh-signing-key
+            secret:
+              secretName: custom-ssh-secret
+              items:
+                - key: privateKey
+                  path: ssh-signing-key
+              defaultMode: 0100
+  - it: skips gpg volume spec
+    template: templates/gitea/deployment.yaml
+    set:
+      signing:
+        enabled: true
+        ssh:
+          existingSecret: 'custom-ssh-secret'
+    asserts:
+      - notContains:
+          path: spec.template.spec.volumes
+          any: true
+          content:
+            name: gpg-private-key

@@ -11,7 +11,17 @@ tests:
         enabled: true
     asserts:
       - failedTemplate:
-          errorMessage: Either specify `signing.privateKey` or `signing.existingSecret`
+          errorMessage: Either configure GPG signing (signing.privateKey/signing.existingSecret) or SSH signing (signing.ssh.privateKey/signing.ssh.existingSecret)
+  - it: fails rendering when both GPG and SSH are configured
+    set:
+      signing:
+        enabled: true
+        privateKey: 'gpg-key-placeholder'
+        ssh:
+          privateKey: 'ssh-key-placeholder'
+    asserts:
+      - failedTemplate:
+          errorMessage: Cannot configure both GPG and SSH signing simultaneously
   - it: skips rendering using external secret reference
     set:
       signing:

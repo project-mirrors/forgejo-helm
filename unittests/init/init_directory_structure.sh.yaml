@@ -74,3 +74,44 @@ tests:
               chmod 700 "${GNUPGHOME}"
               chown 1000:1000 "${GNUPGHOME}"
             fi
+  - it: adds ssh signing script block for enabled ssh signing
+    set:
+      image.rootless: false
+      signing.enabled: true
+      signing.ssh.privateKey: 'ssh-key-placeholder'
+    asserts:
+      - equal:
+          path: stringData["init_directory_structure.sh"]
+          value: |-
+            #!/usr/bin/env bash
+
+            set -euo pipefail
+
+            set -x
+            chown 1000:1000 /data
+            mkdir -p /data/git/.ssh
+            chmod -R 700 /data/git/.ssh
+            [ ! -d /data/gitea/conf ] && mkdir -p /data/gitea/conf
+
+            # prepare temp directory structure
+            mkdir -p "${GITEA_TEMP}"
+            chown 1000:1000 "${GITEA_TEMP}"
+            chmod ug+rwx "${GITEA_TEMP}"
+
+
+            install -d -m 700 -o 1000 -g 1000 /data/git/.ssh-signing
+  - it: includes configure_ssh_signing.sh script
+    set:
+      image.rootless: false
+      signing.enabled: true
+      signing.ssh.privateKey: 'ssh-key-placeholder'
+    asserts:
+      - equal:
+          path: stringData["configure_ssh_signing.sh"]
+          value: |-
+            #!/usr/bin/env bash
+            set -eu
+
+            install -m 600 /raw/ssh-signing-key /data/git/.ssh-signing/key
+            ssh-keygen -y -f /data/git/.ssh-signing/key > /data/git/.ssh-signing/key.pub
+            chmod 644 /data/git/.ssh-signing/key.pub
