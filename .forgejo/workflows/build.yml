@@ -37,6 +37,7 @@ jobs:
 
       - run: pnpm prettier
       - run: pnpm markdownlint .
+      - run: pnpm schema:check
       - run: make readme
       - run: git diff --exit-code --name-only README.md
 
