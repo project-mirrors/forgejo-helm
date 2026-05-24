@@ -1,6 +1,6 @@
 dependencies:
 - name: common
   repository: oci://ghcr.io/visualon/bitnamicharts
-  version: 2.39.0
-digest: sha256:cce1d2bafb5e182b3807e9b0bc174375ea4665a04a77346d9198ffe01f95d322
-generated: "2026-05-10T22:01:17.03728567Z"
+  version: 2.40.0
+digest: sha256:d857db6a15a2ce39765ec995a49645edbcf12d819f5a98ee78098955aaf3269d
+generated: "2026-05-24T22:02:01.092356657Z"
