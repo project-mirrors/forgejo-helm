@@ -21,7 +21,7 @@
     "conventional-changelog-conventionalcommits": "9.3.1",
     "conventional-changelog-core": "9.0.0",
     "husky": "9.1.7",
-    "lint-staged": "17.0.6",
+    "lint-staged": "17.0.7",
     "markdownlint-cli": "0.48.0",
     "prettier": "3.8.3",
     "yaml": "2.9.0"
