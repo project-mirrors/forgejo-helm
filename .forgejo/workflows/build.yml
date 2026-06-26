@@ -111,9 +111,9 @@ jobs:
           - v1.30.14+k3s2 # renovate: k3s
           # https://github.com/k3s-io/k3s/blob/master/channel.yaml#L3-L4
           # stable version
-          - v1.35.5+k3s1 # renovate: k3s
+          - v1.35.6+k3s1 # renovate: k3s
           # latest version
-          - v1.36.1+k3s1 # renovate: k3s
+          - v1.36.2+k3s1 # renovate: k3s
 
     steps:
       - run: cat /etc/os-release
