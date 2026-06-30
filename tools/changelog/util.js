@@ -1,10 +1,9 @@
 import conventionalChangelogPreset from 'conventional-changelog-conventionalcommits';
-import conventionalChangelogCore from 'conventional-changelog-core';
+import { ConventionalChangelog } from 'conventional-changelog';
 
 /**
- * @type {import('conventional-changelog-core').Options}
+ * @type {import('conventional-changelog').Options}
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 export const config = conventionalChangelogPreset({
   types: [
     {
@@ -59,15 +58,19 @@ export const config = conventionalChangelogPreset({
  * @param {boolean|undefined} onTag
  * @returns
  */
-export function getChangelog(onTag = false) {
-  return conventionalChangelogCore(
-    {
-      config,
-      releaseCount: onTag ? 2 : 1,
-    },
-    undefined,
-    undefined,
-    undefined,
-    { headerPartial: '' },
-  );
+export async function getChangelog(onTag = false) {
+  const generator = new ConventionalChangelog()
+    .readPackage()
+    .config(config)
+    .writer({ headerPartial: '' })
+    .options({ releaseCount: onTag ? 2 : 1 });
+
+  /** @type {string[]} */
+  const lines = [];
+
+  for await (const line of generator.write()) {
+    lines.push(line);
+  }
+
+  return lines.join('');
 }

@@ -1,8 +1,6 @@
 import { getChangelog } from './changelog/util.js';
 
-const stream = getChangelog(!!process.argv[2]).setEncoding('utf8');
-
-const changes = (await stream.toArray()).join('');
+const changes = await getChangelog(!!process.argv[2]);
 
 if (!changes.length) {
   console.error('No changelog found');
