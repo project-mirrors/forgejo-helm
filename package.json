@@ -23,7 +23,7 @@
     "husky": "9.1.7",
     "lint-staged": "17.0.8",
     "markdownlint-cli": "0.49.0",
-    "prettier": "3.8.5",
+    "prettier": "3.9.0",
     "yaml": "2.9.0"
   },
   "packageManager": "pnpm@11.9.0",
