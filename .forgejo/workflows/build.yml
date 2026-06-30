@@ -10,9 +10,6 @@ on:
       - v*
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 env:
   HELM_VERSION: v4.2.0 # renovate: datasource=github-releases depName=helm packageName=helm/helm
   HELM_UNITTEST_VERSION: v1.1.1 # renovate: datasource=github-releases depName=helm-unittest packageName=helm-unittest/helm-unittest
