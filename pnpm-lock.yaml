@@ -30,8 +30,8 @@ importers:
         specifier: 0.49.1
         version: 0.49.1
       prettier:
-        specifier: 3.9.6
-        version: 3.9.6
+        specifier: 3.9.7
+        version: 3.9.7
       yaml:
         specifier: 2.9.1
         version: 2.9.1
@@ -404,8 +404,8 @@ packages:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
 
-  prettier@3.9.6:
-    resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
+  prettier@3.9.7:
+    resolution: {integrity: sha512-T3mF5P7HFzZVLDQuCUNtJj6WK1pcpLMweMNUVwGb01bLNkH9AkKxtZvmInw8K6bnn2O3d6/5RHl6zSHiBAD0Og==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -930,7 +930,7 @@ snapshots:
 
   picomatch@4.0.7: {}
 
-  prettier@3.9.6: {}
+  prettier@3.9.7: {}
 
   punycode.js@2.3.1: {}
 
