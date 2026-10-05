@@ -1,0 +1,20 @@
+suite: deployment template (Service configuration)
+release:
+  name: forgejo-unittests
+  namespace: testing
+templates:
+  - templates/gitea/http-svc.yaml
+  - templates/gitea/ssh-svc.yaml
+tests:
+  - it: sets the component label to "http" for the http service
+    template: templates/gitea/http-svc.yaml
+    asserts:
+      - equal:
+          path: metadata.labels["app.kubernetes.io/component"]
+          value: http
+  - it: sets the component label to "ssh" for the ssh service
+    template: templates/gitea/ssh-svc.yaml
+    asserts:
+      - equal:
+          path: metadata.labels["app.kubernetes.io/component"]
+          value: ssh

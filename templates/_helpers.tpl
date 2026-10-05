@@ -101,6 +101,13 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
+Kubernetes component label
+*/}}
+{{- define "gitea.componentLabel" -}}
+app.kubernetes.io/component: {{ . }}
+{{- end -}}
+
+{{/*
 Selector labels
 */}}
 {{- define "gitea.selectorLabels" -}}
