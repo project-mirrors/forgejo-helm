@@ -161,12 +161,17 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- $_ := set $values "secret" (printf "${GITEA_OAUTH_SECRET_%d}" $idx) -}}
 {{- end -}}
 
-{{- $flags := list "skipLocal-2fa" "groupTeamMapRemoval" "skip-local-2fa" "group-team-map-removal" -}}
+{{- $flags := list "skipLocal-2fa" "groupTeamMapRemoval" "skip-local-2fa" "group-team-map-removal" "dyn-group-maps-removal" "dynGroupMapsRemoval" -}}
+{{- $json_vars := list "dyn-group-maps" "dynGroupMaps" "group-team-map" "groupTeamMap" -}}
 {{- range $key, $val := $values -}}
 {{- if has $key $flags -}}
 {{- printf "--%s " ($key | kebabcase) -}}
 {{- else if ne $key "existingSecret" -}}
+{{- if has $key $json_vars -}}
+{{- printf "--%s '%s' " ($key | kebabcase) ($val) -}}
+{{- else -}}
 {{- printf "--%s %s " ($key | kebabcase) ($val | quote) -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

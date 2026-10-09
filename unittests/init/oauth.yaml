@@ -15,7 +15,7 @@ tests:
           autoDiscoverUrl: https://login.microsoftonline.com/some-tenant/v2.0/.well-known/openid-configuration
           useCustomUrls: false
           groupClaimName: groups
-          groupTeamMap: '{}'
+          groupTeamMap: '{"developer":{"MyForgejoOrganization": ["AdminGroup"]}}'
           groupTeamMapRemoval: true
           skipLocal-2fa: true
     asserts:
@@ -25,6 +25,9 @@ tests:
       - matchRegex:
           path: stringData["configure_gitea.sh"]
           pattern: --skip-local-2fa
+      - matchRegex:
+          path: stringData["configure_gitea.sh"]
+          pattern: '{"developer":{"MyForgejoOrganization": \["AdminGroup"\]}}'
       - matchSnapshot:
           path: stringData["configure_gitea.sh"]
   - it: works with oauth with kebab-case
