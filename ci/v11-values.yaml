@@ -1,6 +1,6 @@
 image:
-  registry: codeberg.org
-  repository: forgejo-experimental/forgejo
+  registry: code.forgejo.org
+  repository: forgejo/forgejo
   tag: 11 # don't pin, manifests can be missing
 
 # Use mirror
