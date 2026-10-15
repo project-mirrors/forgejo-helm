@@ -121,8 +121,12 @@ function env2ini::generate_initial_secrets() {
   #   - initially used to set up Forgejo
   # Anyway, they won't harm existing app.ini files
 
-  FORGEJO__SECURITY__INTERNAL_TOKEN=$(gitea generate secret INTERNAL_TOKEN)
-  export FORGEJO__SECURITY__INTERNAL_TOKEN
+  # Forgejo >= 18 uses a UNIX socket for internal communication and no longer
+  # has an INTERNAL_TOKEN (https://codeberg.org/forgejo/forgejo/pulls/14148)
+  if gitea generate secret --help 2>/dev/null | grep -q 'INTERNAL_TOKEN'; then
+    FORGEJO__SECURITY__INTERNAL_TOKEN=$(gitea generate secret INTERNAL_TOKEN)
+    export FORGEJO__SECURITY__INTERNAL_TOKEN
+  fi
   FORGEJO__SECURITY__SECRET_KEY=$(gitea generate secret SECRET_KEY)
   export FORGEJO__SECURITY__SECRET_KEY
   FORGEJO__OAUTH2__JWT_SECRET=$(gitea generate secret JWT_SECRET)
