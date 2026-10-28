@@ -17,6 +17,7 @@ runs:
         apt-get -q install -qq \
           ca-certificates \
           curl \
+          gettext-base \
           gnupg \
           make \
           python3 \
